@@ -1,0 +1,14 @@
+{
+    "name": "name",
+    "version": "0.0.1",
+    "path": "/name/",
+    "includePaths": [
+    	{
+    		"/assets": "",
+    		"/assets/scripts": "",
+    		"/assets/images": "",
+    		"/assets/gui": "",
+    		"/assets/sounds": ""
+    	}
+    ]
+}

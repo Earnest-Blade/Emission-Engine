@@ -1,0 +1,14 @@
+{
+  "name": "project002",
+  "version": "0.0.1",
+  "path": "projects/project002/",
+  "includePaths": [
+    {
+      "/assets": "",
+      "/assets/scripts": "",
+      "/assets/images": "",
+      "/assets/gui": "",
+      "/assets/sounds": ""
+    }
+  ]
+}

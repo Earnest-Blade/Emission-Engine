@@ -1,0 +1,467 @@
+
+#path=assets\ruby\ruby_script_import.rb
+#filename=ruby_script_import.rb
+#init_offset=0
+require "java"
+
+# Imports all packages from java
+# Java Imports
+
+# Engine Imports
+java_import "engine.Application"
+java_import "engine.data.GuiData"
+java_import "engine.tools.maths.Anchor"
+java_import "engine.loaders.ResourceLoader"
+java_import "engine.graphics.window.Window"
+java_import "engine.graphics.displayable.DisplayImage"
+java_import "engine.graphics.displayable.DisplayText"
+java_import "engine.graphics.displayable.DisplayRectangle"
+java_import "engine.graphics.displayable.DisplayButton"
+java_import "engine.graphics.displayable.DisplayScreen"
+
+# LWJGL Imports
+java_import "org.joml.Vector2f"
+
+#path=assets\ruby\gfx\ruby_gfx_screen.rb
+#filename=ruby_gfx_screen.rb
+#init_offet=2
+
+class Screen < DisplayScreen
+
+    def initialize()
+        
+    end
+
+    def show 
+        
+    end
+
+    def hide 
+        
+    end
+
+    def updateMesh
+        
+    end
+
+end
+
+#path=assets\ruby\ruby_scripts_variables.rb
+#filename=ruby_scripts_variables.rb
+#init_offset=10
+
+# Current app reference.
+# This is the main class of the game. This class contain all informations, methods 
+# and variables about the project, the game, the window...
+$application = Application.CURRENT_APP
+
+# Gui data reference from current app.
+# This class contain all informations about gui, ui (window size, window name...).
+$gui = $application.getApplicationGUIData
+
+# Application and project data from current app
+# This class contain all information about your current project.
+$data = $application.getApplicationData
+
+#path=assets\ruby\ruby_script_methods.rb
+#filename=ruby_script_methods.rb
+#init_offset=3
+
+def show(object)
+    object.updateMesh
+    object.show
+end
+
+def hide(object)
+    object.hide
+end
+
+#path=assets\ruby\ruby_script_classes.rb
+#filename=ruby_script_classes.rb
+#init_offset=2
+
+# Main image class.
+# Child class of engine.graphics.displayable.DisplayImage.
+# This class is used to create image to display at screen.
+# The image will be display on the layer 1.
+class Image < DisplayImage
+
+    def initialize(path, layer=0)
+        super(path, layer)
+    end
+
+    def position(x, y)
+        setPosition(ScreenTools::screenToCoords(x, y))
+    end
+
+    def scale(value)
+        setScale(value)
+    end
+
+    def size(x, y)
+        setSize(x, y)
+    end
+
+    def texture(path)
+        changeTexture(path)
+    end
+
+    def anchor(anchor)
+        setAnchor(Anchor.getAnchorByName(anchor))
+    end
+
+    def get_position
+        coordsToScreen(getPosition().x, getPosition().y)
+    end
+
+    def get_scale
+        getScale()
+    end
+
+    def get_size
+        getSize()
+    end
+
+end
+
+# Background class.
+# Child class of engine.graphics.displayable.DisplayImage.
+# This class is used to create backgrounds for games and display them on the screen.
+# The background will be display on the layer 2.
+class Background < DisplayImage
+
+    def initialize(path)
+        super(path, -1) 
+
+        setAnchor(Anchor.getAnchorByName("center"))
+        size $gui.window_width*2, $gui.window_height*2
+    end
+
+    def scale(value)
+        setScale(value)
+    end
+
+    def size(x, y)
+        setSize(x, y)
+    end
+
+    def get_scale
+        getScale()
+    end
+
+    def get_size
+        getSize()
+    end
+end
+
+class Text < DisplayText
+
+    def initialize(text, color, font)
+        super(text, font, color , 1)
+        
+    end
+
+    def text(x)
+        setText(x)
+    end
+
+    def position(x, y)
+        setPosition(ScreenTools::screenToCoords(x, y))
+    end
+
+    def scale(value)
+        setScale(value)
+    end
+
+    def get_position
+        coordsToScreen(getPosition().x, getPosition().y)
+    end
+
+    def get_scale
+        getScale()
+    end
+end
+
+class Button < DisplayButton
+    def initialize(text, font, color, image="", width=0, height=0)
+        super(text, font, color, image, width, height, 1)
+        @@on_click_event = nil
+        @@on_hover_event = nil
+        @@after_hover_event = nil
+    end
+
+    # Abstract method 
+    def OnClick()
+        if @@on_click_event != nil 
+            @@on_click_event.call
+        end
+    end
+
+    # Abstract method 
+    def OnHover()
+        if @@on_hover_event != nil 
+            @@on_hover_event.call
+        end
+    end
+
+    def AfterHover()
+        if @@after_hover_event != nil 
+            @@after_hover_event.call
+        end
+    end
+
+    def position(x, y)
+        setPosition(ScreenTools::screenToCoords(x, y))
+    end
+
+    def scale(value)
+        setScale(value)
+    end
+
+    def offset(xOffset, yOffset)
+        setOffset(xOffset, yOffset)
+    end
+
+    def text(x)
+        setText(x)
+    end
+
+    def anchor(anchor)
+        setAnchor(Anchor.getAnchorByName(anchor))
+    end
+
+    def on_click(&block)
+        @@on_click_event = block
+    end
+
+    def on_hover(&block)
+        @@on_hover_event = block
+    end
+
+    def after_hover(&block)
+        @@after_hover_event = block
+    end
+
+    def get_position
+        coordsToScreen(getPosition().x, getPosition().y)
+    end
+
+    def get_scale
+        getScale()
+    end
+end
+
+class Rectangle < DisplayRectangle
+    def initialize(width, height, color)
+        super(width, height, color, false, 0)
+        
+    end
+
+    def position(x, y)
+        setPosition(ScreenTools::screenToCoords(x, y))
+    end
+
+    def scale(value)
+        setScale(value)
+    end
+
+    def anchor(anchor)
+        setAnchor(Anchor.getAnchorByName(anchor))
+    end
+
+    def get_position
+        coordsToScreen(getPosition().x, getPosition().y)
+    end
+
+    def get_scale
+        getScale()
+    end
+end
+
+class FillRectangle < DisplayRectangle
+    def initialize(width, height, color)
+        super(width, height, color, true, 0)
+    end
+
+    def position(x, y)
+        setPosition(ScreenTools::screenToCoords(x, y))
+    end
+
+    def scale(value)
+        setScale(value)
+    end
+
+    def anchor(anchor)
+        setAnchor(Anchor.getAnchorByName(anchor))
+    end
+
+    def get_position
+        coordsToScreen(getPosition().x, getPosition().y)
+    end
+
+    def get_scale
+        getScale()
+    end
+end
+
+# Label class
+# This class is used to create game action block.
+# Actions that are puts in will be execute on after one. This class is used to organize game's flow.
+# Start the label by calling ".call" method.
+class Label
+    attr_reader :block
+
+    def initialize(&block)
+        @block = block
+    end
+
+    def call
+        @block.call
+    end
+
+    def exit(status=1)
+
+    end
+end
+
+
+#path=assets\ruby\tools\ruby_font_tools.rb
+#filename=ruby_font_tools.rb
+#init_offet=1
+
+module Font
+    
+    def generate_font(path, size)
+        ResourceLoader.createFont(path, Float(size))
+    end
+end
+
+include Font
+
+
+
+#path=assets\ruby\tools\ruby_tools_screen.rb
+#filename=ruby_tools_screen.rb
+#init_offet=1
+
+module ScreenTools
+    java_import "java.awt.Toolkit"
+
+    def getScreenSize()
+        Vector2f.new(
+            Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
+            Toolkit.getDefaultToolkit().getScreenSize().getHeight()
+        )
+    end
+
+    def coordsToScreen(x, y)
+        Vector2f.new(x * getScreenSize.x, y * getScreenSize.y)
+    end
+
+    def screenToCoords(x, y)
+        Vector2f.new(x / getScreenSize.x * 2, y / getScreenSize.y * 2)
+    end
+end
+
+include ScreenTools
+
+#path=projects\project001\assets\scripts\options.rb
+#filename=options.rb
+#init_offset=0
+
+# ------------------------------------- #
+# ---------------- GUI ---------------- #
+# ------------------------------------- #
+
+# Define window's title.
+$gui.application_name = "Java VN Engine Window"
+
+# Define the width of the window.
+$gui.window_width = 1920
+# Define the height of the window.
+$gui.window_height = 1080
+
+# Define how much the fps can be.
+$gui.fps_cap = 60
+
+# Define window and application icon.
+$gui.application_icon = ""
+
+# Define the spawn position x of the window on your screen.
+# By default, it's center to the screen
+# $gui.location_x = 0 -> up of the screen
+$gui.location_x = -1920
+
+# Define the spawn position y of the window on your screen.
+# By default, it's center to the screen
+# $gui.location_y = 0 -> left of the screen
+$gui.location_y = 0
+
+# Define if an fps counter will be display on the corner right of the screen.
+#$gui.show_fps = true
+
+# Define max amount of layers.
+$gui.layer_max = 5
+# Define minimum amount of layers.
+$gui.layer_min = -5
+
+# !DO NOT REMOVE!
+# Save all changed settings
+$gui.flush()
+
+#path=projects\project001\assets\scripts\screens.rb
+#filename=screens.rb
+#init_offset=1
+
+class MainScreen < DisplayScreen
+
+    def initialize()
+        super(0)
+
+        font = Font::generate_font("PTSerif.ttf", 65)
+        setDefaultFont(font)
+        
+        button = Button.new("sample", font, "#ffffff")
+        button.on_hover {  button.setColor("#00ff00")}
+        button.after_hover { button.setColor("#ffffff")}
+
+        add(button)
+        addImage("main_menu_bg.png", 0, 0, 1920, 1080)
+    end
+
+end
+
+$main_menu = MainScreen.new()
+
+
+#path=projects\project001\assets\scripts\main.rb
+#filename=main.rb
+#init_offset=5
+
+# Call when the game is started
+def begin()
+    # show $main_menu
+
+    $init.call # Create variables 
+    $main.call # Start game
+end
+
+# Call when the game is ended
+def end()
+    
+end
+
+# Init variables
+$init = Label.new {
+    $main_font = Font::generate_font("PTSerif.ttf", 65)
+}
+
+# Started label
+$main = Label.new{
+    image1 = Image.new("main_menu_bg.png", 0)
+    image1.size 1920, 1080
+    image1.anchor "center"
+    
+    show image1
+    #show image2
+}
