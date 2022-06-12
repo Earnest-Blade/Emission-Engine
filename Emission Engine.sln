@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emission Engine", "Emission Engine\Emission Engine.csproj", "{7570232D-3DC1-4B27-83EB-33F0F547ADA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B160535A-C6E6-480C-9B8C-4A122BC48B1B}
+	EndGlobalSection
+EndGlobal
