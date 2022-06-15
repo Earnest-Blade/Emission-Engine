@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Reflection;
-
+using Emission.Math;
 using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-
-using Emission.Math;
 
 namespace Emission
 {
@@ -14,54 +12,36 @@ namespace Emission
     {
         public OpenTK.Windowing.GraphicsLibraryFramework.Window* CurrentWindow { get; }
 
-        public IGLFWGraphicsContext Context { get; private set; }
+        public IGLFWGraphicsContext Context { get; }
 
-        public WindowSettings Settings { get; private set; }
+        public WindowSettings Settings { get; }
+
+        public float WindowAspect
+        {
+            get => (float)_lastWindowSize.X / (float)_lastWindowSize.Y;
+        }
 
         public Vector2 WindowPosition
         {
             get => _lastWindowPosition;
-            set
-            {
-                GLFW.SetWindowPos(CurrentWindow, (int)value.X, (int)value.Y);
-            }
+            set => GLFW.SetWindowPos(CurrentWindow, (int)value.X, (int)value.Y);
         }
 
         public Vector2 WindowSize
         {
             get => _lastWindowSize;
-            set
-            {
-                GLFW.SetWindowSize(CurrentWindow, (int)value.X, (int)value.Y);
-            }
-        }
-
-        public Matrix4 WindowProjection
-        {
-            get
-            {
-                switch (Settings.Projection)
-                {
-                    case WindowSettings.WindowProjection.Orthographic:
-                        return MatrixHelper.CreateOrtho(_lastWindowSize.X, _lastWindowSize.Y, Settings.NearPlane, Settings.FarPlane);
-
-                    case WindowSettings.WindowProjection.Perspective:
-                        return MatrixHelper.CreatePerspective(Settings.FieldOfView, _lastWindowSize.X, _lastWindowSize.Y, Settings.NearPlane, Settings.FieldOfView);
-                }
-
-                return Matrix4.Zero;
-            }
+            set => GLFW.SetWindowSize(CurrentWindow, (int)value.X, (int)value.Y);
         }
 
         private Vector2i _lastWindowSize;
         private Vector2 _lastWindowPosition;
-        
+
         private bool _isVisible;
         private bool _isFocus;
 
-        public Window(WindowSettings Settings)
+        public Window(WindowSettings settings)
         {
-            this.Settings = Settings;
+            this.Settings = settings;
 
             GLFW.Init();
 
@@ -72,16 +52,8 @@ namespace Emission
             GLFW.WindowHint(WindowHintBool.Focused, true);
             GLFW.WindowHint(WindowHintBool.Visible, false);
 
-            if (Settings.IsOpenES)
-            {
-                // Define parameters when OpenES is use.
-                GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlEsApi);
-            }
-            else
-            {
-                // Define parameters when OpenGL is use.
-                GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlApi);
-            }
+            GLFW.WindowHint(WindowHintClientApi.ClientApi,
+                Settings.IsOpenES ? ClientApi.OpenGlEsApi : ClientApi.OpenGlApi);
 
             CurrentWindow = GLFW.CreateWindow(Settings.Width * Settings.Scale, Settings.Height * Settings.Scale, Settings.Title, null, null);
             Context = new GLFWGraphicsContext(CurrentWindow);
@@ -103,23 +75,27 @@ namespace Emission
             GLFW.SetWindowSizeCallback(CurrentWindow, WindowResizeCallback);
             GLFW.SetWindowPosCallback(CurrentWindow, WindowMoveCallback);
             GLFW.SetKeyCallback(CurrentWindow, Input.KeyCallback);
+            GLFW.SetScrollCallback(CurrentWindow, Input.ScrollCallback);
+            GLFW.SetCursorPosCallback(CurrentWindow, Input.CursorPosition);
             GLFW.SetMouseButtonCallback(CurrentWindow, Input.MouseCallback);
 
             GL.Enable(EnableCap.Blend);
+            GL.Enable(EnableCap.DepthClamp);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            WindowResizeCallback(CurrentWindow, Settings.Width, Settings.Height);
+            WindowResizeCallback(CurrentWindow, 0, 0);
         }
 
         public void Update()
         {
             _isFocus = GLFW.GetWindowAttrib(CurrentWindow, WindowAttributeGetBool.Focused);
+            GLFW.PollEvents();
         }
 
         public void PreRender()
         {
             GL.ClearColor(0.13f, 0.22f, 0.4f, 1);
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.Flush();
         }
@@ -127,7 +103,7 @@ namespace Emission
         public void PostRender()
         {
             GLFW.SwapBuffers(CurrentWindow);
-            GLFW.WaitEvents();
+            //ApplicationConsole.Print("Poll Events");
         }
 
         public void Show()
@@ -193,6 +169,7 @@ namespace Emission
 
         #region Private Methods
 
+        
         private int LoadBindings()
         {
             Assembly assembly;

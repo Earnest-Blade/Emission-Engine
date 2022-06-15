@@ -67,7 +67,7 @@ namespace Emission
             GL.VertexAttribPointer(tid, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 
             int width, height;
-            BitmapData data = Resources.ReadTexture(path, &width, &height);
+            byte[] data = Resources.ReadTexture(path, &width, &height);
             if (data != null)
             {
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
@@ -77,7 +77,7 @@ namespace Emission
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
                 
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, 
-                                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data);
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             }
             else

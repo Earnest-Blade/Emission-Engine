@@ -13,8 +13,8 @@
 
     public WindowProjection Projection;
 
-    public float NearPlane;
-    public float FarPlane;
+    public float NearDepth;
+    public float FarDepth;
     public float FieldOfView;
 
     public static WindowSettings GetDefault()
@@ -39,9 +39,9 @@
             Projection = WindowProjection.Perspective,
 
             // Projection Parameters
-            NearPlane =  0.1f,
-            FarPlane = 100.0f,
-            FieldOfView = 45.0f
+            NearDepth =  0.1f,
+            FarDepth = 100.0f,
+            FieldOfView = 90.0f
         };
     }
 

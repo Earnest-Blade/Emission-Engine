@@ -3,6 +3,8 @@
 using Emission.Math;
 using OpenTK.Graphics.OpenGL;
 
+using Emission.Shading;
+
 namespace Emission
 {
     class Mesh
@@ -17,7 +19,6 @@ namespace Emission
         private int _vboID;
         private int _eboID;
         private int _texID;
-        private int _texCoordsID;
 
         private float[] _vertices;
         private int[] _indices;
@@ -34,7 +35,7 @@ namespace Emission
             _eboID = GraphicAllocator.BindIndices(_indices);
             _texID = GraphicAllocator.BindTexture2D("assets/textures/debug.jpg");
 
-            ID = int.Parse(_vaoID + "" + _vboID + "" + _eboID + "" + _texCoordsID);
+            ID = int.Parse(_vaoID + "" + _vboID + "" + _eboID);
             Name = "mesh" + ID;
 
             ApplicationConsole.Print("[INFO] " + Name + " initialized!");
@@ -43,14 +44,14 @@ namespace Emission
         public virtual void Update()
         {
             Shader.Start();
-            Shader.UseTransformUniformMat4("uTransform", Transform.ToMatrix());
-            Shader.UseTransformUniformMat4("uView", Camera.Current.CameraView);
-            Shader.UseUniformMat4("uProjection", Window.Current.WindowProjection);
+            Shader.UseUniformMat4("uTransform", Transform.ToMatrix());
+            Shader.UseUniformMat4("uView", Camera.Main.ViewMatrix());
+            Shader.UseUniformProjectionMat4("uProjection", Camera.Main.ProjectionMatrix());
         }
 
         public virtual void PreRender()
         {
-            // TODO: Optimize loading VAOs, VBOs, IBOs
+            
         }
 
         public virtual void Render()

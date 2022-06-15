@@ -1,5 +1,6 @@
 ﻿using System;
 
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using Emission.Math;
@@ -91,6 +92,22 @@ namespace Emission
             }
         }
 
+        /// <summary>
+        /// Return current mouse position on the screen as a <see cref="Vector2"/>.
+        /// </summary>
+        public static Vector2 MousePosition
+        {
+            get => Current._mousePosition;
+        }
+
+        /// <summary>
+        /// Return current mouse scroll value.
+        /// </summary>
+        public static float Scroll
+        {
+            get => Current._mouseScroll;
+        }
+
         private static readonly Input current = new Input();
 
         // Keyboard arrays
@@ -100,21 +117,19 @@ namespace Emission
         // Mouse arrays
         private int[] _mouseButtonStates = new int[MOUSE_SIZE];
         private bool[] _activeMouseButtons = new bool[MOUSE_SIZE];
+        
+        // Mouse state
+        private float _mouseScroll = 0;
+        private Vector2 _mousePosition = Vector2.Zero;
         private long _lastPressedMouseTime = 0;
         private long _mouseDoubleClickPeriod = 1000000000 / 5;
 
-        private Input()
-        {
-            resetKeys();
-            resetMouse();
-        }
+        private Input() { }
 
         public void Update()
         {
-            resetKeys();
-            resetMouse();
-
-            GLFW.PollEvents();
+            ResetKeys();
+            ResetMouse();
         }
 
         private bool KeyDown(int key)
@@ -132,7 +147,7 @@ namespace Emission
             return _keyStates[key] == (int)InputAction.Release;
         }
 
-        private void resetKeys()
+        private void ResetKeys()
         {
             for(int i = 0; i < _keyStates.Length; i++)
             {
@@ -171,8 +186,10 @@ namespace Emission
             return false;
         }
 
-        private void resetMouse()
+        private void ResetMouse()
         {
+            _mouseScroll = 0;
+            
             for(int i = 0; i < _mouseButtonStates.Length; i++)
             {
                 _mouseButtonStates[i] = NO_STATE;
@@ -194,23 +211,35 @@ namespace Emission
         public static bool IsMouseButtonDoubleClicked(MouseButton button) { return Current.MouseButtonDoubleClicked((int)button); }
 
         public static int Axis(Axis a) { return a.IsDown(); }
+        public static float Axis(Axis a, float mod) { return a.IsDown(mod); }
+        
+        public static int AxisPress(Axis a) { return a.IsPress(); }
+        public static float AxisPress(Axis a, float mod) { return a.IsPress(mod); }
 
         public static unsafe void KeyCallback(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, OpenTK.Windowing.GraphicsLibraryFramework.Keys key, int scanCode, InputAction action, KeyModifiers mod)
         {
-            if (current != null)
-            {
-                Current._activeKeys[(int)key] = (action != InputAction.Release);
-                Current._keyStates[(int)key] = (int)action;
-            }
+            if (current == null) return;
+            Current._activeKeys[(int)key] = (action != InputAction.Release);
+            Current._keyStates[(int)key] = (int)action;
         }
 
         public static unsafe void MouseCallback(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, OpenTK.Windowing.GraphicsLibraryFramework.MouseButton button, InputAction action, KeyModifiers mod)
         {
-            if(current != null)
-            {
-                Current._activeMouseButtons[(int)button] = (action != InputAction.Release);
-                Current._mouseButtonStates[(int)button] = (int)action;
-            }
+            if (current == null) return;
+            Current._activeMouseButtons[(int)button] = (action != InputAction.Release);
+            Current._mouseButtonStates[(int)button] = (int)action;
+        }
+
+        public static unsafe void CursorPosition(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, double x, double y)
+        {
+            if (current == null) return;
+            Current._mousePosition = new Vector2((float)x, (float)y);
+        }
+        
+        public static unsafe void ScrollCallback(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, double x, double y)
+        {
+            if (current == null) return;
+            Current._mouseScroll = (float)y;
         }
 
         public static Input Current
@@ -221,16 +250,14 @@ namespace Emission
 
     class Axis
     {
-        public static Axis Horizontal = new Axis("Horizontal", Keys.Left, Keys.Right);
-        public static Axis Vertical = new Axis("Vertical", Keys.Down, Keys.Up);
-        public static Axis UpDown = new Axis("UpDown", Keys.LeftShift, Keys.Space);
-
-        public string Name { get; }
+        public static Axis Horizontal = new Axis( Keys.Left, Keys.Right);
+        public static Axis Vertical = new Axis(Keys.Down, Keys.Up);
+        public static Axis UpDown = new Axis(Keys.LeftShift, Keys.Space);
 
         private Keys _positiveKey;
         private Keys _negativeKey;
 
-        public Axis(string name, Keys negativeKey, Keys positiveKey)
+        public Axis(Keys negativeKey, Keys positiveKey)
         {
             this._positiveKey = positiveKey;
             this._negativeKey = negativeKey;
@@ -239,8 +266,29 @@ namespace Emission
         public int IsDown()
         {
             if (Input.IsKeyDown(_negativeKey)) return -1;
-            else if (Input.IsKeyDown(_positiveKey)) return 1;
-            else return 0;
+            if (Input.IsKeyDown(_positiveKey)) return 1;
+            return 0;
+        }
+        
+        public float IsDown(float mod)
+        {
+            if (Input.IsKeyDown(_negativeKey)) return -mod;
+            if (Input.IsKeyDown(_positiveKey)) return mod;
+            return 0;
+        }
+
+        public int IsPress()
+        {
+            if (Input.IsKeyPressed(_negativeKey)) return -1;
+            if (Input.IsKeyPressed(_positiveKey)) return 1;
+            return 0;
+        }
+        
+        public float IsPress(float mod)
+        {
+            if (Input.IsKeyPressed(_negativeKey)) return -mod;
+            if (Input.IsKeyPressed(_positiveKey)) return mod;
+            return 0;
         }
     }
 }

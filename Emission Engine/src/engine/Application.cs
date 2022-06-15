@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+using Emission.Math;
 
 namespace Emission
 {
-    // TODO: Setup a singleton
+    // TODO Create a scene class and use this class as a scene
     class Application
     {
         private static readonly Application current = new Application();
@@ -13,6 +11,8 @@ namespace Emission
         public Window Window { get; }
         public Camera Camera { get; }
         public ApplicationConsole Console { get; }
+
+        private Mesh _mesh;
 
         private Application()
         {
@@ -23,15 +23,17 @@ namespace Emission
 
         public void Start()
         {
+            Camera.SetAsMain(Camera);
+            
             Window.Show();
 
-            Mesh mesh = new Mesh(
+            _mesh = new Mesh(
                 new float[]
                 {
-                    0f,   100f, -100f, 0.0f, 0.0f,
-                    0f,   0f,   -100f, 0.0f, 1.0f,
-                    100f, 0f,   -100f, 1.0f, 1.0f,
-                    100f, 100f, -100f, 1.0f, 0.0f
+                    0.5f, 0.5f,  0f, 1.0f, 1.0f,
+                    0.5f, -0.5f, 0f, 1.0f, 0.0f,
+                    -0.5f, -0.5f,0f, 0.0f, 0.0f,
+                    -0.5f, 0.5f, 0f, 0.0f, 1.0f
                 },
                 new int[]
                 {
@@ -39,27 +41,55 @@ namespace Emission
                 }
             );
 
-            //mesh.Transform.Scale = 5f;
+            Loop();
+        }
 
+        private void Loop()
+        {
+            double totalElapsedTime = 0, previousTime = Time.CurrentTime;
+            int frameCount = 0;
+            
             while (!Window.ShouldClose())
             {
-                Input.Current.Update();
+                Time.SetDeltaTime(Time.CurrentTime - totalElapsedTime);
+                totalElapsedTime = Time.CurrentTime;
 
-                Window.Update();
-                Camera.Update();
-
-                mesh.Update();
-
-                if (Input.IsKeyDown(Keys.Escape)) Stop(1);
-
-                Window.PreRender();
-
-                mesh.Render();
-
-                Window.PostRender();
+                frameCount++;
+                if (Time.CurrentTime - previousTime >= 1.0)
+                {
+                    Time.SetFps(frameCount);
+                    frameCount = 0;
+                    previousTime = Time.CurrentTime;
+                }
+                
+                Update();
+                Render();
             }
-
+            
             Stop(0);
+        }
+
+        private void Update()
+        {
+            Input.Current.Update();
+            Window.Update();
+            
+            Camera.Update();
+            
+            _mesh.Update();
+            
+            if (Input.IsKeyPressed(Keys.D)) ApplicationConsole.Print("[INFO] Current framerate: " + Time.Fps);
+            if (Input.IsKeyPressed(Keys.C)) ApplicationConsole.Print("[INFO] Current Camera Position" + Camera.Transform.Position);
+            if (Input.IsKeyDown(Keys.Escape)) Stop(1);
+        }
+
+        private void Render()
+        {
+            Window.PreRender();
+
+            _mesh.Render();
+
+            Window.PostRender();
         }
 
         public void Stop(int status)
@@ -81,7 +111,7 @@ namespace Emission
 
         static void Main(string[] args)
         {
-            Application.Current.Start();
+            Current.Start();
         }
     }
 }

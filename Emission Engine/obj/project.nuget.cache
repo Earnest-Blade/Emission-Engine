@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "C7c78iCmzwGkZPcNqkXw5hOO2atsgDjKp1TDbmqs7H6o8rGnKfUpHmYLIOAj9E9o8Iqal8sXqRNz9GwjTMK/HQ==",
+  "dgSpecHash": "/RITpWfB4TDEpIcONiOY5jljMJIh3pSsRAeR6tx3EfbFJ+BvcSst9v7GRKUbjCdA1Wyi14RHD9EcGcYOYVI8UQ==",
   "success": true,
   "projectFilePath": "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\Emission Engine.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\imgui.net\\1.87.3\\imgui.net.1.87.3.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk\\4.7.2\\opentk.4.7.2.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.compute\\4.7.2\\opentk.compute.4.7.2.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.core\\4.7.2\\opentk.core.4.7.2.nupkg.sha512",
@@ -17,10 +16,11 @@
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.windowing.common\\4.7.2\\opentk.windowing.common.4.7.2.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.windowing.desktop\\4.7.2\\opentk.windowing.desktop.4.7.2.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\4.7.2\\opentk.windowing.graphicslibraryframework.4.7.2.nupkg.sha512",
+    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\sixlabors.imagesharp\\1.0.0\\sixlabors.imagesharp.1.0.0.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.buffers\\4.4.0\\system.buffers.4.4.0.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.numerics.vectors\\4.4.0\\system.numerics.vectors.4.4.0.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512"
+    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512",
+    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
   ],
   "logs": []
 }

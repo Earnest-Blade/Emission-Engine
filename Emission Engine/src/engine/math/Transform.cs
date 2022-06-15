@@ -22,6 +22,11 @@ namespace Emission.Math
             Position = new Vector3(x, y, z);
         }
 
+        public void MoveFrom(Vector3 v)
+        {
+            Position += v;
+        }
+        
         public void MoveFrom(float x, float y, float z)
         {
             Position += new Vector3(x, y, z);

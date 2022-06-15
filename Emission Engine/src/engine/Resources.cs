@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.ColorSpaces;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace Emission
 {
@@ -158,15 +163,30 @@ namespace Emission
             }
         }
 
-        public static unsafe BitmapData ReadTexture(string path, int* width, int* height)
+        public static unsafe byte[] ReadTexture(string path, int* width, int* height)
         {
-            using(var image = new Bitmap(path))
+            Image<Rgba32> image = Image.Load<Rgba32>(path);
+
+            *width = image.Width;
+            *height = image.Height;
+            
+            image.Mutate(x => x.Flip(FlipMode.Vertical));
+            
+            List<byte> pixels = new List<byte>(4 * image.Width * image.Height);
+
+            for (int y = 0; y < image.Height; y++)
             {
-                BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                *width = data.Width;
-                *height = data.Height;
-                return data;
+                Span<Rgba32> row = image.GetPixelRowSpan(y);
+                for (int x = 0; x < image.Width; x++)
+                {
+                    pixels.Add(row[x].R);
+                    pixels.Add(row[x].G);
+                    pixels.Add(row[x].B);
+                    pixels.Add(row[x].A);
+                }
             }
+            
+            return pixels.ToArray();
         }
     }
 }

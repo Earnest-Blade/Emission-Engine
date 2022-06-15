@@ -3,7 +3,7 @@
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
-namespace Emission
+namespace Emission.Shading
 {
     class Shader
     {
@@ -54,12 +54,12 @@ namespace Emission
             GL.Uniform1(GL.GetUniformLocation(_program, name), value);
         }
 
-        public void UseUniformMat4(string name, Matrix4 value)
+        public void UseUniformProjectionMat4(string name, Matrix4 value)
         {
             GL.UniformMatrix4(GL.GetUniformLocation(_program, name), false, ref value);
         }
 
-        public void UseTransformUniformMat4(string name, Matrix4 value)
+        public void UseUniformMat4(string name, Matrix4 value)
         {
             GL.UniformMatrix4(GL.GetUniformLocation(_program, name), true, ref value);
         }

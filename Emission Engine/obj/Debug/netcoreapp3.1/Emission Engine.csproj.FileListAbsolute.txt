@@ -10,7 +10,6 @@ D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emiss
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.pdb
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.genruntimeconfig.cache
-D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.csprojAssemblyReference.cache
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\OpenTK.Compute.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\OpenTK.Core.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\OpenTK.Graphics.dll
@@ -26,13 +25,11 @@ D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runti
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\glfw3.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\glfw3.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.csproj.CopyComplete
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.1\System.Drawing.Common.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Drawing.Common.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\ImGui.NET.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\libcimgui.so
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\osx-universal\native\libcimgui.dylib
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\cimgui.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\cimgui.dll
+D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.csproj.AssemblyReference.cache
+D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\netcoreapp3.1\Emission Engine.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.dll
