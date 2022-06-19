@@ -7,7 +7,7 @@ using Emission.Shading;
 
 namespace Emission
 {
-    class Mesh
+    public class Mesh
     {
         public int ID { get; }
         public string Name { get; }
@@ -15,13 +15,13 @@ namespace Emission
         public Shader Shader { get; }
         public Transform Transform;
 
-        private int _vaoID;
-        private int _vboID;
-        private int _eboID;
-        private int _texID;
+        protected int _vaoID;
+        protected int _vboID;
+        protected int _eboID;
+        protected int _texID;
 
-        private float[] _vertices;
-        private int[] _indices;
+        protected float[] _vertices;
+        protected int[] _indices;
 
         public Mesh(float[] vertices, int[] indices)
         {

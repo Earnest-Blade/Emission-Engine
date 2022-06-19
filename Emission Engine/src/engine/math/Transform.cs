@@ -4,16 +4,54 @@ using OpenTK.Mathematics;
 
 namespace Emission.Math
 {
-    class Transform
+    public class Transform
     {
         public Vector3 Position;
-        public Quaternion Rotation;
         public float Scale;
+
+        public Vector3 Front => _front;
+        public Vector3 Up => _up;
+        public Vector3 Right => _right;
+
+        public float Pitch
+        {
+            get => Mathf.RadiansToDegrees(_pitch);
+            set
+            {
+                _pitch = Mathf.DegreesToRadian(value);
+            }
+        }
+        
+        public float Yaw
+        {
+            get => Mathf.RadiansToDegrees(_yaw);
+            set
+            {
+                _yaw = Mathf.DegreesToRadian(value);
+            }
+        }
+        
+        public float Roll
+        {
+            get => Mathf.RadiansToDegrees(_roll);
+            set
+            {
+                _roll = Mathf.DegreesToRadian(value);
+            }
+        }
+
+        // private methods
+        private Vector3 _front = -Vector3.UnitY;
+        private Vector3 _up = Vector3.UnitY;
+        private Vector3 _right = Vector3.UnitX;
+        
+        private float _pitch; // in radian
+        private float _yaw; // in radian
+        private float _roll; // in radian
 
         public Transform()
         {
             Position = Vector3.Zero;
-            Rotation = Quaternion.Identity;
             Scale = 1;
         }
 
@@ -27,21 +65,23 @@ namespace Emission.Math
             Position += v;
         }
         
-        public void MoveFrom(float x, float y, float z)
+        public void MoveFromCurrent(float x, float y, float z)
         {
             Position += new Vector3(x, y, z);
         }
 
-        /// <summary>
-        /// Rotate transform using Euler's Angles.
-        /// 
-        /// </summary>
-        /// <param name="pitch">Rotation avant-arriere</param>
-        /// <param name="yaw">Rotation sur lui meme, gauche-droite</param>
-        /// <param name="roll">Rotation en tourbillon</param>
-        public void Rotate(float pitch, float yaw, float roll)
+        public void Rotate(float roll, float pitch, float yaw)
         {
-            Rotation = Quaternion.FromEulerAngles(pitch, yaw, roll);
+            Roll = roll;
+            Pitch = pitch;
+            Yaw = yaw;
+        }
+        
+        public void RotateFromCurrent(float roll, float pitch, float yaw)
+        {
+            Roll += roll;
+            Pitch += pitch;
+            Yaw += yaw;
         }
 
         public Matrix4 ToMatrix()
@@ -50,7 +90,10 @@ namespace Emission.Math
 
             matrix *= Matrix4.CreateTranslation(Position);
             matrix *= Matrix4.CreateScale(Scale);
-            matrix *= Matrix4.CreateFromQuaternion(Rotation);
+            
+            matrix *= Matrix4.CreateRotationZ(_yaw);
+            matrix *= Matrix4.CreateRotationY(_pitch);
+            matrix *= Matrix4.CreateRotationX(_roll);
             
             return matrix;
         }

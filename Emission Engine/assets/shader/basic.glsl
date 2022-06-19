@@ -18,7 +18,9 @@
 		oTextCoords = iTextCoords;
 		oAlpha = alpha;
 		
-		gl_Position = vec4(iPosition, 1.0) * uTransform * uView * uProjection;
+		//gl_Position = vec4(iPosition, 1.0) * uTransform * uView * uProjection;
+		gl_Position = vec4(iPosition, 1.0);
+
 	}
 
 fragment:

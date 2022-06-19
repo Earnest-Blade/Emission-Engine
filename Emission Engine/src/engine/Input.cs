@@ -9,10 +9,11 @@ namespace Emission
 {
     class Input
     {
+        // Constants
         public const int KEYBOARD_SIZE = 512;
         public const int MOUSE_SIZE = 16;
         public const int NO_STATE = -1;
-
+        
         /// <summary>
         /// Get if a key or a mouse button is pressed. Return a boolean.
         /// Check both variables, if any of these is true, it will return true.
@@ -101,6 +102,23 @@ namespace Emission
         }
 
         /// <summary>
+        /// Return value of <see cref="MousePosition"/> before update.
+        /// </summary>
+        public static Vector2 LastMousePosition
+        {
+            get => Current._lastMousePosition;
+        }
+        
+        /// <summary>
+        /// Return the result of the difference between <see cref="MousePosition"/> and <see cref="LastMousePosition"/>.
+        /// Use to get mouse movement between two frames.
+        /// </summary>
+        public static Vector2 DeltaMousePosition
+        {
+            get => Current._mousePosition - Current._lastMousePosition;
+        }
+
+        /// <summary>
         /// Return current mouse scroll value.
         /// </summary>
         public static float Scroll
@@ -108,6 +126,11 @@ namespace Emission
             get => Current._mouseScroll;
         }
 
+        /// <summary>
+        /// Binding for mouse sensivity
+        /// </summary>
+        public static float Sensivity => Current._mouseSensivity;
+        
         private static readonly Input current = new Input();
 
         // Keyboard arrays
@@ -120,10 +143,12 @@ namespace Emission
         
         // Mouse state
         private float _mouseScroll = 0;
+        private float _mouseSensivity = 1;
         private Vector2 _mousePosition = Vector2.Zero;
+        private Vector2 _lastMousePosition = Vector2.Zero;
         private long _lastPressedMouseTime = 0;
         private long _mouseDoubleClickPeriod = 1000000000 / 5;
-
+        
         private Input() { }
 
         public void Update()
@@ -216,27 +241,30 @@ namespace Emission
         public static int AxisPress(Axis a) { return a.IsPress(); }
         public static float AxisPress(Axis a, float mod) { return a.IsPress(mod); }
 
-        public static unsafe void KeyCallback(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, OpenTK.Windowing.GraphicsLibraryFramework.Keys key, int scanCode, InputAction action, KeyModifiers mod)
+        public virtual void KeyCallback(OpenTK.Windowing.GraphicsLibraryFramework.Keys key, int scanCode, 
+            InputAction action, KeyModifiers mod)
         {
             if (current == null) return;
             Current._activeKeys[(int)key] = (action != InputAction.Release);
             Current._keyStates[(int)key] = (int)action;
         }
 
-        public static unsafe void MouseCallback(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, OpenTK.Windowing.GraphicsLibraryFramework.MouseButton button, InputAction action, KeyModifiers mod)
+        public virtual void MouseCallback( OpenTK.Windowing.GraphicsLibraryFramework.MouseButton button, 
+            InputAction action, KeyModifiers mod)
         {
             if (current == null) return;
             Current._activeMouseButtons[(int)button] = (action != InputAction.Release);
             Current._mouseButtonStates[(int)button] = (int)action;
         }
 
-        public static unsafe void CursorPosition(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, double x, double y)
+        public virtual void CursorPosition(double x, double y)
         {
             if (current == null) return;
+            Current._lastMousePosition = Current._mousePosition;
             Current._mousePosition = new Vector2((float)x, (float)y);
         }
         
-        public static unsafe void ScrollCallback(OpenTK.Windowing.GraphicsLibraryFramework.Window* window, double x, double y)
+        public virtual void ScrollCallback(double y)
         {
             if (current == null) return;
             Current._mouseScroll = (float)y;

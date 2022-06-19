@@ -20,7 +20,7 @@ namespace Emission.Math
         /// <summary>
         /// Constant of bits in color. Use to convert RGB color to OpenGL color.
         /// </summary>
-        public const int ColorBit = 255;
+        public const float ColorBit = 255.0f;
 
         /// <summary>
         /// 
@@ -49,6 +49,16 @@ namespace Emission.Math
             return matrix;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="bottom"></param>
+        /// <param name="top"></param>
+        /// <param name="depthNear"></param>
+        /// <param name="depthFar"></param>
+        /// <returns></returns>
         public static Matrix4 OrthographicOffCenter(float left, float right, float bottom, float top, float depthNear,
             float depthFar)
         {
@@ -61,6 +71,31 @@ namespace Emission.Math
                 M33 = -2 / (depthFar - depthNear),
                 M34 = (depthFar + depthNear) / (depthFar - depthNear),
                 M44 = 1f
+            };
+
+            return matrix;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roll"></param>
+        /// <param name="pitch"></param>
+        /// <param name="yaw"></param>
+        /// <returns></returns>
+        public static Matrix4 RotationMatrix(float roll, float pitch, float yaw)
+        {
+            Matrix4 matrix = new Matrix4()
+            {
+                M11 = Cos(pitch) * Cos(yaw),
+                M12 = Sin(roll) * Sin(pitch) * Cos(yaw) - Cos(roll) * Sin(yaw),
+                M13 = Cos(roll) * Sin(pitch) * Cos(yaw) + Sin(roll) * Sin(yaw),
+                M21 = Cos(pitch) * Sin(yaw),
+                M22 = Sin(roll) * Sin(pitch) * Cos(yaw) + Cos(roll) * Sin(yaw),
+                M23 = Cos(roll) * Sin(pitch) * Cos(yaw) - Sin(roll) * Sin(yaw),
+                M31 = -Sin(pitch),
+                M32 = Sin(roll) * Cos(pitch),
+                M33 = Cos(roll) * Cos(pitch)
             };
 
             return matrix;

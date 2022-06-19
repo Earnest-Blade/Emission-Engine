@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Emission.Shading
 {
-    class Shader
+    public class Shader
     {
         public string Name { get; }
 
@@ -77,7 +77,7 @@ namespace Emission.Shading
 
             GL.GetShaderInfoLog(shader, out string shaderLogs);
             if (shaderLogs != "") ApplicationConsole.PrintError("[SHADER] " + shaderLogs);
-            else ApplicationConsole.Print("[SHADER] Succefully compile shader!");
+            else ApplicationConsole.Print("[SHADER] Successfully compile shader!");
 
             return shader;
         }
@@ -130,7 +130,7 @@ namespace Emission.Shading
 
     }
 
-    struct ShaderFile
+    public struct ShaderFile
     {
         public string VertexString;
         public string FragmentString;

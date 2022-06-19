@@ -1,5 +1,7 @@
 ﻿using System;
 using Emission.Math;
+using Game;
+using OpenTK.Mathematics;
 
 namespace Emission
 {
@@ -9,37 +11,23 @@ namespace Emission
         private static readonly Application current = new Application();
 
         public Window Window { get; }
-        public Camera Camera { get; }
         public ApplicationConsole Console { get; }
 
-        private Mesh _mesh;
+        private Scene _debugScene;
 
         private Application()
         {
             Window = new Window(WindowSettings.GetDefault());
-            Camera = new Camera();
             Console = new ApplicationConsole();
+            
         }
 
         public void Start()
         {
-            Camera.SetAsMain(Camera);
-            
-            Window.Show();
+            _debugScene = new DebugScene();
+            _debugScene.Call();
 
-            _mesh = new Mesh(
-                new float[]
-                {
-                    0.5f, 0.5f,  0f, 1.0f, 1.0f,
-                    0.5f, -0.5f, 0f, 1.0f, 0.0f,
-                    -0.5f, -0.5f,0f, 0.0f, 0.0f,
-                    -0.5f, 0.5f, 0f, 0.0f, 1.0f
-                },
-                new int[]
-                {
-                    1, 2, 0, 0, 3, 2
-                }
-            );
+            Window.Visible = true;
 
             Loop();
         }
@@ -49,7 +37,7 @@ namespace Emission
             double totalElapsedTime = 0, previousTime = Time.CurrentTime;
             int frameCount = 0;
             
-            while (!Window.ShouldClose())
+            while (!Window.ShouldClose)
             {
                 Time.SetDeltaTime(Time.CurrentTime - totalElapsedTime);
                 totalElapsedTime = Time.CurrentTime;
@@ -74,12 +62,10 @@ namespace Emission
             Input.Current.Update();
             Window.Update();
             
-            Camera.Update();
+            _debugScene.Update();
             
-            _mesh.Update();
-            
+            // Debug Input
             if (Input.IsKeyPressed(Keys.D)) ApplicationConsole.Print("[INFO] Current framerate: " + Time.Fps);
-            if (Input.IsKeyPressed(Keys.C)) ApplicationConsole.Print("[INFO] Current Camera Position" + Camera.Transform.Position);
             if (Input.IsKeyDown(Keys.Escape)) Stop(1);
         }
 
@@ -87,7 +73,7 @@ namespace Emission
         {
             Window.PreRender();
 
-            _mesh.Render();
+            _debugScene.Render();
 
             Window.PostRender();
         }

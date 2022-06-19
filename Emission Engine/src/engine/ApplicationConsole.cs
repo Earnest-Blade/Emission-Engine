@@ -27,6 +27,11 @@ namespace Emission
             Console.WriteLine(s);
         }
 
+        public static void Print(float[] f)
+        {
+            Console.WriteLine("[{0}]", string.Join(", ", f));
+        }
+
         public static void Print(Object o)
         {
             _instance.LogContent += "\n" + Header() + o.ToString();

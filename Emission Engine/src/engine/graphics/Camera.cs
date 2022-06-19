@@ -1,67 +1,62 @@
 ﻿using System;
-
+using System.Runtime.InteropServices;
 using OpenTK.Mathematics;
 
 using Emission.Math;
 
 namespace Emission
 {
-    class Camera
+    unsafe class Camera
     {
         private static Camera _main;
         
         public Transform Transform;
         public float Speed = 1;
 
+        public Vector3 Front => _front;
+        public Vector3 Up => _up;
+        public Vector3 Right => _right;
+        
+        public WindowSettings.GraphicProjectionMode ProjectionMode { get => _projectionMode; }
+
         private Vector3 _front = -Vector3.UnitZ;
         private Vector3 _up = Vector3.UnitY;
         private Vector3 _right = Vector3.UnitX;
 
-        private float _pitch;
-        private float _yaw = -Mathf.PiOver2;
-        
+        private Matrix4 _projection;
+
+        private WindowSettings.GraphicProjectionMode _projectionMode;
         private float _fov = 90.0f;
         private float _nearDepth;
         private float _farDepth;
 
-        // TODO: Move Pitch and Yaw to Transform class
-        public float Pitch
+        public float Fov
         {
-            get => Mathf.RadiansToDegrees(_pitch);
+            get => _fov;
             set
             {
-                float angle = Mathf.Clamp(value, -89f, 89f);
-                _pitch = Mathf.DegreesToRadian(angle);
-                UpdateView();
+                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value));
+                _fov = value;
+                UpdateMatrix();
             }
         }
 
-        public float Yaw
-        {
-            get => _yaw;
-            set
-            {
-                _yaw = Mathf.DegreesToRadian(value);
-                UpdateView();
-            }
-        }
-
-        public Camera()
+        public Camera(WindowSettings.GraphicProjectionMode graphicProjectionMode, float fov, float nearDepth, float farDepth)
         {
             Transform = new Transform();
             Transform.Position = Vector3.UnitZ*3;
+            
+            _projectionMode = graphicProjectionMode;
+            _fov = fov;
+            _nearDepth = nearDepth;
+            _farDepth = farDepth;
+            
+            UpdateMatrix();
         }
 
         public void Update()
         {
-            if (Input.Any) // If any key or mouse event is trigger
-            {
-                Vector3 x = Input.Axis(Axis.Vertical) * _front * Speed * Time.DeltaTime; // Forward-Backward
-                Vector3 y = Input.Axis(Axis.Horizontal) * _right * Speed * Time.DeltaTime; // Left-Right
-                Vector3 z = Input.Axis(Axis.UpDown) * _up * Speed * Time.DeltaTime; // Top-Bottom
-
-                Transform.Position = Transform.Position + (x + y + z);
-            }
+            UpdateMatrix();
         }
         
         public Matrix4 ViewMatrix()
@@ -71,23 +66,7 @@ namespace Emission
 
         public Matrix4 ProjectionMatrix()
         {
-            WindowSettings settings = Window.Current.Settings;
-            _fov = settings.FieldOfView;
-            _nearDepth = settings.NearDepth;
-            _farDepth = settings.FarDepth;
-            
-            switch (settings.Projection)
-            {
-                case WindowSettings.WindowProjection.Perspective:
-                    return Mathf.PerspectiveProjection(_fov, Window.Current.WindowAspect,
-                        _nearDepth > 0 ? _nearDepth : 0.1f, _farDepth);
-
-                case WindowSettings.WindowProjection.Orthographic:
-                    return Mathf.OrthographicOffCenter(0, Window.Current.WindowSize.X, Window.Current.WindowSize.Y, 0,
-                        _nearDepth, _farDepth);
-            }
-
-            return Matrix4.Zero;
+            return _projection;
         }
 
         /// <summary>
@@ -96,9 +75,9 @@ namespace Emission
         /// </summary>
         private void UpdateView()
         {
-            _front.X = Mathf.Cos(_pitch) / Mathf.Cos(_yaw);
-            _front.Y = Mathf.Sin(_pitch);
-            _front.Z = Mathf.Cos(_pitch) * Mathf.Sin(_yaw);
+            _front.X = Mathf.Cos(Mathf.DegreesToRadian(Transform.Pitch)) / Mathf.Cos(Mathf.DegreesToRadian(Transform.Yaw));
+            _front.Y = Mathf.Sin(Mathf.DegreesToRadian(Transform.Pitch));
+            _front.Z = Mathf.Cos(Mathf.DegreesToRadian(Transform.Pitch)) * Mathf.Sin(Mathf.DegreesToRadian(Transform.Yaw));
 
             _front = Vector3.Normalize(_front);
 
@@ -107,13 +86,47 @@ namespace Emission
         }
 
         /// <summary>
+        /// Call when update or change projection matrix value.
+        /// Re calculate by using <see cref="WindowSettings"/> class, get from current window.
+        /// Also define all needed values.
+        /// Use a switch to be fast.
+        /// </summary>
+        private void UpdateMatrix()
+        {
+            Window window = Window.Current;
+            
+            switch (ProjectionMode)
+            {
+                case WindowSettings.GraphicProjectionMode.Perspective:
+                    _projection = Mathf.PerspectiveProjection(_fov, window.WindowAspect,
+                        _nearDepth > 0 ? _nearDepth : 0.1f, _farDepth);
+                    return;
+
+                case WindowSettings.GraphicProjectionMode.Orthographic:
+                    _projection = Mathf.OrthographicOffCenter(0, window.WindowSize.X, window.WindowSize.Y, 0,
+                        _nearDepth, _farDepth);
+                    return;
+            }
+        }
+
+        /// <summary>
         /// Return active camera.
         /// </summary>
         public static Camera Main
         {
-            get => _main ?? new Camera();
+            get => _main;
         }
-        
+
+        /// <summary>
+        /// Create a new camera using Window 
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static Camera LoadFrom(WindowSettings settings)
+        {
+            return new Camera(settings.ProjectionMode, settings.FieldOfView, settings.NearDepth, settings.FieldOfView);
+        }
+
         /// <summary>
         /// Define, as a static method, the current active camera.
         /// Old defined camera will be stopped after use it.
@@ -121,7 +134,7 @@ namespace Emission
         /// <param name="camera">New active camera</param>
         public static void SetAsMain(Camera camera)
         {
-            Camera._main = camera;
+            _main = camera;
         }
         
     }

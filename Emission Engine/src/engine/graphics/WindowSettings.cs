@@ -1,4 +1,4 @@
-﻿struct WindowSettings
+﻿public struct WindowSettings
 {
     public int Width;
     public int Height;
@@ -11,7 +11,7 @@
     public bool IsOpenES;
     public bool ShowOpenGLVersion;
 
-    public WindowProjection Projection;
+    public GraphicProjectionMode ProjectionMode;
 
     public float NearDepth;
     public float FarDepth;
@@ -36,7 +36,7 @@
             ShowOpenGLVersion = true,
 
             // Projection Settings
-            Projection = WindowProjection.Perspective,
+            ProjectionMode = GraphicProjectionMode.Perspective,
 
             // Projection Parameters
             NearDepth =  0.1f,
@@ -45,7 +45,7 @@
         };
     }
 
-    public enum WindowProjection
+    public enum GraphicProjectionMode
     {
         Orthographic, Perspective
     }
