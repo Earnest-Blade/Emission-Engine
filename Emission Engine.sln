@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emission Engine", "Emission Engine\Emission Engine.csproj", "{7570232D-3DC1-4B27-83EB-33F0F547ADA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emission Engine", "Emission Engine\Emission Engine.csproj", "{7570232D-3DC1-4B27-83EB-33F0F547ADA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emission Mesh Loader", "Emission Mesh Loader\Emission Mesh Loader.csproj", "{A7FFC06B-79A3-4ACA-9C72-BBEDE21E4328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7570232D-3DC1-4B27-83EB-33F0F547ADA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7FFC06B-79A3-4ACA-9C72-BBEDE21E4328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FFC06B-79A3-4ACA-9C72-BBEDE21E4328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FFC06B-79A3-4ACA-9C72-BBEDE21E4328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FFC06B-79A3-4ACA-9C72-BBEDE21E4328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

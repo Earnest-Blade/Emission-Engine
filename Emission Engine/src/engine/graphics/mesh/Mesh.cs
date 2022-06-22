@@ -23,6 +23,8 @@ namespace Emission
         protected float[] _vertices;
         protected int[] _indices;
 
+        public Mesh((float[], int[]) tuple) : this(tuple.Item1, tuple.Item2) { }
+
         public Mesh(float[] vertices, int[] indices)
         {
             Transform = new Transform();

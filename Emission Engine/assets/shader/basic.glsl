@@ -5,6 +5,7 @@
 	layout(location = 1) in vec2 iTextCoords;
 	
 	out vec2 oTextCoords;
+	out vec3 oColor;
 	out float oAlpha;
 	
 	uniform mat4 uProjection;
@@ -17,16 +18,15 @@
 	{
 		oTextCoords = iTextCoords;
 		oAlpha = alpha;
-		
-		//gl_Position = vec4(iPosition, 1.0) * uTransform * uView * uProjection;
-		gl_Position = vec4(iPosition, 1.0);
-
+		oColor = vec3(iPosition.x+0.5,iPosition.y+0.5,iPosition.z+0.5);
+		gl_Position = vec4(iPosition, 1.0) * uTransform * uView * uProjection;
 	}
 
 fragment:
 	#version 410
 
 	in vec2 oTextCoords;
+	in vec3 oColor;
 	in float oAlpha;
 
 	out vec4 oFrag;
@@ -36,6 +36,6 @@ fragment:
 	void main(void)
 	{
 		vec4 color = texture2D(uSampler, oTextCoords);
-		oFrag = color;
+		oFrag = vec4(oColor, 1.0);
 	}
 

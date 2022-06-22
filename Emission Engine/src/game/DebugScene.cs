@@ -1,7 +1,8 @@
 ﻿using System;
 using Emission;
 using Emission.Math;
-using OpenTK.Mathematics;
+
+using Emission.MultiMeshLoader;
 
 namespace Game
 {
@@ -16,7 +17,9 @@ namespace Game
 
         protected override void OnInitialize()
         {
-            _mesh = MeshLoader.Load("assets/models/cube.obj");
+            _mesh = new Mesh(ModelLoader.LoadWavefront("assets/models/monkey.obj"));
+
+            _mesh.Transform.Scale = 0.1f;
         }
 
         protected override void OnStart()
@@ -28,8 +31,8 @@ namespace Game
         {
             _mesh.Update();
             
-            var x = Input.Axis(Axis.Vertical) * _camera.Front * _camera.Speed * Time.DeltaTime; // Forward-Backward
-            var y = Input.Axis(Axis.Horizontal) * _camera.Right * _camera.Speed * Time.DeltaTime; // Left-Right
+            var x = Input.Axis(Axis.Horizontal) * _camera.Front * _camera.Speed * Time.DeltaTime; // Forward-Backward
+            var y = Input.Axis(Axis.Vertical) * _camera.Right * _camera.Speed * Time.DeltaTime; // Left-Right
             var z = Input.Axis(Axis.UpDown) * _camera.Up * _camera.Speed * Time.DeltaTime; // Top-Bottom
             _camera.Transform.Position += (x + y + z);
 
@@ -50,3 +53,15 @@ namespace Game
         }
     }
 }
+
+/*_mesh = new Mesh(new float[]
+            {
+                0.5f, 0.5f, 0.0f, 1.0f, 1.0f, // top right
+                0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
+                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
+                -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
+            }, new int[]
+            {
+                0, 1, 3,   // first triangle
+                1, 2, 3
+            });*/

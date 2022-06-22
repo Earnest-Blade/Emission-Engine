@@ -76,7 +76,7 @@ namespace Emission.Shading
             GL.CompileShader(shader);
 
             GL.GetShaderInfoLog(shader, out string shaderLogs);
-            if (shaderLogs != "") ApplicationConsole.PrintError("[SHADER] " + shaderLogs);
+            if (shaderLogs != "") ApplicationConsole.PrintError("[SHADER ERROR] " + shaderLogs);
             else ApplicationConsole.Print("[SHADER] Successfully compile shader!");
 
             return shader;

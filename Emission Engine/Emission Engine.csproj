@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="ImGui.NET" Version="1.87.3" />
     <PackageReference Include="OpenTK" Version="4.7.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0" />
@@ -27,6 +28,10 @@
 
   <ItemGroup>
     <Folder Include="bin\Debug\netcoreapp3.1\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Emission Mesh Loader\Emission Mesh Loader.csproj" />
   </ItemGroup>
 
 </Project>

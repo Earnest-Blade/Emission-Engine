@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "RC2a0PTLcMevZfAYtY8uaF1ynKGei77+AfYVB9RuvNU6/BmeOcq4IANeJe2kkLEqsu30IUqm+unJ2guuQT5pUw==",
+  "success": true,
+  "projectFilePath": "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Mesh Loader\\Emission Mesh Loader.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
+  "logs": []
+}

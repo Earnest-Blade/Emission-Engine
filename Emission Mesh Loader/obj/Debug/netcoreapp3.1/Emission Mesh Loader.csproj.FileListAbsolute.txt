@@ -1,0 +1,14 @@
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\bin\Debug\netcoreapp3.1\Emission Mesh Loader.exe
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\bin\Debug\netcoreapp3.1\Emission Mesh Loader.deps.json
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\bin\Debug\netcoreapp3.1\Emission Mesh Loader.runtimeconfig.json
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\bin\Debug\netcoreapp3.1\Emission Mesh Loader.runtimeconfig.dev.json
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\bin\Debug\netcoreapp3.1\Emission Mesh Loader.dll
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\bin\Debug\netcoreapp3.1\Emission Mesh Loader.pdb
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.csproj.AssemblyReference.cache
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.AssemblyInfoInputs.cache
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.AssemblyInfo.cs
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.csproj.CoreCompileInputs.cache
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.dll
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.pdb
+D:\Projets\Code\C#\Emission Engine\Emission Mesh Loader\obj\Debug\netcoreapp3.1\Emission Mesh Loader.genruntimeconfig.cache

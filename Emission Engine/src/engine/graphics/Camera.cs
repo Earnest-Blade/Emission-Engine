@@ -56,6 +56,7 @@ namespace Emission
 
         public void Update()
         {
+            UpdateView();
             UpdateMatrix();
         }
         
