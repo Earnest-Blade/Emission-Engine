@@ -1,14 +1,23 @@
 
-At 2022-06-22 19:19:16Z : **** OpenGL Strings ****
-At 2022-06-22 19:19:16Z : [GL INFO] Renderer                 : NVIDIA GeForce GTX 1050 Ti with Max-Q Design/PCIe/SSE2
-At 2022-06-22 19:19:16Z : [GL INFO] Shading Language Version : 4.40 NVIDIA via Cg compiler
-At 2022-06-22 19:19:16Z : [GL INFO] Graphic Card             : NVIDIA Corporation
-At 2022-06-22 19:19:16Z : [GL INFO] OpenGL Version           : 4.4.0 NVIDIA 466.77
-At 2022-06-22 19:19:16Z : ************************
-At 2022-06-22 19:19:16Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\Emission Engine\assets/shader/basic.glsl'...
-At 2022-06-22 19:19:16Z : [SHADER] Successfully compile shader!
-At 2022-06-22 19:19:16Z : [SHADER] Successfully compile shader!
-At 2022-06-22 19:19:16Z : [INFO] shader3 initialized!
-At 2022-06-22 19:19:16Z : [INFO] mesh112 initialized!
-At 2022-06-22 19:19:36Z : [INFO] Quitting with status 1
-At 2022-06-22 19:19:36Z : [WARNING] File 'D:\Projets\Code\C#\Emission Engine\Emission Engine\logs.txt' is not create because it already exist!
+At 2022-07-06 21:47:32Z : **** OpenGL Strings ****
+At 2022-07-06 21:47:32Z : [GL INFO] Renderer                 : NVIDIA GeForce GTX 1050 Ti with Max-Q Design/PCIe/SSE2
+At 2022-07-06 21:47:32Z : [GL INFO] Shading Language Version : 4.40 NVIDIA via Cg compiler
+At 2022-07-06 21:47:32Z : [GL INFO] Graphic Card             : NVIDIA Corporation
+At 2022-07-06 21:47:32Z : [GL INFO] OpenGL Version           : 4.4.0 NVIDIA 466.77
+At 2022-07-06 21:47:32Z : ************************
+At 2022-07-06 21:47:32Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\Emission Engine\assets/shader/whiteColor.glsl'...
+At 2022-07-06 21:47:32Z : [SHADER] Successfully compile shader!
+At 2022-07-06 21:47:32Z : [SHADER] Successfully compile shader!
+At 2022-07-06 21:47:32Z : [INFO] shader3 initialized!
+At 2022-07-06 21:47:32Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\Emission Engine\assets/shader/basic.glsl'...
+At 2022-07-06 21:47:32Z : [SHADER] Successfully compile shader!
+At 2022-07-06 21:47:32Z : [SHADER] Successfully compile shader!
+At 2022-07-06 21:47:32Z : [INFO] shader6 initialized!
+At 2022-07-06 21:47:32Z : [INFO] mesh112 initialized!
+At 2022-07-06 21:47:32Z : [INFO] mesh234 initialized!
+At 2022-07-06 21:47:33Z : [INFO] Resize dear ImGui vertex buffer to new size 31120
+At 2022-07-06 21:47:33Z : [INFO] Resize dear ImGui vertex buffer to new size 31120
+At 2022-07-06 21:47:33Z : [INFO] Resize dear ImGui vertex buffer to new size 46680
+At 2022-07-06 21:47:33Z : [INFO] Resize dear ImGui vertex buffer to new size 46680
+At 2022-07-06 21:49:01Z : [INFO] Quitting with status 1
+At 2022-07-06 21:49:01Z : [WARNING] File 'D:\Projets\Code\C#\Emission Engine\Emission Engine\logs.txt' is not create because it already exist!

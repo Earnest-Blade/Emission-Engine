@@ -1,67 +1,112 @@
-﻿using System;
-using Emission;
+﻿using Emission;
+using Emission.Toolbox.ImGuiTool;
+using Emission.Lighting;
 using Emission.Math;
-
+using Emission.Shading;
 using Emission.MultiMeshLoader;
 
-namespace Game
+using ImGuiNET;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+
+class DebugScene : Scene
 {
-    class DebugScene : Scene
+    private Mesh _cube;
+    private Mesh _lightSource;
+
+    private Light _light;
+
+    private ImGuiController _controller;
+
+    public DebugScene() : base("Debug Map")
+    { 
+        Window.Current.ClearColor = new Vector4(0, 0, 0, 255);
+        Camera.Transform.Position = new Vector3(5, 0, 0);
+    }
+
+    protected override void OnInitialize()
     {
-        private Mesh _mesh;
+        Material mat = new Material("assets/shader/whiteColor.glsl");
 
-        public DebugScene() : base("Debug Map")
+        LightMaterial mat2 = new LightMaterial("assets/shader/basic.glsl");
+        //mat2.BindTexture("assets/textures/debug.jpg", "texture0");
+        mat2.BindTexture("assets/textures/proto.png", "texture0", TextureUnit.Texture0);
+
+        _light = new Light(new Vector3(10.0f, 4.0f, 2.0f), new Vector3(1.0f, 1.0f, 1.0f));
+
+        _lightSource = new Mesh(mat, ModelLoader.LoadWavefront("assets/models/basic.obj"));
+        _lightSource.Transform.Scale = 0.15f;
+        _lightSource.Transform.Position = _light.LightPosition;
+        
+        _cube = new Mesh(mat2, ModelLoader.LoadWavefront("assets/models/basic.obj"));
+
+        _controller = new ImGuiController(Window.Current.WindowSize);
+    }
+
+    protected override void OnStart()
+    {
+        _cube.Show();
+        _lightSource.Show();
+    }
+
+    protected override void OnUpdate()
+    {
+        _cube.Update();
+        _lightSource.Update();
+
+        _lightSource.Transform.Position = _light.LightPosition;
+        
+        _controller.WindowResized(Window.Current.WindowSize);
+        _controller.Update(Time.DeltaTime);
+        
+        UpdateCamera();
+        
+        // Debug Input
+        if (Input.IsKeyDown(Keys.Escape)) Application.Singleton.Stop(1);
+    }
+
+    protected override void OnRender()
+    {
+        _cube.Render();
+        _lightSource.Render();
+
+        RenderGui();
+        _controller.Render();
+    }
+
+    protected override void OnStop()
+    {
+        _cube.Dispose();
+    }
+
+    void UpdateCamera()
+    {
+        var x = Input.Axis(Axis.Vertical) * Mathf.Left * Camera.Speed * Time.DeltaTime; // Left-Right
+        var y = Input.Axis(Axis.UpDown) * Mathf.Up * Camera.Speed * Time.DeltaTime; // Top-Bottom
+        var z = Input.Axis(Axis.Horizontal) * Mathf.Front * Camera.Speed * Time.DeltaTime; // Forward-Backward
+        Camera.Transform.Position += (x + y + z);
+
+        if (Input.IsMouseButtonDown(MouseButton.Button2))
         {
-            
-        }
-
-        protected override void OnInitialize()
-        {
-            _mesh = new Mesh(ModelLoader.LoadWavefront("assets/models/monkey.obj"));
-
-            _mesh.Transform.Scale = 0.1f;
-        }
-
-        protected override void OnStart()
-        {
-            
-        }
-
-        protected override void OnUpdate()
-        {
-            _mesh.Update();
-            
-            var x = Input.Axis(Axis.Horizontal) * _camera.Front * _camera.Speed * Time.DeltaTime; // Forward-Backward
-            var y = Input.Axis(Axis.Vertical) * _camera.Right * _camera.Speed * Time.DeltaTime; // Left-Right
-            var z = Input.Axis(Axis.UpDown) * _camera.Up * _camera.Speed * Time.DeltaTime; // Top-Bottom
-            _camera.Transform.Position += (x + y + z);
-
-            _mesh.Transform.Scale += Input.Scroll;
-            
-            if(Input.IsKeyDown(Keys.Z)) _mesh.Transform.RotateFromCurrent(10, 0, 0);
-            if(Input.IsKeyDown(Keys.S)) _mesh.Transform.RotateFromCurrent(-10, 0, 0);
-        }
-
-        protected override void OnRender()
-        {
-            _mesh.Render();
-        }
-
-        protected override void OnStop()
-        {
-            
+            Camera.Transform.Rotate(0.0f, 
+                Input.DeltaMousePosition.Y * Input.Sensivity * Time.DeltaTime,
+                Input.DeltaMousePosition.X * Input.Sensivity * Time.DeltaTime
+            );
         }
     }
-}
 
-/*_mesh = new Mesh(new float[]
-            {
-                0.5f, 0.5f, 0.0f, 1.0f, 1.0f, // top right
-                0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-                -0.5f, 0.5f, 0.0f, 0.0f, 1.0f
-            }, new int[]
-            {
-                0, 1, 3,   // first triangle
-                1, 2, 3
-            });*/
+    void RenderGui()
+    {
+        ImGui.Begin("Debug Window");
+        ImGui.SetWindowSize(new System.Numerics.Vector2(400, 500));
+        
+        ImGui.Text($"FPS: {Time.Fps}");
+        ImGui.Text($"DeltaTime {Time.DeltaTime}");
+        
+        Camera.SubmitImGui();
+        _cube.SubmitImGui();
+        _light.SubmitImGui();
+        
+        ImGui.End();
+    }
+}

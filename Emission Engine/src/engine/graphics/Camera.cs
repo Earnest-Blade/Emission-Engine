@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using OpenTK.Mathematics;
 
 using Emission.Math;
+using Emission.Toolbox;
 
 namespace Emission
 {
-    unsafe class Camera
+    unsafe class Camera : IGuiSubmitable
     {
         private static Camera _main;
         
         public Transform Transform;
-        public float Speed = 1;
+        public float Speed = 2;
 
         public Vector3 Front => _front;
         public Vector3 Up => _up;
@@ -53,16 +54,17 @@ namespace Emission
             
             UpdateMatrix();
         }
-
+    
         public void Update()
         {
             UpdateView();
             UpdateMatrix();
         }
-        
+
         public Matrix4 ViewMatrix()
         {
-            return Matrix4.LookAt(Transform.Position, Transform.Position * _front, _up);
+            UpdateView();
+            return Matrix4.LookAt(Transform.Position, Transform.Position - _front, _up);
         }
 
         public Matrix4 ProjectionMatrix()
@@ -70,6 +72,20 @@ namespace Emission
             return _projection;
         }
 
+        public void SubmitImGui()
+        {
+            ImGuiNET.ImGui.TextColored(ColorHelper.RGB(255, 236, 0), "Object Camera");
+            ImGuiNET.ImGui.SliderFloat("Camera Position X", ref Transform.Position.X, -10, 10);
+            ImGuiNET.ImGui.SliderFloat("Camera Position Y", ref Transform.Position.Y, -10, 10);
+            ImGuiNET.ImGui.SliderFloat("Camera Position Z", ref Transform.Position.Z, -10, 10);
+            
+            var currentRotation = Transform.Rotation;
+            ImGuiNET.ImGui.SliderFloat("Camera Rotation X", ref currentRotation.X, -360, 360);
+            ImGuiNET.ImGui.SliderFloat("Camera Rotation Y", ref currentRotation.Y, -360, 360);
+            ImGuiNET.ImGui.SliderFloat("Camera Rotation Z", ref currentRotation.Z, -360, 360);
+            Transform.Rotation = currentRotation;
+        }
+        
         /// <summary>
         /// Call when need to update vector. 
         /// Pre-calculate movement before changing camera position.
@@ -98,7 +114,7 @@ namespace Emission
             
             switch (ProjectionMode)
             {
-                case WindowSettings.GraphicProjectionMode.Perspective:
+                case WindowSettings.GraphicProjectionMode.Perspective: 
                     _projection = Mathf.PerspectiveProjection(_fov, window.WindowAspect,
                         _nearDepth > 0 ? _nearDepth : 0.1f, _farDepth);
                     return;

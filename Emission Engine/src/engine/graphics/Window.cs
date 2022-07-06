@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Emission.Math;
+using Emission.Toolbox;
 using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Desktop;
@@ -9,7 +9,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Emission
 {
-    public unsafe class Window
+    public unsafe class Window : IEngineBehaviour
     {
         /// <summary>
         /// Pointer to GLFW Window object. Represent window. Public get and can be only set class constructor.
@@ -142,6 +142,17 @@ namespace Emission
             set => GLFW.SetWindowShouldClose(CurrentWindow, value);
         }
 
+        public Vector4 ClearColor
+        {
+            get => _clearColor;
+            set
+            {
+                _clearColor = ColorHelper.RGBGL(value.X, value.Y, value.Z);
+            }
+        }
+        
+        public IEngineBehaviour Behaviour {get => this;}
+
         // Events
         public event GLFWCallbacks.WindowCloseCallback CloseCallbackEvent;
         public event GLFWCallbacks.WindowSizeCallback ResizeCallbackEvent;
@@ -154,14 +165,16 @@ namespace Emission
         // private variables
         private Vector2i _lastWindowSize;
         private Vector2i _lastWindowPosition;
+        private Vector4 _clearColor;
 
         private string _title;
 
         // constructor
         public Window(WindowSettings settings)
         {
-            this.Settings = settings;
-            this._title = settings.Title;
+            Settings = settings;
+            _title = settings.Title;
+            ClearColor = new Vector4(0, 0, 0, 1);
 
             // Load GLFW. VERY IMPORTANT
             GLFW.Init();
@@ -185,8 +198,8 @@ namespace Emission
             int status = LoadBindings();
             if(status == -1)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot load bindings.");
-                Application.Current.Stop(-1);
+                Debug.LogError("[ERROR] Cannot load bindings.");
+                Application.Singleton.Stop(-1);
             }
 
             // Update title with window settings
@@ -196,37 +209,53 @@ namespace Emission
             }
 
             // Define all callbacks
-            BindCallbacks();
+            BindCallbacks(); // GLFW and OpenGL Callbacks
+            Behaviour.BindCallbacks(); // Engine Callbacks
 
             // OpenGL window parameters
             GL.Enable(EnableCap.Blend);
-            GL.Enable(EnableCap.DepthClamp);
+            GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Texture2D);
+            GL.DepthFunc(DepthFunction.Less);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
+            
             // Update Viewport
-            OnWindowResize(0, 0);
+            GLFW.GetWindowSize(CurrentWindow, out var windowW, out var windowH);
+            OnWindowResize(windowW, windowH);
         }
 
-        public void Update()
+        void IEngineBehaviour.Initialize()
         {
-            // Update Events
+            Visible = true;
+        }
+
+        void IEngineBehaviour.Start()
+        {
+            
+        }
+
+        void IEngineBehaviour.Update()
+        {
             GLFW.PollEvents();
         }
 
-        public void PreRender()
+        void IEngineBehaviour.PreRender()
         {
-            GL.ClearColor(0.13f, 0.22f, 0.4f, 1);
+            GL.ClearColor(ClearColor.X, ClearColor.Y, ClearColor.Z, ClearColor.W);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            GL.Flush();
         }
 
-        public void PostRender()
+        void IEngineBehaviour.Render()
+        {
+            
+        }
+
+        void IEngineBehaviour.PostRender()
         {
             GLFW.SwapBuffers(CurrentWindow);
         }
 
-        public void Destroy()
+        void IEngineBehaviour.Dispose()
         {
             GLFW.DestroyWindow(CurrentWindow);
             GLFW.Terminate();
@@ -234,16 +263,13 @@ namespace Emission
 
         private void OnWindowClose()
         {
-            Application.Current.Stop(0);
+            Application.Singleton.Stop(0);
         }
 
         private void OnWindowResize(int width, int height)
         {
-            GLFW.GetWindowSize(CurrentWindow, out var windowW, out var windowH);
-
-            _lastWindowSize = new Vector2i((int)windowW, (int)windowH);
-            GL.Viewport(0, 0, (int)windowW, (int)windowH);
-            if(Camera.Main != null) Camera.Main.Update(); 
+            _lastWindowSize = new Vector2i(width, height);
+            GL.Viewport(0, 0, width, height);
         }
 
         private void OnWindowMove(int x, int y)
@@ -254,7 +280,7 @@ namespace Emission
 
         /// <summary>
         /// Use refraction to initialize Gl bindings.
-        /// Code from <see href="https://github.com/opentk/opentk/blob/master/src/OpenTK.Windowing.Desktop/NativeWindow.cs">Native Window</see> in
+        /// Code from <see href="https://github.com/opentk/opentk/blob/master/src/OpenTK.Windowing.Desktop/NativeWindow.cs">Native Window</see>
         /// OpenTk source code.
         /// Return loading status, zero when is done and -1 when there is an error or it cannot be loaded.
         /// </summary>
@@ -295,12 +321,12 @@ namespace Emission
             LoadBindings("OpenGL4");
 
             // Display OpenGL Strings into Console so that you have information for debugging without have to search in engine.
-            ApplicationConsole.Print("**** OpenGL Strings ****");
-            ApplicationConsole.Print("[GL INFO] Renderer                 : " + GL.GetString(StringName.Renderer));
-            ApplicationConsole.Print("[GL INFO] Shading Language Version : " + GL.GetString(StringName.ShadingLanguageVersion));
-            ApplicationConsole.Print("[GL INFO] Graphic Card             : " + GL.GetString(StringName.Vendor));
-            ApplicationConsole.Print("[GL INFO] OpenGL Version           : " + GL.GetString(StringName.Version));
-            ApplicationConsole.Print("************************");
+            Debug.Log("**** OpenGL Strings ****");
+            Debug.Log("[GL INFO] Renderer                 : " + GL.GetString(StringName.Renderer));
+            Debug.Log("[GL INFO] Shading Language Version : " + GL.GetString(StringName.ShadingLanguageVersion));
+            Debug.Log("[GL INFO] Graphic Card             : " + GL.GetString(StringName.Vendor));
+            Debug.Log("[GL INFO] OpenGL Version           : " + GL.GetString(StringName.Version));
+            Debug.Log("************************");
 
             return 0;
         }
@@ -333,6 +359,6 @@ namespace Emission
         }
 
         // Static getter for the Window, call from current Application.
-        public static Window Current { get => Application.Current.Window; }
+        public static Window Current { get => Application.Singleton.Window; }
     }
 }

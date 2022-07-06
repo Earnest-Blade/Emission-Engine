@@ -41,7 +41,7 @@
             // Projection Parameters
             NearDepth =  0.1f,
             FarDepth = 100.0f,
-            FieldOfView = 90.0f
+            FieldOfView = 45.0f
         };
     }
 

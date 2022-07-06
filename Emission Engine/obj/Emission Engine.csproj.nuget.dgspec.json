@@ -49,10 +49,6 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
-            "AssimpNet": {
-              "target": "Package",
-              "version": "[4.1.0, )"
-            },
             "ImGui.NET": {
               "target": "Package",
               "version": "[1.87.3, )"

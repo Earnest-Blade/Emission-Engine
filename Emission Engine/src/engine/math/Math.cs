@@ -5,7 +5,7 @@ namespace Emission.Math
 {
     // Provides constants and static methods for common
     // mathematical methods
-    static class Mathf
+    public static class Mathf
     {
         /// <summary>
         /// PI constant. Warped from <see cref="System.Math"/>.
@@ -16,6 +16,11 @@ namespace Emission.Math
         public const float PiOver2 = (float)Pi / 2;
         public const float PiOver3 = (float)Pi / 3;
         public const float PiOver4 = (float)Pi / 4;
+
+        public static Vector3 Front = new Vector3(0.0f, 0.0f, -1.0f);
+        public static Vector3 Left = new Vector3(-1.0f, 0.0f, 0.0f);
+        public static Vector3 Up = new Vector3(0.0f, 1.0f, 0.0f);
+
         
         /// <summary>
         /// Constant of bits in color. Use to convert RGB color to OpenGL color.
@@ -33,18 +38,15 @@ namespace Emission.Math
         public static Matrix4 PerspectiveProjection(float fov, float aspect, float nearPlane, float farPlane)
         {
             fov = Clamp(fov, 0.1f, 180f);
-            float yScale = (1f / Tan(DegreesToRadian(fov / 2))) * aspect;
-            float xScale = yScale / aspect;
-            float frustrum = farPlane - nearPlane;
-
-            Matrix4 matrix = new Matrix4
+            float yScale = 1f / Tan(fov / 2);
+            float frustrum = nearPlane - farPlane;
+            Matrix4 matrix = new Matrix4()
             {
-                M11 = xScale,
+                M11 = yScale / aspect,
                 M22 = yScale,
-                M33 = -((farPlane + nearPlane) / frustrum),
-                M34 = -1f,
-                M43 = -((2 * nearPlane * farPlane) / frustrum),
-                M44 = 0
+                M33 = (nearPlane + farPlane) / frustrum,
+                M34 = (2 * nearPlane * farPlane) / frustrum,
+                M43 = -1
             };
             return matrix;
         }
@@ -128,6 +130,74 @@ namespace Emission.Math
         public static float Clamp(float value, float min, float max)
         {
             return value < min ? min : value > max ? max : value;
+        }
+
+        /// <summary>
+        /// Rounds a specified Decimal number to the closest integer toward negative infinity.
+        /// </summary>
+        /// <param name="x">The value to round</param>
+        /// <returns>If d has a fractional part, the next whole Decimal number toward negative infinity that is less than d. -or-
+        /// If d doesn't have a fractional part, d is returned unchanged. Note that the method returns an integral value of type
+        /// </returns>
+        public static decimal Floor(decimal x)
+        {
+            return decimal.Floor(x);
+        }
+        
+        /// <summary>
+        /// Rounds a specified Double number to the closest integer toward negative infinity.
+        /// </summary>
+        /// <param name="x">The value to round</param>
+        /// <returns>If d has a fractional part, the next whole Double number toward negative infinity that is less than d. -or-
+        /// If d doesn't have a fractional part, d is returned unchanged. Note that the method returns an integral value of type
+        /// </returns>
+        public static double Floor(double x)
+        {
+            return (double)decimal.Floor((decimal)x);
+        }
+        
+        /// <summary>
+        /// Return the bigger number of the parameters.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static float Max(float x, float y)
+        {
+            return (x >= y) ? x : y;
+        }
+
+        /// <summary>
+        /// Return the bigger number of the parameters.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static double Max(double x, double y)
+        {
+            return (x >= y) ? x : y;
+        }
+
+        /// <summary>
+        /// Return the bigger number of the parameters.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static int Max(int x, int y)
+        {
+            return (x >= y) ? x : y;
+        }
+        
+        /// <summary>
+        /// Return the bigger number of the parameters.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static decimal Max(decimal x, decimal y)
+        {
+            return (x >= y) ? x : y;
         }
 
         /// <summary>

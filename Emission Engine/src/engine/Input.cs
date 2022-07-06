@@ -101,12 +101,22 @@ namespace Emission
             get => Current._mousePosition;
         }
 
+        public static Vector2 MousePositionCenter
+        {
+            get => Current._mousePosition - Window.Current.WindowSize / 2;
+        }
+        
         /// <summary>
         /// Return value of <see cref="MousePosition"/> before update.
         /// </summary>
         public static Vector2 LastMousePosition
         {
             get => Current._lastMousePosition;
+        }
+        
+        public static Vector2 LastMousePositionCenter
+        {
+            get => Current._lastMousePosition - Window.Current.WindowSize / 2;
         }
         
         /// <summary>
@@ -116,6 +126,15 @@ namespace Emission
         public static Vector2 DeltaMousePosition
         {
             get => Current._mousePosition - Current._lastMousePosition;
+        }
+        
+        public static Vector2 DeltaMousePositionCenter
+        {
+            get
+            {
+                if (DeltaMousePosition == Vector2.Zero)  return Vector2.Zero;
+                return DeltaMousePosition - (Window.Current.WindowSize / 2);
+            }
         }
 
         /// <summary>
@@ -143,7 +162,7 @@ namespace Emission
         
         // Mouse state
         private float _mouseScroll = 0;
-        private float _mouseSensivity = 1;
+        private float _mouseSensivity = 2f;
         private Vector2 _mousePosition = Vector2.Zero;
         private Vector2 _lastMousePosition = Vector2.Zero;
         private long _lastPressedMouseTime = 0;
@@ -224,6 +243,8 @@ namespace Emission
             {
                 _lastPressedMouseTime = 0;
             }
+
+            _lastMousePosition = _mousePosition;
         }
 
         public static bool IsKeyDown(Keys key) { return Current.KeyDown((int)key); }
@@ -240,6 +261,11 @@ namespace Emission
         
         public static int AxisPress(Axis a) { return a.IsPress(); }
         public static float AxisPress(Axis a, float mod) { return a.IsPress(mod); }
+
+        public static OpenTK.Windowing.GraphicsLibraryFramework.Keys ToOpenGLKey(Keys k)
+        {
+            return (OpenTK.Windowing.GraphicsLibraryFramework.Keys)((int)k);
+        }
 
         public virtual void KeyCallback(OpenTK.Windowing.GraphicsLibraryFramework.Keys key, int scanCode, 
             InputAction action, KeyModifiers mod)
@@ -260,7 +286,6 @@ namespace Emission
         public virtual void CursorPosition(double x, double y)
         {
             if (current == null) return;
-            Current._lastMousePosition = Current._mousePosition;
             Current._mousePosition = new Vector2((float)x, (float)y);
         }
         
@@ -318,5 +343,8 @@ namespace Emission
             if (Input.IsKeyPressed(_positiveKey)) return mod;
             return 0;
         }
+
+        public static Axis operator +(Axis a) => a;
+        public static Axis operator -(Axis a) => new Axis(a._positiveKey, a._negativeKey);
     }
 }

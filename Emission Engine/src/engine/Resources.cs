@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.ColorSpaces;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -32,7 +29,7 @@ namespace Emission
         {
             if(path.Length == 0)
             {
-                ApplicationConsole.PrintError("[WARNING] The path you are trying to load is empty. Return value will be null");
+                Debug.LogError("[WARNING] The path you are trying to load is empty. Return value will be null");
                 return null;
             }
 
@@ -40,17 +37,17 @@ namespace Emission
 
             try
             {
-                ApplicationConsole.Print("[INFO] Reading '" +  fullPath + "'...");
+                Debug.Log("[INFO] Reading '" +  fullPath + "'...");
                 return File.ReadAllText(fullPath);
             }
             catch (DirectoryNotFoundException)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot find directory in " + fullPath);
+                Debug.LogError("[ERROR] Cannot find directory in " + fullPath);
                 throw new DirectoryNotFoundException();
             }
             catch (FileNotFoundException)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot find file in " + fullPath);
+                Debug.LogError("[ERROR] Cannot find file in " + fullPath);
                 throw new FileNotFoundException();
             }
         }
@@ -67,17 +64,17 @@ namespace Emission
 
             try
             {
-                ApplicationConsole.Print("[INFO] Reading '" + fullPath + "'...");
+                Debug.Log("[INFO] Reading '" + fullPath + "'...");
                 return File.OpenRead(fullPath);
             }
             catch (DirectoryNotFoundException)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot find directory in " + fullPath);
+                Debug.LogError("[ERROR] Cannot find directory in " + fullPath);
                 throw new DirectoryNotFoundException();
             }
             catch (FileNotFoundException)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot find file in " + fullPath);
+                Debug.LogError("[ERROR] Cannot find file in " + fullPath);
                 throw new FileNotFoundException();
             }
         }
@@ -94,17 +91,17 @@ namespace Emission
 
             try
             {
-                ApplicationConsole.Print("[INFO] Reading '" + fullPath + "'...");
+                Debug.Log("[INFO] Reading '" + fullPath + "'...");
                 return File.ReadAllLines(fullPath);
             }
             catch (DirectoryNotFoundException)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot find directory in " + fullPath);
+                Debug.LogError("[ERROR] Cannot find directory in " + fullPath);
                 throw new DirectoryNotFoundException();
             }
             catch (FileNotFoundException)
             {
-                ApplicationConsole.PrintError("[ERROR] Cannot find file in " + fullPath);
+                Debug.LogError("[ERROR] Cannot find file in " + fullPath);
                 throw new FileNotFoundException();
             }
         }
@@ -124,7 +121,7 @@ namespace Emission
             }
             else
             {
-                ApplicationConsole.Print("[WARNING] File '" + fullPath + "' is not create because it already exist!");
+                Debug.Log("[WARNING] File '" + fullPath + "' is not create because it already exist!");
             }
         }
 
@@ -143,10 +140,16 @@ namespace Emission
             }
             else
             {
-                ApplicationConsole.Print("[WARNING] File '" + fullPath + "' is not create because it already exist!");
+                Debug.Log("[WARNING] File '" + fullPath + "' is not create because it already exist!");
             }
         }
 
+        /// <summary>
+        /// Write into a file using a relative path. Use <see cref="File.WriteAllText"/> to write with a string as
+        /// content. If the file isn't create, it will return an error.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="content"></param>
         public static void Write(string path, string content)
         {
             string fullPath = Path.Combine(Path.GetFullPath("."), path);
@@ -158,12 +161,21 @@ namespace Emission
                 }
                 catch(Exception e)
                 {
-                    ApplicationConsole.PrintError("[ERROR] Cannot write in '" + path + "':\n" + e.Message);
+                    Debug.LogError("[ERROR] Cannot write in '" + path + "':\n" + e.Message);
                 }
             }
         }
 
-        public static unsafe byte[] ReadTexture(string path, int* width, int* height)
+        /// <summary>
+        /// Read all bytes from an image and return an array of them. Use <see cref="SixLabors.ImageSharp"/> to
+        /// extract bytes from image with a for loop into image's pixels.
+        /// Also define image's width and height using pointers.
+        /// </summary>
+        /// <param name="path">Path to the image to load</param>
+        /// <param name="width">Pointer to image's width variable</param>
+        /// <param name="height">Pointer to image's height variable</param>
+        /// <returns>Bytes list</returns>
+        public static unsafe byte[] ReadImageBytes(string path, int* width, int* height)
         {
             Image<Rgba32> image = Image.Load<Rgba32>(path);
 

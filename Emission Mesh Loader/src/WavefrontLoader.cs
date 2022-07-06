@@ -8,6 +8,7 @@ namespace Emission.MultiMeshLoader
     {
         private List<float> _vertices;
         private List<float> _textureCoords;
+        private List<float> _normals;
         private List<Tuple<int[], int[], int[]>> _faces;
 
         private string[] _lines;
@@ -17,6 +18,7 @@ namespace Emission.MultiMeshLoader
             _lines = Resources.GetAllLines(path);
             _vertices = new List<float>();
             _textureCoords = new List<float>();
+            _normals = new List<float>();
             _faces = new List<Tuple<int[], int[], int[]>>();
         }
 
@@ -31,10 +33,13 @@ namespace Emission.MultiMeshLoader
                     switch (sliced[0])
                     {
                         case "v":
-                            ParseVertex(sliced);
+                            Parse3DData(sliced, ref _vertices);
                             break;
                         case "vt":
-                            ParseTextureCoordonates(sliced);
+                            Parse2DData(sliced, ref _textureCoords);
+                            break;
+                        case "vn":
+                            Parse3DData(sliced, ref _normals);
                             break;
                         case "f":
                             ParseFaces(sliced);
@@ -42,43 +47,68 @@ namespace Emission.MultiMeshLoader
                     }
                 }
             }
-
             return ToModel();
         }
         
         private (float[], int[]) ToModel()
         {
             List<float> vertices = new List<float>();
-            List<int> indices = new List<int>();
-            
-            for (int i = 0; i < _vertices.Count; i+=3)
-            {
-                // Load vertices
-                vertices.AddRange(new []{_vertices[i], _vertices[i + 1], _vertices[i + 2], 0.0f, 0.0f});
-            }
 
             foreach (var face in _faces)
             {
                 if (face.Item1.Length == 3)
                 {
-                    // Load triangles indices
-                    indices.AddRange(new []{face.Item1[0]-1, face.Item1[1]-1, face.Item1[2]-1}); // 0, 1, 2
-                }
-                if (face.Item1.Length == 4)
-                {
-                    // Load quads indices
-                    indices.AddRange(new []
+                    for (int v = 0; v < face.Item1.Length; v++)
                     {
-                        face.Item1[0]-1, face.Item1[1]-1, face.Item1[3]-1, // 0, 1, 3
-                        face.Item1[1]-1, face.Item1[2]-1, face.Item1[3]-1 // 1, 2, 3
+                        vertices.AddRange(new []
+                        {
+                            _vertices[face.Item1[v] - 1],
+                            _vertices[face.Item1[v]],
+                            _vertices[face.Item1[v] + 1],
+                            _textureCoords[face.Item2[v]],
+                            _textureCoords[face.Item2[v] + 1],
+                            _normals[face.Item3[v] - 1],
+                            _normals[face.Item3[v]],
+                            _normals[face.Item3[v] + 1],
+                        });
+                    }
+                }
+                else if (face.Item1.Length == 4)
+                {
+                    float[,] vert = new float[4, 8];
+                    for (int v = 0; v < face.Item1.Length; v++)
+                    {
+                        vert[v, 0] = _vertices[face.Item1[v] * 3 - 3];      // x
+                        vert[v, 1] = _vertices[face.Item1[v] * 3 - 2];      // y
+                        vert[v, 2] = _vertices[face.Item1[v] * 3 - 1];      // z
+                        vert[v, 3] = _textureCoords[face.Item2[v] * 2 - 2]; // tx
+                        vert[v, 4] = _textureCoords[face.Item2[v] * 2 - 1]; // ty
+                        vert[v, 5] = _normals[face.Item3[v] * 3 - 3];       // nx
+                        vert[v, 6] = _normals[face.Item3[v] * 3 -2];        // ny
+                        vert[v, 7] = _normals[face.Item3[v] * 3 - 1];       // nz
+                    }
+                    
+                    vertices.AddRange(new []
+                    {
+                        vert[0, 0], vert[0, 1], vert[0, 2], vert[0, 3], vert[0, 4], vert[0, 5], vert[0, 6], vert[0, 7],
+                        vert[1, 0], vert[1, 1], vert[1, 2], vert[1, 3], vert[1, 4], vert[1, 5], vert[1, 6], vert[1, 7],
+                        vert[3, 0], vert[3, 1], vert[3, 2], vert[3, 3], vert[3, 4], vert[3, 5], vert[3, 6], vert[3, 7],
+                        
+                        vert[1, 0], vert[1, 1], vert[1, 2], vert[1, 3], vert[1, 4], vert[1, 5], vert[1, 6], vert[1, 7],
+                        vert[2, 0], vert[2, 1], vert[2, 2], vert[2, 3], vert[2, 4], vert[2, 5], vert[2, 6], vert[2, 7],
+                        vert[3, 0], vert[3, 1], vert[3, 2], vert[3, 3], vert[3, 4], vert[3, 5], vert[3, 6], vert[3, 7],
                     });
                 }
             }
             
-            return (vertices.ToArray(), indices.ToArray());
+            // generate indices
+            int[] indices = new int[(vertices.Count) / 8 + 1];
+            for (int i = 0; i < (vertices.Count) / 8 + 1; i++) indices[i] = i;
+            
+            return (vertices.ToArray(), indices);
         }
         
-        private void ParseVertex(string[] data)
+        private void Parse3DData(string[] data, ref List<float> list)
         {
             bool success = float.TryParse(data[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float x);
             success &= float.TryParse(data[2], NumberStyles.Any, CultureInfo.InvariantCulture, out float y);
@@ -90,10 +120,10 @@ namespace Emission.MultiMeshLoader
                 return;
             }
             
-            _vertices.AddRange(new []{x,y,z});
+            list.AddRange(new []{x,y,z});
         }
 
-        private void ParseTextureCoordonates(string[] data)
+        private void Parse2DData(string[] data, ref List<float> list)
         {
             bool success = float.TryParse(data[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float x);
             success &= float.TryParse(data[2], NumberStyles.Any, CultureInfo.InvariantCulture, out float y);
@@ -104,7 +134,7 @@ namespace Emission.MultiMeshLoader
                 return;
             }
             
-            _textureCoords.AddRange(new []{x,y});
+            list.AddRange(new []{x,y});
         }
 
         private void ParseFaces(string[] data)
@@ -125,10 +155,10 @@ namespace Emission.MultiMeshLoader
                     Console.WriteLine("[ERROR] Cannot parse face : " + data);
                     return;
                 }
-
+                
                 vindex[i - 1] = x;
                 vtindex[i - 1] = y;
-                vtindex[i - 1] = z;
+                vnindex[i - 1] = z;
             }
             
             _faces.Add(new Tuple<int[], int[], int[]>(vindex, vtindex, vnindex));

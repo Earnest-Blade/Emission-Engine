@@ -1,21 +1,24 @@
 ﻿namespace Emission
 {
-    abstract class Scene
+    abstract class Scene : IEngineBehaviour
     {
         private static Scene _current;
 
         public string Name { get; }
+        public IEngineBehaviour Behaviour {get => this;}
         
-        protected Camera _camera;
+        protected Camera Camera;
+        protected bool IsSceneEnable => _enable;
 
         private bool _enable;
 
         public Scene(string name)
         {
             Name = name;
-            _camera = Camera.LoadFrom(Window.Current.Settings);
+            Behaviour.BindCallbacks();
             
-            Initialize();
+            Camera = Camera.LoadFrom(Window.Current.Settings);
+            _enable = false;
         }
 
         protected abstract void OnInitialize();
@@ -24,34 +27,64 @@
         protected abstract void OnRender();
         protected abstract void OnStop();
 
-        private void Initialize()
+        void IEngineBehaviour.Initialize()
         {
             OnInitialize();
         }
-
-        public void Update()
+        
+        void IEngineBehaviour.Start()
         {
-            _camera.Update();
             
-            OnUpdate();
         }
 
-        public void Render()
+        void IEngineBehaviour.Update()
         {
-            OnRender();
+            if (_enable)
+            {
+                Camera.Update();
+            
+                OnUpdate();
+            }
+        }
+
+        void IEngineBehaviour.PreRender()
+        {
+            
+        }
+
+        void IEngineBehaviour.Render()
+        {
+            if (_enable)
+            {
+                OnRender();
+            }
+        }
+
+        void IEngineBehaviour.PostRender()
+        {
+            
+        }
+
+        void IEngineBehaviour.Dispose()
+        {
+            OnStop();
         }
 
         public void Call()
         {
-            Scene.SetCurrentScene(this);
-            Camera.SetAsMain(_camera);
-            
-            this.OnStart();
+            SetCurrentScene(this);
+            Camera.SetAsMain(Camera);
+
+            _enable = true;
+            OnStart();
         }
 
         public void Unload()
         {
-            this.OnStop();
+            OnStop();
+            _enable = false;
+            
+            Behaviour.UnbindCallbacks();
             
             SetCurrentScene(null);
         }
