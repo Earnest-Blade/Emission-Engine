@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Emission_Engine</RootNamespace>
+    <LangVersion>10</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeTypeSharp" Version="1.1.3" />
+    <PackageReference Include="ImGui.NET" Version="1.87.3" />
+    <PackageReference Include="OpenTK" Version="4.7.4" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="engine\errors" />
+    <Folder Include="IO\images" />
+  </ItemGroup>
+
+</Project>

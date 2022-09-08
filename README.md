@@ -3,16 +3,23 @@
 
 Emission is custom game and rendering engine made in C# using OpenTk, a warper of OpenGL. 
 Emission engine can run on Window/MacOS/Linux.
+I'm currently using this engine to create my own game, and it grows by technicals stuff that I need. 
 
 ## Engine 
 It's the main project use for rendering.
-Rendering take his foundations on OpenGL and GLFW. It also uses ImageSharp from Six Labors to load images but a custom image loader is intended. 
+Rendering take his foundations on Modern OpenGL and GLFW. 
+It uses faces arrays to render differents kinds of meshes. It also use pre-compiled statics meshes and debug rendering.
+Emission cannot render bones animations but im working on this features. 
 
-## Model Loader
-Emission Engine come with his own model loader.
-Currently, it can open :
+## I/O
+Emission Engine come with his own io system.
+Emission I/O tools can use:
+- Images Files (Png, Jpg, Bmp...)
+- Fonts 
+- 3D Objects (Obj)
 
- - OBJ Files from Wavefront
+## Build System
+Currently in development, Emission come with his own build system and compression system in order to build games.
 
 
 ## License

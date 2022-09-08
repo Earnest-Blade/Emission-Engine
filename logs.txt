@@ -1,0 +1,34 @@
+Running with Win32NT on version 6.2.9200.0
+Running on process 26372
+
+At 2022-09-08 18:11:07Z : **** OpenGL Strings ****
+At 2022-09-08 18:11:07Z : [GL INFO] Renderer                 : Intel(R) UHD Graphics 630
+At 2022-09-08 18:11:07Z : [GL INFO] Shading Language Version : 4.40 - Build 30.0.101.1339
+At 2022-09-08 18:11:07Z : [GL INFO] Graphic Card             : Intel
+At 2022-09-08 18:11:07Z : [GL INFO] OpenGL Version           : 4.4.0 - Build 30.0.101.1339
+At 2022-09-08 18:11:07Z : ************************
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/internal/shader/debug.glsl'...
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile VertexShader shader!
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile FragmentShaderArb shader!
+At 2022-09-08 18:11:07Z : [INFO] shader3 initialized!
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/shader/basic.glsl'...
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/internal/shader/light.glsl'...
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/internal/shader/camera.glsl'...
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/internal/shader/material.glsl'...
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile VertexShader shader!
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile FragmentShaderArb shader!
+At 2022-09-08 18:11:07Z : [INFO] shader6 initialized!
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/internal/shader/sprites/sprite.glsl'...
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile VertexShader shader!
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile FragmentShaderArb shader!
+At 2022-09-08 18:11:07Z : [INFO] shader9 initialized!
+At 2022-09-08 18:11:07Z : [INFO] New mesh geometry has been loaded!
+At 2022-09-08 18:11:07Z : [INFO] New mesh geometry has been loaded!
+At 2022-09-08 18:11:07Z : [INFO] New mesh successfully initialized!
+At 2022-09-08 18:11:07Z : [INFO] Reading 'D:\Projets\Code\C#\Emission Engine\assets/internal/shader/skybox.glsl'...
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile VertexShader shader!
+At 2022-09-08 18:11:07Z : [SHADER] Successfully compile FragmentShaderArb shader!
+At 2022-09-08 18:11:07Z : [INFO] shader12 initialized!
+At 2022-09-08 18:11:07Z : [INFO] New mesh geometry has been loaded!
+At 2022-09-08 18:11:16Z : [INFO] Quitting with status 0
+At 2022-09-08 18:11:16Z : [WARNING] File 'D:\Projets\Code\C#\Emission Engine\logs.txt' is not create because it already exist!
