@@ -1,4 +1,3 @@
-
 # Emission Engine
 
 Emission is custom game and rendering engine made in C# using OpenTk, a warper of OpenGL. 

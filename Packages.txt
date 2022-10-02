@@ -1,8 +1,0 @@
-To run Emission Engine, you need some packages, theses are already installed 
-but there is a list of those if you need to (re)install them. 
-
-NuGet Packages :
-- OpenTk v4.7.2
-- SixLabors.ImageSharp v1.0.0
-- ImGuiNet v1.87.3
-- FreeTypeSharp 1.1.3
