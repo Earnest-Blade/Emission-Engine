@@ -31,8 +31,4 @@ D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\refint\Sandbox.dll
 D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\Sandbox.pdb
 D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\Sandbox.genruntimeconfig.cache
 D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\ref\Sandbox.dll
-D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\Microsoft.Win32.SystemEvents.dll
-D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\System.Drawing.Common.dll
-D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
-D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
-D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\StbImageSharp.dll

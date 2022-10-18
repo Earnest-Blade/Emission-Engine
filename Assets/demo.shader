@@ -19,7 +19,7 @@ vertex:
 		oTextCoords = iTextCoords;
 		oAlpha = alpha;
 		
-		gl_Position = vec4(iPosition, 1.0) ;
+		gl_Position = vec4(iPosition, 1.0);
 	}
 
 fragment:
@@ -34,6 +34,7 @@ fragment:
 
 	void main(void)
 	{
-		//vec4 color = texture2D(texture0, oTextCoords);
-		oFrag = vec4(1.0, 1.0, 1.0, 1.0);
+		vec4 color = texture2D(texture0, oTextCoords);
+		oFrag = color;
+		//oFrag = vec4(1.0, 1.0, 1.0, 1.0);
 	}

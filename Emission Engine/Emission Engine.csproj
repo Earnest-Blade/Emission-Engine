@@ -4,11 +4,30 @@
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Emission_Engine</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenTK" Version="4.7.5" />
-      <PackageReference Include="System.Drawing.Common" Version="4.7.3" />
+      <PackageReference Include="StbImageSharp" Version="2.27.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\Assets\background_image.png">
+        <Link>Assets\background_image.png</Link>
+      </Content>
+      <Content Include="..\Assets\cube.shader">
+        <Link>Assets\cube.shader</Link>
+      </Content>
+      <Content Include="..\Assets\demo.shader">
+        <Link>Assets\demo.shader</Link>
+      </Content>
+      <Content Include="..\Data\Assets.bundle">
+        <Link>Data\Assets.bundle</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Engine\Emission.Inputs\Joysticks" />
     </ItemGroup>
 
 </Project>

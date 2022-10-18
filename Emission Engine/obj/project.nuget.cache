@@ -1,24 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "n5mPZDqVuHnpYmuKH8mmubL7mMtTdGGnLzztBbW66IGhjbUaZyfmeXiLmHBfTztURTXXTlh36/2dnb7JDmQnoQ==",
+  "dgSpecHash": "n+3dMN++jTZjmXzhm8c8Bw8QlTubXb2fQ0N36HklJH24f5Z/N9EII5sYJzzg8VBFihe9Bx4BlyvsA1b8wPpIfA==",
   "success": true,
   "projectFilePath": "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\Emission Engine.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.9\\microsoft.netcore.platforms.3.1.9.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk\\4.7.5\\opentk.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.compute\\4.7.5\\opentk.compute.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.core\\4.7.5\\opentk.core.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.graphics\\4.7.5\\opentk.graphics.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.input\\4.7.5\\opentk.input.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.mathematics\\4.7.5\\opentk.mathematics.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.openal\\4.7.5\\opentk.openal.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.redist.glfw\\3.3.8.30\\opentk.redist.glfw.3.3.8.30.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.windowing.common\\4.7.5\\opentk.windowing.common.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.windowing.desktop\\4.7.5\\opentk.windowing.desktop.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\4.7.5\\opentk.windowing.graphicslibraryframework.4.7.5.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.drawing.common\\4.7.3\\system.drawing.common.4.7.3.nupkg.sha512",
-    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512"
+    "C:\\Users\\Luca Marpeau\\.nuget\\packages\\stbimagesharp\\2.27.13\\stbimagesharp.2.27.13.nupkg.sha512"
   ],
   "logs": []
 }

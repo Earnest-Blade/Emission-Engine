@@ -1,4 +1,5 @@
--- Event System
+-- Old Event System
+
 public static void RegisterEvent(byte flags, Action ptr)
         {
             if (EventDispatcher.Instance == null) throw new EmissionException("Event Not Initialize Exception", ""); 

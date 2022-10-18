@@ -45,13 +45,9 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "OpenTK": {
+            "StbImageSharp": {
               "target": "Package",
-              "version": "[4.7.5, )"
-            },
-            "System.Drawing.Common": {
-              "target": "Package",
-              "version": "[4.7.3, )"
+              "version": "[2.27.13, )"
             }
           },
           "imports": [
