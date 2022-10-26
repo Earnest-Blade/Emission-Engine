@@ -7,8 +7,6 @@ using JetBrains.Annotations;
 using Exception = System.Exception;
 #pragma warning disable 0419
 
-using Emission.GLFW;
-
 namespace Emission.Window.GLFW
 {
     /// <summary>
@@ -125,31 +123,31 @@ namespace Emission.Window.GLFW
         ///         headers or functions.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The window hit to set.</param>
+        /// <param name="windowHint">The window hit to set.</param>
         /// <param name="value">The new value of the window hint.</param>
         [DllImport(LIBRARY, EntryPoint = "glfwWindowHintString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void WindowHintString(Hint hint, byte[] value);
+        public static extern void WindowHintString(WindowHint windowHint, byte[] value);
 
         /// <summary>
-        ///     Helper function to call <see cref="WindowHintString(Hint, byte[])" /> with UTF-8 encoding.
+        ///     Helper function to call <see cref="WindowHintString(GLFW.WindowHint, byte[])" /> with UTF-8 encoding.
         /// </summary>
-        /// <param name="hint">The window hit to set.</param>
+        /// <param name="windowHint">The window hit to set.</param>
         /// <param name="value">The new value of the window hint.</param>
         // ReSharper disable once InconsistentNaming
-        public static void WindowHintStringUTF8(Hint hint, string value)
+        public static void WindowHintStringUTF8(WindowHint windowHint, string value)
         {
-            WindowHintString(hint, Encoding.UTF8.GetBytes(value));
+            WindowHintString(windowHint, Encoding.UTF8.GetBytes(value));
         }
 
         /// <summary>
-        ///     Helper function to call <see cref="WindowHintString(Hint, byte[])" /> with ASCII encoding.
+        ///     Helper function to call <see cref="WindowHintString(GLFW.WindowHint, byte[])" /> with ASCII encoding.
         /// </summary>
-        /// <param name="hint">The window hit to set.</param>
+        /// <param name="windowHint">The window hit to set.</param>
         /// <param name="value">The new value of the window hint.</param>
         // ReSharper disable once InconsistentNaming
-        public static void WindowHintStringASCII(Hint hint, string value)
+        public static void WindowHintStringASCII(WindowHint windowHint, string value)
         {
-            WindowHintString(hint, Encoding.ASCII.GetBytes(value));
+            WindowHintString(windowHint, Encoding.ASCII.GetBytes(value));
         }
 
         /// <summary>
@@ -442,13 +440,13 @@ namespace Emission.Window.GLFW
         ///         initialized again.>.
         ///     </para>
         /// </summary>
-        /// <param name="hint">
-        ///     The hint, valid values are <see cref="Hint.JoystickHatButtons" />,
-        ///     <see cref="Hint.CocoaMenuBar" />, and <see cref="Hint.CocoaChDirResources" />.
+        /// <param name="windowHint">
+        ///     The hint, valid values are <see cref="GLFW.WindowHint.JoystickHatButtons" />,
+        ///     <see cref="GLFW.WindowHint.CocoaMenuBar" />, and <see cref="GLFW.WindowHint.CocoaChDirResources" />.
         /// </param>
         /// <param name="value">The value of the hint.</param>
         [DllImport(LIBRARY, EntryPoint = "glfwInitHint", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitHint(Hint hint, bool value);
+        public static extern void InitHint(WindowHint windowHint, bool value);
 
         /// <summary>
         ///     This function initializes the GLFW library. Before most GLFW functions can be used, GLFW must be initialized, and
@@ -1000,12 +998,12 @@ namespace Emission.Window.GLFW
         ///         other coordinate systems in GLFW, the X-axis points to the right and the Y-axis points down.
         ///     </para>
         /// </summary>
-        /// <param name="image">The image.</param>
+        /// <param name="icon">The image.</param>
         /// <param name="xHotspot">The x hotspot.</param>
         /// <param name="yHotspot">The y hotspot.</param>
         /// <returns>The created cursor.</returns>
         [DllImport(LIBRARY, EntryPoint = "glfwCreateCursor", CallingConvention = CallingConvention.Cdecl)]
-        public static extern Cursor CreateCursor(Icon image, int xHotspot, int yHotspot);
+        public static extern Cursor CreateCursor(Icon icon, int xHotspot, int yHotspot);
 
         /// <summary>
         ///     This function destroys a cursor previously created with <see cref="CreateCursor" />. Any remaining cursors will be
@@ -1416,7 +1414,7 @@ namespace Emission.Window.GLFW
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1424,10 +1422,10 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
         [DllImport(LIBRARY, EntryPoint = "glfwWindowHint", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void WindowHint(Hint hint, int value);
+        public static extern void WindowHint(WindowHint windowHint, int value);
 
         /// <summary>
         ///     Gets the value of the specified window attribute.
@@ -1724,7 +1722,7 @@ namespace Emission.Window.GLFW
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1732,16 +1730,16 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, bool value)
+        public static void WindowHint(WindowHint windowHint, bool value)
         {
-            WindowHint(hint, value ? Constants.True : Constants.False);
+            WindowHint(windowHint, value ? Constants.True : Constants.False);
         }
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1749,13 +1747,13 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, ClientApi value) { WindowHint(hint, (int) value); }
+        public static void WindowHint(WindowHint windowHint, ClientApi value) { WindowHint(windowHint, (int) value); }
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1763,13 +1761,13 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, Constants value) { WindowHint(hint, (int) value); }
+        public static void WindowHint(WindowHint windowHint, Constants value) { WindowHint(windowHint, (int) value); }
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1777,13 +1775,13 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, ContextApi value) { WindowHint(hint, (int) value); }
+        public static void WindowHint(WindowHint windowHint, ContextApi value) { WindowHint(windowHint, (int) value); }
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1791,13 +1789,13 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, Robustness value) { WindowHint(hint, (int) value); }
+        public static void WindowHint(WindowHint windowHint, Robustness value) { WindowHint(windowHint, (int) value); }
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1805,13 +1803,13 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, Profile value) { WindowHint(hint, (int) value); }
+        public static void WindowHint(WindowHint windowHint, Profile value) { WindowHint(windowHint, (int) value); }
 
         /// <summary>
         ///     Sets hints for the next call to <see cref="CreateWindow" />. The hints, once set, retain their values
-        ///     until changed by a call to <see cref="WindowHint(Hint, int)" /> or <see cref="DefaultWindowHints" />, or until the
+        ///     until changed by a call to <see cref="WindowHint(GLFW.WindowHint, int)" /> or <see cref="DefaultWindowHints" />, or until the
         ///     library is
         ///     terminated.
         ///     <para>
@@ -1819,9 +1817,9 @@ namespace Emission.Window.GLFW
         ///         this will instead be reported by the next call to <see cref="CreateWindow" />.
         ///     </para>
         /// </summary>
-        /// <param name="hint">The hint.</param>
+        /// <param name="windowHint">The hint.</param>
         /// <param name="value">The value.</param>
-        public static void WindowHint(Hint hint, ReleaseBehavior value) { WindowHint(hint, (int) value); }
+        public static void WindowHint(WindowHint windowHint, ReleaseBehavior value) { WindowHint(windowHint, (int) value); }
 
         private static void GetContextVersion(IntPtr window, out int major, out int minor, out int revision)
         {

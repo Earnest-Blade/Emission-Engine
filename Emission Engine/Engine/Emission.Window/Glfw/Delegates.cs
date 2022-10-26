@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Emission.GLFW
+namespace Emission.Window.GLFW
 {
     /// <summary>
     ///     Function signature for receiving error callbacks.

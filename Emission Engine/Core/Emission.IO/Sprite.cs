@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Emission.Mathematics.Numerics;
+using Emission.Mathematics;
 
 using StbImageSharp;
 
@@ -8,17 +8,35 @@ namespace Emission.IO
 {
     public class Sprite : IDisposable
     {
+        /// <summary>
+        /// The height, in pixels, of this image.
+        /// </summary>
         public int Width;
+        
+        /// <summary>
+        /// The width, in pixels, of this image.
+        /// </summary>
         public int Height;
 
-        public Vector2 Size => (Width, Height);
+        /// <summary>
+        /// Create a rectangle from <see cref="Width"/> and <see cref="Height"/> of the sprite.
+        /// </summary>
+        public Rectangle Size => new Rectangle(0, 0, Width, Height);
         
+        /// <summary>
+        /// Path use to load the sprite.
+        /// </summary>
         public string Path => _path;
+        
+        /// <summary>
+        /// Byte array in RGBA that define the sprite.
+        /// </summary>
         public byte[] Bytes => _bytes;
         
         private string _path;
         private byte[] _bytes;
 
+        /* Constructor */
         public Sprite(string path)
         {
             byte[] buffer = File.ReadAllBytes(path);
@@ -37,6 +55,5 @@ namespace Emission.IO
             Width = 0;
             Height = 0;
         }
-
     }
 }

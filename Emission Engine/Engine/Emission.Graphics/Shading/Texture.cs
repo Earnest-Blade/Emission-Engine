@@ -1,12 +1,13 @@
 ﻿using System;
 
 using Emission.IO;
-using static Emission.Graphics.GL;
-using Emission.Mathematics.Numerics;
+using static Emission.Graphics.GL.GL;
+using Emission.Mathematics;
+using Emission.Graphics;
 
-namespace Emission.Shading
+namespace Emission.Graphics.Shading
 {
-    public class Texture : IDisposable
+    public class Texture : IEquatable<Texture>, IDisposable
     {
         public string Path { get => _path; }
         public string Name { get => _name; }
@@ -23,7 +24,7 @@ namespace Emission.Shading
             }
         }
 
-        public Vector2 Size => Sprite.Size;
+        public Rectangle Size => Sprite.Size;
 
         private string _path;
         private string _name;
@@ -92,6 +93,26 @@ namespace Emission.Shading
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
             glActiveTexture(_texUnit);
             glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        public bool Equals(Texture other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return _texId == other._texId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Texture)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)_texId;
         }
     }
 }

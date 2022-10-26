@@ -1,4 +1,4 @@
-﻿namespace Emission.GLFW
+﻿namespace Emission
 {
     /// <summary>
     ///     Describes the state of a button/key.

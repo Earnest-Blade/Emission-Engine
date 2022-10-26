@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 
-using Emission.GLFW;
 using Emission.Window;
-using Emission.Mathematics.Numerics;
+using Emission.Mathematics;
 
 namespace Emission
 {
@@ -14,7 +13,7 @@ namespace Emission
         public const int MOUSE_SIZE = 16;
         public const int NO_STATE = -1;
         public const int MOUSE_DB_CLICK_COOLDOWN = 1000000000 / 5;
-        
+
         /// <summary>
         /// Get if a key or a mouse button is pressed. Return a boolean.
         /// Check both variables, if any of these is true, it will return true.
@@ -118,7 +117,8 @@ namespace Emission
         /// </summary>
         public static float Sensivity => _instance._mouseSensivity;
 
-        private static Input _instance;
+        private static Input _instance = null;
+        private static readonly object _padlock = new object();
 
         private int[] _keyStates;
         private bool[] _activeKeys;
@@ -271,15 +271,11 @@ namespace Emission
         public static int AxisPress(Axis a) { return a.IsPress(); }
         public static float AxisPress(Axis a, float mod) { return a.IsPress(mod); }
 
-        /// <summary>
-        /// Create a new static instance of <see cref="Input"/>.
-        /// </summary>
-        public static void CreateInput()
-        {
-            _instance ??= new Input();
-        }
-
         public static bool HasInstance() => _instance != null;
-        public static Input Instance => _instance;
+
+        public static Input Instance
+        {
+            get { lock (_padlock) return _instance ??= new Input(); }
+        }
     }
 }

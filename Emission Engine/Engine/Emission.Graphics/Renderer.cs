@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
+using Emission;
 using Emission.IO;
-using static Emission.Graphics.GL;
+using static Emission.Graphics.GL.GL;
 
-namespace Emission
+namespace Emission.Graphics
 {
     public unsafe class Renderer
     {
@@ -131,7 +130,7 @@ namespace Emission
             else
             {
                 // cannot load texture
-                throw new EmissionException(EmissionException.EmissionTextureException, "Cannot load Texture2D");
+                throw new EmissionException(Errors.EmissionTextureException, "Cannot load Texture2D");
             }
             
             glActiveTexture(GL_TEXTURE_2D);

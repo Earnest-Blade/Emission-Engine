@@ -1,12 +1,12 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Emission.IO;
-using static Emission.Graphics.GL;
-using Emission.Mathematics.Numerics;
+using static Emission.Graphics.GL.GL;
+using Emission.Mathematics;
 
-namespace Emission.Shading
+namespace Emission.Graphics.Shading
 {
-    public class Shader : IDisposable
+    public class Shader : IDisposable, IEquatable<Shader>
     {
         public const string UNIFORM_TRANSFORM = "uTransform";
         public const string UNIFORM_VIEW = "uView";
@@ -76,7 +76,6 @@ namespace Emission.Shading
         public int GetUniformLocation(string name)
         {
             int location = glGetUniformLocation(_program, name);
-            //if (location == -1) Debug.LogColor($"[WARNING] '{name}' does not exists.", ConsoleColor.Yellow);
             return location;
         }
         
@@ -188,7 +187,7 @@ namespace Emission.Shading
             glCompileShader(shader);
 
             string shaderLogs = glGetShaderInfoLog(shader);
-            if (shaderLogs != "") throw new EmissionException(EmissionException.EmissionOpenGlException, shaderLogs);
+            if (shaderLogs != "") throw new EmissionException(Errors.EmissionOpenGlException, shaderLogs);
             
             Debug.Log($"[SHADER] Successfully compile {enumType} shader!");
 
@@ -215,7 +214,7 @@ namespace Emission.Shading
         /// <returns>Vertex and fragment shader content</returns>
         protected static string[] SplitShader(string path)
         {
-            string[] lines = File.ReadLines(path);
+            IEnumerable<string> lines = File.ReadLines(path);
             string[] content = new string[3];
             var type = ShaderType.None;
 
@@ -278,6 +277,26 @@ namespace Emission.Shading
 
             // Retun a struct that contains all parsed content
             return (content);
+        }
+
+        public bool Equals(Shader other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return _program == other._program && _vertex == other._vertex && _fragment == other._fragment;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Shader)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_program, _vertex, _fragment);
         }
     }
 }

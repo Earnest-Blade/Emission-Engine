@@ -1,0 +1,16 @@
+[INFO] Define Console's log path as '.log'!
+[IO] Reading file 'window_options.json'
+[INFO] A new game window instance have been created!
+[INFO] New window has been created!
+[INFO] Using OpenGL 4.3.0 - Build 31.0.101.2112
+[INFO] Using GLSL 4.30 - Build 31.0.101.2112
+[INFO] Running with OpenGL Vendor Intel
+[INFO] Running with OpenGL Renderer Intel(R) UHD Graphics 630
+[IO] Reading file 'icon.png'
+[IO] Reading file 'D:\Projets\Code\C#\Emission Engine\Data/Assets.bundle'
+[IO] Reading file 'Assets/cube.shader'
+[SHADER] Successfully compile Vertex shader!
+[SHADER] Successfully compile Fragment shader!
+[INFO] shader3 initialized!
+[0;0;1;0;0;1;0;0;-1;0;0;0;0;0;0;1]
+[INFO] Application stopped with exit code: 0!

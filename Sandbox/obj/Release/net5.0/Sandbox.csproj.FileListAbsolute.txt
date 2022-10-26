@@ -32,3 +32,9 @@ D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\Sandbox.pdb
 D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\Sandbox.genruntimeconfig.cache
 D:\Projets\Code\C#\Emission Engine\Sandbox\obj\Release\net5.0\ref\Sandbox.dll
 D:\Projets\Code\C#\Emission Engine\Sandbox\bin\Release\net5.0\StbImageSharp.dll
+D:\Projets\Code\C#\Emission Engine\Bin\Release\net5.0\Sandbox.exe
+D:\Projets\Code\C#\Emission Engine\Bin\Release\net5.0\Sandbox.deps.json
+D:\Projets\Code\C#\Emission Engine\Bin\Release\net5.0\Sandbox.runtimeconfig.json
+D:\Projets\Code\C#\Emission Engine\Bin\Release\net5.0\Sandbox.runtimeconfig.dev.json
+D:\Projets\Code\C#\Emission Engine\Bin\Release\net5.0\Sandbox.dll
+D:\Projets\Code\C#\Emission Engine\Bin\Release\net5.0\Sandbox.pdb

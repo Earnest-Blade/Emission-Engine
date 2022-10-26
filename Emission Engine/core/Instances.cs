@@ -1,5 +1,6 @@
 ﻿using Emission.IO;
 using Emission.Window;
+using Emission.Graphics;
 
 namespace Emission
 {

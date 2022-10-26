@@ -1,0 +1,8 @@
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission Engine.csproj.AssemblyReference.cache
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission_Engine.Errors.resources
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission_Engine.Strings.resources
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission Engine.csproj.GenerateResource.cache
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission Engine.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission Engine.AssemblyInfoInputs.cache
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission Engine.AssemblyInfo.cs
+D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Emission Engine.csproj.CoreCompileInputs.cache

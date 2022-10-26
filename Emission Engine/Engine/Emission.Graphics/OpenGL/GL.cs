@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
-namespace Emission.Graphics
+namespace Emission.Graphics.GL
 {
     /// <summary>
     ///     Returns a function pointer for the OpenGL function with the specified name. 

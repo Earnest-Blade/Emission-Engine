@@ -1,30 +1,55 @@
 ﻿using System;
-using Emission.GLFW;
+using System.Runtime.InteropServices;
 using StbImageSharp;
 
 namespace Emission.IO
 {
-    public unsafe struct Icon
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Icon
     {
-        public int Width;
-        public int Height;
+        /// <summary>
+        /// The height, in pixels, of this image.
+        /// </summary>
+        public readonly int Width;
 
-        public byte[] Data;
-        public IntPtr Pixels;
+        /// <summary>
+        /// The width, in pixels, of this image.
+        /// </summary>
+        public readonly int Height;
 
-        public Icon(string path)
+        /// <summary>
+        /// Pointer to the RGBA pixel data of this image, arranged left-to-right, top-to-bottom.
+        /// </summary>
+        public readonly IntPtr Pixels;
+
+        /// <summary>
+        /// Array of byte that represent the RGBA image.
+        /// </summary>
+        public readonly byte[] Data;
+
+        public Icon(int width, int height, IntPtr pixels)
         {
-            byte[] buff = File.ReadAllBytes(path);
-            ImageResult image = ImageResult.FromMemory(buff, ColorComponents.RedGreenBlueAlpha);
+            Width = width;
+            Height = height;
+            Pixels = pixels;
+            Data = null;
+        }
+
+        public unsafe Icon(string path)
+        {
+            byte[] buffer = File.ReadAllBytes(path);
+            ImageResult image = ImageResult.FromMemory(buffer, ColorComponents.RedGreenBlueAlpha);
 
             Width = image.Width;
             Height = image.Height;
             Data = image.Data;
 
-            fixed (byte* ptr = &image.Data[0])
+            fixed (byte* ptr = &Data[0])
             {
                 Pixels = new IntPtr(ptr);
             }
         }
+
+        // TODO: Implement manual load of bmp
     }
 }

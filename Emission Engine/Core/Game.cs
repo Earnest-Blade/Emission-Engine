@@ -1,7 +1,7 @@
 ﻿using System;
-
 using Emission.IO;
 using Emission.Window;
+using Emission.Graphics;
 
 namespace Emission
 {
@@ -12,18 +12,14 @@ namespace Emission
         public Debug Debugger;
         public Data Data;
 
-        private bool _isRunning;
-        private float _startDuration;
-        
+        public bool IsRunning { get; private set; }
+
         internal Game()
         {
-            _isRunning = false;
-            _startDuration = (float)Time.GlfwTime();
+            IsRunning = false;
             
             EngineBehaviour.CreateDispatcher();
             Event.CreateEventDispatcher();
-            
-            Input.CreateInput();
 
             Event.AddDelegate(Event.Initialize, Initialize);
             Event.AddDelegate(Event.Start, Start);
@@ -34,10 +30,10 @@ namespace Emission
 
         private void Initialize()
         {
-            Window ??= new Window.Window(WindowParameters.Default("Window"));
-            Renderer ??= new Renderer();
             Debugger ??= new Debug("Emission Console");
             Data ??= new Data();
+            Window ??= new Window.Window(WindowParameters.Default("Window"));
+            Renderer ??= new Renderer();
             
             Window.Initialize();
             EngineBehaviour.Call(Event.Initialize);
@@ -48,18 +44,19 @@ namespace Emission
             Window.Start();
             EngineBehaviour.Call(Event.Start);
             
-            Debug.Log($"[INFO] Starting duration: {Math.Round(Time.GlfwTime() - _startDuration, 2)}ms!");
-            if (!_isRunning) Loop();
+
+            if (!IsRunning) Loop();
         }
-        
+
         private void Loop()
         {
-            _isRunning = true;
+            IsRunning = true;
             double totalElapsedTime = 0, previousTime = Time.GlfwTime();
             int frameCount = 0;
 
             while (!Window.ShouldClose)
             {
+                IsRunning = true;
                 Time.SetDeltaTime(Time.GlfwTime() - totalElapsedTime);
                 totalElapsedTime = Time.GlfwTime();
 
@@ -71,15 +68,18 @@ namespace Emission
                     previousTime = Time.GlfwTime();
                 }
 
+                Instances.Input.Update();
+                
                 Window.Update();
                 Event.Invoke(Event.Update);
                 
                 Window.Render();
                 Event.Invoke(Event.Render);
 
-                Window.Flush();
+                Window.Swap();
             }
-            
+
+            IsRunning = false;
             Event.Invoke(Event.Stop, 0);
         }
 
@@ -104,6 +104,7 @@ namespace Emission
             EngineBehaviour.RemoveDispatcher();
             
             Debug.Log($"[INFO] Application stopped with exit code: {status}!");
+            Debugger.Dispose();
             
             // Exit Application
             Environment.Exit(status);

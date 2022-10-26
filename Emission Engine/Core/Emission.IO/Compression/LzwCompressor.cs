@@ -85,7 +85,7 @@ namespace Emission.IO.Compression
         private static byte[] GetBytes(int[] value)
         {
             if (value == null)
-                throw new EmissionException(EmissionException.EmissionCompressionException, "GetBytes (int[]) object cannot be null.");
+                throw new EmissionException(Errors.EmissionIOException, "GetBytes (int[]) object cannot be null.");
             var numArray = new byte[value.Length * 4];
             Buffer.BlockCopy(value, 0, numArray, 0, numArray.Length);
             return numArray;

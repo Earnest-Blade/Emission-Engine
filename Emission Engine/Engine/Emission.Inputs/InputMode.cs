@@ -1,4 +1,4 @@
-﻿namespace Emission.GLFW
+﻿namespace Emission
 {
     /// <summary>
     ///     Strongly-typed values for getting/setting the input mode hints.

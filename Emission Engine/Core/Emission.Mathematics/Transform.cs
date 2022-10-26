@@ -1,31 +1,31 @@
-﻿using Emission.Mathematics;
-using Emission.Mathematics.Numerics;
+﻿using System;
 
-namespace Emission
+namespace Emission.Mathematics
 {
-    public class Transform
+    [Serializable]
+    public class Transform : IEquatable<Transform>
     {
-        public static readonly Transform Zero = new ();
+        public static Transform Zero => new Transform(Vector3.Zero, Vector3.Zero, 1);
         
         public Vector3 Position;
         public Vector3 Scale;
-
+        
         public Quaternion Rotation;
 
         public Vector3 EulerAngle
         {
-            get => Rotation.EulerAngles;
-            set => Rotation.EulerAngles = value;
+            get => Rotation.ToEulerAngles().ToDegrees();
+            set => Rotation = Quaternion.FromEulerAngles(value.ToRadians());
         }
 
-        public Vector3 Forward => -Backward;
-        public Vector3 Backward => Vector3.Normalize(Right);
+        public Vector3 Forward;
+        public Vector3 Backward;
         
-        public Vector3 Up => new (0.0f, 1.0f, 0.0f);
-        public Vector3 Down => new (0.0f, -1.0f, 0.0f);
+        public Vector3 Right;
+        public Vector3 Left;
         
-        public Vector3 Right => new (1.0f, 0.0f, 0.0f);
-        public Vector3 Left => new (-1.0f, 0.0f, 0.0f);
+        public Vector3 Up;
+        public Vector3 Down;
 
         public Transform() : this(Vector3.Zero, Vector3.Zero, Vector3.One) {}
         public Transform(Vector3 position) : this(position, Vector3.Zero, Vector3.One) {}
@@ -37,24 +37,34 @@ namespace Emission
         {
             Position = position;
             Scale = scale;
-            
             Rotation = Quaternion.Identity;
+            
+            Forward = Vector3.UnitZ;
+            Backward = -Forward;
+            
+            Up = Vector3.UnitY;
+            Down = -Up;
+            
+            Right = Vector3.UnitX;
+            Left = -Right;
         }
 
         public Matrix4 ToMatrix()
         {
-            Matrix4 matrix = Matrix4.Scale(Scale);
-            matrix *= Matrix4.FromQuaternion(Rotation);
+            Matrix4 matrix = Matrix4.Identity;
+
+            matrix *= Matrix4.Scale(Scale);
             matrix *= Matrix4.Translation(Position);
+            matrix *= Matrix4.RotationQuaternion(Rotation);
+            
             return matrix;
         }
-        
-        public Matrix4 LookAt(Transform transform)
+
+        public Matrix4 LookAt(Transform transform) => LookAt(transform, Vector3.UnitY);
+        public Matrix4 LookAt(Transform transform, Vector3 up)
         {
-            return Matrix4.LookAt(Position, transform.Position * new Vector3(-1, 1, 1), Vector3.UnitY);
+            return Matrix4.LookAt(Position, transform.Position * new Vector3(-1, 1, 1), up);
         }
-        
-        public override string ToString() => $"[{Position}, {EulerAngle}]";
 
         public static Transform operator +(Transform t1, Transform t2)
             => new Transform(t1.Position + t2.Position, t1.Rotation + t1.Rotation, t1.Scale + t2.Scale);
@@ -64,5 +74,27 @@ namespace Emission
         
         public static Transform operator *(Transform t1, Transform t2) 
             => new Transform(t1.Position * t2.Position, t2.Rotation * t2.Rotation, t1.Scale * t2.Scale);
+
+        public static bool operator ==(Transform left, Transform right) => left!.Equals(right);
+        public static bool operator !=(Transform left, Transform right) => !(left == right);
+
+        public bool Equals(Transform other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Position.Equals(other.Position) && Scale.Equals(other.Scale) && Rotation.Equals(other.Rotation);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Transform t && Equals(t);
+        }
+        
+        public override string ToString() => $"[{Position}, {EulerAngle}]";
+
+        public override int GetHashCode()
+        {
+            return Position.GetHashCode() + Rotation.GetHashCode() + Scale.GetHashCode();
+        }
     }
 }

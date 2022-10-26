@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace Emission
+namespace Emission.Graphics
 {
     [DataContract]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

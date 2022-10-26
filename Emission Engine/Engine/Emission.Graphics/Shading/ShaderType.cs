@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Emission.Shading
+namespace Emission.Graphics.Shading
 {
     [Flags]
     public enum ShaderType

@@ -1,20 +1,19 @@
 ﻿using System;
-
+using Emission;
 using Emission.Mathematics;
-using Emission.Mathematics.Numerics;
 
-namespace Emission
+namespace Emission.Graphics
 {
-    public class PerspectiveCamera : ICamera, IDisposable
+    public sealed class PerspectiveCamera : ICamera, IDisposable
     {
-        public const float MIN_DEPTH = 0.01f;
+        private const float MIN_DEPTH = 0.01f;
     
         public float Fov
         {
             get => _fov;
             set
             {
-                if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 0 && value >= 90) throw new ArgumentOutOfRangeException(nameof(value));
                 _fov = value;
                 CalculateProjection();
             }
@@ -53,7 +52,7 @@ namespace Emission
 
         private float _fov;
 
-        public PerspectiveCamera(Window.Window window, float fov, float nearDepth, float farDepth) 
+        public PerspectiveCamera(global::Emission.Window.Window window, float fov, float nearDepth, float farDepth) 
             : this(window.Viewport.Width, window.Viewport.Height, fov, nearDepth, farDepth) {}
         
         public PerspectiveCamera(float width, float height, float fov, float nearDepth, float farDepth)
@@ -62,7 +61,7 @@ namespace Emission
         public PerspectiveCamera(Viewport viewport, float fov)
         {
             Viewport = viewport;
-            _fov = fov;
+            Fov = fov;
             _transform = Transform.Zero;
             _transform.Scale = new Vector3(0.5f);
             
@@ -77,34 +76,43 @@ namespace Emission
         public void Translate(Vector3 position) => Move(position, Vector3.Zero);
         public void Move(Vector3 position, Vector3 rotation)
         {
-            Vector3 camRight = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, rotation));
-            Vector3 camUp = Vector3.Cross(rotation, camRight);
-        }
+            Transform.Rotation += Quaternion.FromEulerAngles(rotation);
+            Transform.Position += position;
 
-        public void RotateAround(Transform transform, float radius)
-        {
-            float x = MathF.Sin(Time.GlfwTime()) * radius;
-            float z = MathF.Cos(Time.GlfwTime()) * radius;
+            Vector3 euler = Transform.EulerAngle;
 
-            _view = Matrix4.LookAt((x, 0, z), Vector3.Zero, Vector3.UnitY);
+            Vector3 front = new Vector3()
+            {
+                X = MathF.Cos(MathHelper.DegreesToRadians(euler.Z)) * MathF.Cos(MathHelper.DegreesToRadians(euler.Y)),
+                Y = MathF.Sin(MathHelper.DegreesToRadians(euler.Y)),
+                Z = MathF.Sin(MathHelper.DegreesToRadians(euler.Z)) * MathF.Cos(MathHelper.DegreesToRadians(euler.Y))
+            };
+            
+            Transform.Forward = Vector3.Normalize(front);
+            Transform.Right = Vector3.Normalize(Vector3.Cross(Transform.Forward, Vector3.UnitY));
+            Transform.Up = Vector3.Normalize(Vector3.Cross(Transform.Right, Transform.Forward));
+            
+            _view = Matrix4.LookAt(Transform.Position, Transform.Position + Transform.Forward, Transform.Up);
+
+            //_view = Matrix4.One;
         }
         
-        public void Dispose()
-        {
-            Event.RemoveDelegate<Vector2>(Event.WindowResize, Resize);   
-        }
-        
-        protected void CalculateProjection()
-        {
-            _projection = Matrix4.PerspectiveProjection(_fov, Viewport.Aspect, Viewport.NearDepth, Viewport.FarDepth);
-        }
-
         public void Resize(Vector2 size)
         {
             Viewport.Width = size.X;
             Viewport.Height = size.Y;
             
             CalculateProjection();
+        }
+
+        public void Dispose()
+        {
+            Event.RemoveDelegate<Vector2>(Event.WindowResize, Resize);   
+        }
+        
+        private void CalculateProjection()
+        {
+            _projection = Matrix4.PerspectiveProjection(MathHelper.DegreesToRadians(_fov), Viewport.Aspect, Viewport.NearDepth, Viewport.FarDepth);
         }
     }
 }

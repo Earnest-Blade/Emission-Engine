@@ -4,11 +4,19 @@ namespace Emission
 {
     internal class GameInstance : IDisposable
     {
-        public static GameInstance Instance => _instance;
+        public static GameInstance Instance
+        {
+            get
+            {
+                lock (_padlock) return _instance;
+            }
+        }
+
         public Game Game => _gameInstance;
-            
+
         private static GameInstance _instance;
-        private Game _gameInstance;
+        private static Game _gameInstance;
+        private static readonly object _padlock = new object();
 
         public GameInstance()
         {

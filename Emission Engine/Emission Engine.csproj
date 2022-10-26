@@ -5,7 +5,22 @@
         <RootNamespace>Emission_Engine</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>10</LangVersion>
+        <BaseOutputPath>D:\Projets\Code\C#\Emission Engine\Bin</BaseOutputPath>
+        <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>bin\</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>bin\</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Engine\Emission.Window\y1ll5qmg.oky~" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="StbImageSharp" Version="2.27.13" />
@@ -18,16 +33,28 @@
       <Content Include="..\Assets\cube.shader">
         <Link>Assets\cube.shader</Link>
       </Content>
-      <Content Include="..\Assets\demo.shader">
-        <Link>Assets\demo.shader</Link>
-      </Content>
       <Content Include="..\Data\Assets.bundle">
         <Link>Data\Assets.bundle</Link>
       </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Engine\Emission.Inputs\Joysticks" />
+      <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Errors.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Errors.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Errors.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

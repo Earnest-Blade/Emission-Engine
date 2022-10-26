@@ -1,6 +1,7 @@
 ﻿using System;
+using Emission;
 
-namespace Emission
+namespace Emission.Graphics
 {
     public abstract class Mesh : IEquatable<Mesh>, IDisposable
     {
@@ -14,7 +15,7 @@ namespace Emission
         public virtual void Initialize(float[] data, int[] indices)
         {
             if (data == null || indices == null)
-                throw new EmissionException(EmissionException.EmissionOpenGlException, "Data or Indices are null");
+                throw new EmissionException(Errors.EmissionOpenGlException, "Data or Indices are null");
             
             _data = data;
             _indices = indices;

@@ -1,43 +1,42 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
-using Emission.GLFW;
 using Emission.IO;
+using Emission.Graphics;
 using Emission.Window.GLFW;
-using static Emission.Graphics.GL;
-using Emission.Mathematics.Numerics;
+using static Emission.Graphics.GL.GL;
+using Emission.Mathematics;
+using System.Reflection;
 
 namespace Emission.Window
 {
-    public class Window : IDisposable, IEngineBehaviour
+    public sealed class Window : IDisposable, IEngineBehaviour
     {
         /// <summary>
         /// Pointer to Glfw Window object. Represent window. Public get and can be only set class constructor.
-        /// Pointer to <see cref="GLFW.Window"/>
         /// </summary>
         public IntPtr Handle { get; }
 
         /// <summary>
         /// Structure that contains all information to generate window.
         /// Information cannot be change, so it can be used to get starting value for the width or the title for example.
-        /// Also contains Projection parameters for projections matrices for current <see cref="PerspectiveCamera"/>.
         /// </summary>
         public WindowParameters Parameters { get; }
 
         /// <summary>
         /// Return, as float value, the relationship between the width and the height of the screen.
-        /// Calculate with <see cref="_lastWindowPosition"/>.
+        /// Calculate with <see cref="_lastWinSize"/>.
         /// Cannot be set, readonly.
         /// </summary>
-        public float WindowAspect
-        {
-            get => _lastWinSize.X / _lastWinSize.Y;
-        }
+        public float WindowAspect => _lastWinSize.X / _lastWinSize.Y;
 
         /// <summary>
         /// Use a Vector2 with int values to get window's position in computer screen space.
         /// Can be set or get.
-        /// Call <see cref="Glfw.SetWindowPos"/> to define position.
+        /// Call <see cref="Glfw.SetWindowPosition"/> to define position.
         /// </summary>
         public Vector2 WindowPosition
         {
@@ -117,7 +116,7 @@ namespace Emission.Window
         }
 
         /// <summary>
-        /// Warper for <see cref="Glfw.GetWindowAttrib"/> with <see cref="WindowAttributeGetBool.Focused"/> while
+        /// Warper for <see cref="Glfw.GetWindowAttribute(System.IntPtr,int)"/> with <see cref="WindowAttribute.Focused"/> while
         /// returning value and <see cref="Glfw.FocusWindow"/> when value is set.
         /// </summary>
         public bool Focus
@@ -135,18 +134,38 @@ namespace Emission.Window
             get => Glfw.WindowShouldClose(Handle);
             set => Glfw.SetWindowShouldClose(Handle, value);
         }
-        
+
         /// <summary>
         /// Gets or sets the opacity of the window in the range of 0.0f and 1.0f.
         /// </summary>
         public float Opacity
         {
             get => Glfw.GetWindowOpacity(Handle);
-            set => Glfw.SetWindowOpacity(Handle, Math.Min(1.0f, Math.Max(0.0f, value)));
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                Glfw.SetWindowOpacity(Handle, value);
+            }
         }
 
+        /// <summary>
+        /// Gets the clear color of the window.
+        /// </summary>
+        public ColorRgb ClearColor
+        {
+            get => Parameters.ClearColorRgb;
+        }
+
+        /// <summary>
+        /// Viewport of the window.
+        /// Countains WindowSize and Window Position
+        /// </summary>
         public Viewport Viewport => new Viewport(0, 0, WindowSize.X, WindowSize.Y);
 
+        /// <summary>
+        /// Engine Behaviour of the Window.
+        /// </summary>
         public IEngineBehaviour Behaviour => this;
 
         private string _title;
@@ -163,27 +182,37 @@ namespace Emission.Window
             if (!Glfw.Init())
             {
                 Glfw.GetError(out string error);
-                throw new EmissionException(EmissionException.EmissionGlfwException, error);
+                throw new EmissionException(Errors.EmissionGlfwException, error);
             }
-            
-            Glfw.WindowHint(Hint.ClientApi, ClientApi.OpenGL);
-            Glfw.WindowHint(Hint.OpenglProfile, Profile.Core);
-            Glfw.WindowHint(Hint.ContextVersionMinor, Parameters.MinorVersion);
-            Glfw.WindowHint(Hint.ContextVersionMajor, Parameters.MajorVersion);
-            Glfw.WindowHint(Hint.Focused, Parameters.IsFocused);
-            Glfw.WindowHint(Hint.Floating, Parameters.IsFloating);
-            Glfw.WindowHint(Hint.Maximized, Parameters.IsMaximized);
-            Glfw.WindowHint(Hint.Decorated, Parameters.IsDecorated);
-            Glfw.WindowHint(Hint.Resizable, Parameters.IsResizable);
-            Glfw.WindowHint(Hint.Visible, Parameters.IsVisible);
-            Glfw.WindowHint(Hint.CenterCursor, Parameters.IsCursorCentered);
-            Glfw.WindowHint(Hint.FocusOnShow, Parameters.IsFocusedOnShow);
+
+            Glfw.WindowHint(WindowHint.ClientApi, ClientApi.OpenGL);
+            Glfw.WindowHint(WindowHint.OpenglProfile, Profile.Core);
+            Glfw.WindowHint(WindowHint.ContextVersionMinor, Parameters.MinorVersion);
+            Glfw.WindowHint(WindowHint.ContextVersionMajor, Parameters.MajorVersion);
+            Glfw.WindowHint(WindowHint.Focused, Parameters.IsFocused);
+            Glfw.WindowHint(WindowHint.Floating, Parameters.IsFloating);
+            Glfw.WindowHint(WindowHint.Maximized, Parameters.IsMaximized);
+            Glfw.WindowHint(WindowHint.Decorated, Parameters.IsDecorated);
+            Glfw.WindowHint(WindowHint.Resizable, Parameters.IsResizable);
+            Glfw.WindowHint(WindowHint.Visible, Parameters.IsVisible);
+            Glfw.WindowHint(WindowHint.CenterCursor, Parameters.IsCursorCentered);
+            Glfw.WindowHint(WindowHint.FocusOnShow, Parameters.IsFocusedOnShow);
             
             Handle = Glfw.CreateWindow(Parameters.Width, Parameters.Height, Parameters.Title, Monitor.None, IntPtr.Zero);
-            if (Handle == IntPtr.Zero) throw new EmissionException(EmissionException.EmissionGlfwException, "Failed to create GLFW Window!");
+            if (Handle == IntPtr.Zero) throw new EmissionException(Errors.EmissionGlfwException, "Failed to create GLFW Window!");
 
+            Debug.Log("[INFO] New window has been created!");
+            
             Glfw.MakeContextCurrent(Handle);
             Import(Glfw.GetProcAddress);
+            
+            Debug.Log($"[INFO] Using OpenGL {glGetString(GL_VERSION)}");
+            Debug.Log($"[INFO] Using GLSL {glGetString(GL_SHADING_LANGUAGE_VERSION)}");
+            Debug.Log($"[INFO] Running with OpenGL Vendor {glGetString(GL_VENDOR)}");
+            Debug.Log($"[INFO] Running with OpenGL Renderer {glGetString(GL_RENDERER)}");
+
+            if (!string.IsNullOrEmpty(parameters.Icon))
+                SetIcon(parameters.Icon);
         }
 
         public void Initialize()
@@ -196,7 +225,7 @@ namespace Emission.Window
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             glViewport(0, 0, Parameters.Width, Parameters.Height);
-
+            
             Event.AddDelegate(Event.WindowClose, OnClose);
             Event.AddDelegate<Vector2>(Event.WindowResize, OnResize);
             Event.AddDelegate<Vector2>(Event.WindowMove, OnMove);
@@ -213,13 +242,13 @@ namespace Emission.Window
             Glfw.SetCloseCallback(Handle, _ => Event.Invoke(Event.WindowClose));
             Glfw.SetWindowSizeCallback(Handle, (_, width, height) => Event.Invoke<Vector2>(Event.WindowResize, (width, height)));
             Glfw.SetWindowPositionCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.WindowMove, ((float)x, (float)y)));
-            Glfw.SetWindowFocusCallback(Handle, (_, focused) => Event.Invoke<bool>(Event.WindowFocus, focused));
-            Glfw.SetWindowIconifyCallback(Handle, (_, iconified) => Event.Invoke<bool>(Event.WindowIconify, iconified));
-            Glfw.SetWindowMaximizeCallback(Handle, (_, maximized) => Event.Invoke<bool>(Event.WindowMaximize, maximized));
+            Glfw.SetWindowFocusCallback(Handle, (_, focused) => Event.Invoke(Event.WindowFocus, focused));
+            Glfw.SetWindowIconifyCallback(Handle, (_, minimized) => Event.Invoke(Event.WindowIconify, minimized));
+            Glfw.SetWindowMaximizeCallback(Handle, (_, maximized) => Event.Invoke(Event.WindowMaximize, maximized));
 
-            Glfw.SetKeyCallback(Handle, (_, key, code, action, mods) => Event.Invoke<(Keys, InputState)>(Event.Key, (key, action)));
-            Glfw.SetMouseButtonCallback(Handle, (_, button, action, mods) => Event.Invoke<(MouseButton, InputState)>(Event.Button, (button, action)));
-            Glfw.SetScrollCallback(Handle, (_, x, y) => Event.Invoke<double>(Event.MouseScroll, y));
+            Glfw.SetKeyCallback(Handle, (_, key, _, action, _) => Event.Invoke<(Keys, InputState)>(Event.Key, (key, action)));
+            Glfw.SetMouseButtonCallback(Handle, (_, button, action, _) => Event.Invoke<(MouseButton, InputState)>(Event.Button, (button, action)));
+            Glfw.SetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MouseScroll, y));
             Glfw.SetCursorPositionCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MouseMove, ((float)x, (float)y)));
         }
 
@@ -235,22 +264,18 @@ namespace Emission.Window
 
         public void Render()
         {
-            glClearColor(Parameters.ClearColorArgb.R, Parameters.ClearColorArgb.G, Parameters.ClearColorArgb.B, 0);
+            glClearColor(Parameters.ClearColorRgb.R, Parameters.ClearColorRgb.G, Parameters.ClearColorRgb.B, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
-        public void Flush()
+        public void Swap()
         {
-            if (Parameters.VSync)
-            {
-                Glfw.SwapBuffers(Handle);
-            }
+            Glfw.SwapBuffers(Handle);
         }
 
-        public void LoadIcon(string path) => LoadIcon(new Icon(path));
-        public void LoadIcon(Icon icon)
+        public void SetIcon(string path)
         {
-            Glfw.SetWindowIcon(Handle, 1, new []{icon});
+            Glfw.SetWindowIcon(Handle, 1, new []{new Icon(path)});
         }
 
         public void Stop()
@@ -264,62 +289,64 @@ namespace Emission.Window
             Glfw.Terminate();
         }
         
-        public virtual void OnClose()
+        public void OnClose()
         {
             GameController.Stop(0);
         }
         
-        public virtual void OnResize(Vector2 size)
+        public void OnResize(Vector2 size)
         {
             glViewport(0, 0, (int)size.X, (int)size.Y);
             _lastWinSize = size;
         }
 
-        public virtual void OnMove(Vector2 pos)
+        public void OnMove(Vector2 pos)
         {
             _lastWinPos = pos;
         }
 
-        public virtual void OnFocus(bool focused)
+        public void OnFocus(bool focused)
         {
             
         }
 
-        public virtual void OnIconify(bool iconified)
+        public void OnIconify(bool iconified)
         {
             
         }
         
-        public virtual void OnMaximize(bool maximized)
+        public void OnMaximize(bool maximized)
         {
             
         }
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct WindowParameters
     {
-        public int Width; 
-        public int Height;
-        public string Title;
+        public int Width { get; set; } 
+        public int Height { get; set; } 
+        public string Title { get; set; } 
+        public string Icon { get; set; }
 
-        public bool IsFocused;
-        public bool IsFloating;
-        public bool IsMaximized;
-        public bool IsDecorated;
-        public bool IsResizable;
-        public bool IsVisible;
-        public bool IsCursorCentered;
-        public bool IsFocusedOnShow;
+        public bool IsFocused { get; set; } 
+        public bool IsFloating { get; set; } 
+        public bool IsMaximized { get; set; } 
+        public bool IsDecorated { get; set; } 
+        public bool IsResizable { get; set; } 
+        public bool IsVisible { get; set; } 
+        public bool IsCursorCentered { get; set; } 
+        public bool IsFocusedOnShow { get; set; } 
 
-        public string Version;
-        public int MinorVersion;
-        public int MajorVersion;
+        public string Version { get; set; } 
+        public int MinorVersion { get; set; } 
+        public int MajorVersion { get; set; } 
 
-        public int DepthBits;
-        public int StencilBits;
-        public bool VSync;
+        public int DepthBits { get; set; } 
+        public int StencilBits { get; set; } 
 
-        public ColorRgb ClearColorArgb;
+        [JsonIgnore]
+        public ColorRgb ClearColorRgb;
 
         public static WindowParameters Default(string name) => Default(name, 960 * 2, 540 * 2);
         public static WindowParameters Default(string name, int width, int height)
@@ -329,6 +356,7 @@ namespace Emission.Window
                 Width = width,
                 Height = height,
                 Title = name,
+                Icon = null,
                 
                 IsFloating = true,
                 IsFocused = false,
@@ -345,10 +373,14 @@ namespace Emission.Window
                 
                 DepthBits = 24,
                 StencilBits = 8,
-                VSync = true,
                 
-                ClearColorArgb = ColorRgb.Black
+                ClearColorRgb = ColorRgb.Black
             };
+        }
+
+        public static WindowParameters FromJson(string path)
+        {
+            return Json.Deserialize<WindowParameters>(path);
         }
     }
 }

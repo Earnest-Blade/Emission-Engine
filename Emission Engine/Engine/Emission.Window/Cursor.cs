@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Emission.IO;
 
-namespace Emission.GLFW
+namespace Emission.Window
 {
     /// <summary>
     ///     Wrapper around a handle for a window cursor object.

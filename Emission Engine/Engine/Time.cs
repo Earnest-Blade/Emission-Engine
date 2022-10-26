@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Emission.GLFW;
 using Emission.Window.GLFW;
 
 namespace Emission

@@ -1,12 +1,15 @@
 ﻿using Emission;
-using Emission.Mathematics.Numerics;
+using Emission.Mathematics;
+using Emission.Graphics;
 
 namespace Sandbox.Scripts
 {
-    public class FreeCameraController : IObjectBehaviour
+    public class FreeCameraController : IEngineBehaviour
     {
         public Transform Transform => _camera.Transform;
     
+        public IEngineBehaviour Behaviour => this;
+        
         private float _speed;
         private ICamera _camera;
 
@@ -15,23 +18,29 @@ namespace Sandbox.Scripts
             _camera = camera;
             _speed = speed;
         }
+        
+        public void Initialize() { }
+        public void Start() { }
 
         public void Update()
         {
-            /*Vector3 rotation = new Vector3();
+            Vector3 rotation = new Vector3();
             if (Input.IsMouseButtonDown(MouseButton.Button2))
             {
-                rotation.Y += Input.DeltaMousePosition.Y * Input.Sensivity * Time.DeltaTime;
-                rotation.Z += Input.DeltaMousePosition.X * Input.Sensivity * Time.DeltaTime;
+                rotation.Y = Input.DeltaMousePosition.Y * Input.Sensivity * Time.DeltaTime;
+                rotation.Z = Input.DeltaMousePosition.X * Input.Sensivity * Time.DeltaTime;
             }
 
             Vector3 move = new Vector3();
             move += Input.Axis(Axis.Horizontal) * Transform.Right * _speed * Time.DeltaTime; // Left-Right
             move += Input.Axis(Axis.UpDown) * Transform.Up * _speed * Time.DeltaTime; // Top-Bottom
             move += Input.Axis(Axis.Vertical) * Transform.Forward * _speed * Time.DeltaTime; // Forward-Backward
-            
-            _camera.Translate(move);*/
-            ((PerspectiveCamera)_camera).RotateAround(new Transform(Vector3.Zero), 10);
+
+            _camera.Move(move, rotation);
+            //Debug.Log(((PerspectiveCamera)_camera).Transform.EulerAngle);
         }
+
+        public void Render() { }
+        public void Stop() { }
     }
 }

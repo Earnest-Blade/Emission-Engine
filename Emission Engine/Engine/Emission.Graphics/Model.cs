@@ -1,8 +1,9 @@
-﻿using System;
-using Emission.Shading;
-using static Emission.Graphics.GL;
+﻿using Emission;
+using Emission.Graphics.Shading;
+using Emission.Mathematics;
+using static Emission.Graphics.GL.GL;
 
-namespace Emission
+namespace Emission.Graphics
 {
     public class Model : Mesh
     {

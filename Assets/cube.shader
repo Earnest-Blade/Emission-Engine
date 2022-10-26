@@ -1,4 +1,4 @@
-#define:
+define:
     #version 410
 
 vertex:
@@ -15,8 +15,7 @@ vertex:
     void main(){
         oTexCoords = iTexCoords;
 
-        gl_Position = uTransform * uView * uProjection * vec4(iPosition, 1.0);
-        //  * uTransform * uView * uProjection
+        gl_Position = uProjection * uTransform * vec4(iPosition, 1.0);
     }
 
 fragment:
@@ -28,5 +27,5 @@ fragment:
 
     void main(){
         //fragColor = texture2D(texture0, oTexCoords);
-        fragColor = vec4(1, 1, 1, 1);
+        fragColor = vec4(1, 0, 1, 1) * vec4(vec3(gl_FragCoord.z), 1.0);
     }

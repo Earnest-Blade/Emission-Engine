@@ -1,7 +1,7 @@
-﻿using Emission.Graphics;
-using Emission.Mathematics.Numerics;
+﻿using Emission;
+using Emission.Mathematics;
 
-namespace Emission
+namespace Emission.Graphics
 {
     public interface ICamera
     {

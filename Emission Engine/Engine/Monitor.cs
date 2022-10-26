@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-using Emission.Mathematics.Numerics;
+using Emission.Mathematics;
 using Emission.Window.GLFW;
 
 namespace Emission
@@ -20,7 +20,7 @@ namespace Emission
         public static Monitor PrimaryMonitor => Glfw.GetPrimaryMonitor();
 
         /// <summary>
-        /// Get an array of recognize monitors.
+        /// Get an array of all recognize monitors.
         /// </summary>
         public static Monitor[] Monitors
         {
@@ -50,7 +50,7 @@ namespace Emission
         {
             get
             {
-                Glfw.GetMonitorWorkArea(handle, out var x, out var y, out var width, out var height);
+                Glfw.GetMonitorWorkArea(_handle, out var x, out var y, out var width, out var height);
                 return new Rectangle(x, y, width, height);
             }
         }
@@ -63,7 +63,7 @@ namespace Emission
         {
             get
             {
-                Glfw.GetMonitorContentScale(handle, out var x, out var y);
+                Glfw.GetMonitorContentScale(_handle, out var x, out var y);
                 return new Vector2(x, y);
             }
         }
@@ -74,30 +74,30 @@ namespace Emission
         /// </summary>
         public IntPtr UserPointer
         {
-            get => Glfw.GetMonitorUserPointer(handle);
-            set => Glfw.SetMonitorUserPointer(handle, value);
+            get => Glfw.GetMonitorUserPointer(_handle);
+            set => Glfw.SetMonitorUserPointer(_handle, value);
         }
         
-        private readonly IntPtr handle;
+        private readonly IntPtr _handle;
 
         public Monitor()
         {
-            handle = default;
+            _handle = default;
         }
 
-        public bool Equals(Monitor other) { return handle.Equals(other.handle); }
+        public bool Equals(Monitor other) { return _handle.Equals(other._handle); }
         public override bool Equals(object obj)
         {
             if (obj is Monitor monitor) return Equals(monitor);
             return false;
         }
 
-        public override int GetHashCode() { return handle.GetHashCode(); }
+        public override int GetHashCode() { return _handle.GetHashCode(); }
 
         public static bool operator ==(Monitor left, Monitor right) { return left.Equals(right); }
         public static bool operator !=(Monitor left, Monitor right) { return !left.Equals(right); }
 
-        public override string ToString() { return handle.ToString(); }
+        public override string ToString() { return _handle.ToString(); }
         
     }
 }

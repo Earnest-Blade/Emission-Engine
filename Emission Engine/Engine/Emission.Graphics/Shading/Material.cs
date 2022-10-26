@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using Emission.Mathematics.Numerics;
 
-namespace Emission.Shading
+using Emission.Graphics;
+using Emission.Mathematics;
+
+namespace Emission.Graphics.Shading
 {
-    public class Material : IDisposable
+    public class Material : IEquatable<Material>, IDisposable
     {
         // public variables
         public Shader Shader { get; }
-        public string Name;
+        public readonly string Name;
 
         public float Alpha
         {
             get => _alpha;
             set
             {
+                if (value < 0 && value > 1) throw new ArgumentOutOfRangeException(nameof(value));
                 _alpha = Math.Clamp(value, 0, 1);
             }
         }
@@ -66,10 +69,7 @@ namespace Emission.Shading
 
         public virtual void Update()
         {
-            /*Transform cameraTransform = Camera.Main.Transform;
-            Shader.UseUniformVec3("camera.position", cameraTransform.Position);
-            Shader.UseUniformVec3("camera.rotation", cameraTransform.EulerAngle);*/
-            Shader.UseUniform1f("alpha", Alpha);
+            //Shader.UseUniform1f("alpha", Alpha);
         }
 
         public virtual void Stop()
@@ -83,16 +83,25 @@ namespace Emission.Shading
             Shader.Dispose();
         }
         
+        /// <summary>
+        /// Apply a transformation to the current shader.
+        /// Use uniform variable <see cref="Shader.UNIFORM_TRANSFORM"/>.
+        /// </summary>
+        /// <param name="transform">Transform to send to the shader.</param>
         public void UseTransform(Transform transform)
         {
             Shader.UseUniformMat4(Shader.UNIFORM_TRANSFORM, transform.ToMatrix());
         }
 
+        /// <summary>
+        /// Apply current camera View and Projection to the current shader.
+        /// Use Uniforms variables <see cref="Shader.UNIFORM_VIEW"/> and <see cref="Shader.UNIFORM_PROJECTION"/>.
+        /// </summary>
         public void UseProjection()
         {
             if (!ICamera.Exists()) return;
 
-            //Shader.UseUniformMat4(Shader.UNIFORM_VIEW, ((PerspectiveCamera)ICamera.GetMain()).View);
+            Shader.UseUniformMat4(Shader.UNIFORM_VIEW, ((PerspectiveCamera)ICamera.GetMain()).View);
             Shader.UseUniformProjectionMat4(Shader.UNIFORM_PROJECTION, ((PerspectiveCamera)ICamera.GetMain()).Projection);
         }
 
@@ -100,9 +109,7 @@ namespace Emission.Shading
         /// Add texture to shader by using an image loaded by the relative path.
         /// Apply texture to a specific named texture sampler and with a unit.
         /// </summary>
-        /// <param name="path">Path to image</param>
-        /// <param name="name">Location name</param>
-        /// <param name="unit">Texture Unit</param>
+        /// <param name="texture">Texture to use.</param>
         public Material BindTexture(Texture texture)
         {
             texture.Use();
@@ -142,12 +149,10 @@ namespace Emission.Shading
                 Shader.UseUniform1(texture.Name, _textures.IndexOf(texture));
             }
             
-            try
-            {
+            if(_diffuseMap != null)
                 _diffuseMap.Use();
+            if(_specularMap != null)
                 _specularMap.Use();
-            }
-            catch(NullReferenceException){}
         }
 
         /// <summary>
@@ -232,6 +237,26 @@ namespace Emission.Shading
         public void UseUniformMat4(string name, Matrix4 value)
         {
             Shader.UseUniformMat4(name, value);
+        }
+
+        public bool Equals(Material other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Name == other.Name && Equals(Shader, other.Shader);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Material)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Shader);
         }
     }
 }
