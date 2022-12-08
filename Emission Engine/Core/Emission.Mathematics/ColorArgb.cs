@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Emission.Annotations;
+using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Emission.Mathematics
 {
     [Serializable]
+    [PageSerializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct ColorArgb : IEquatable<ColorArgb>
     {

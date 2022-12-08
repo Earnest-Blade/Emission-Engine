@@ -33,4 +33,7 @@
     <data name="EmissionTextureException" xml:space="preserve">
         <value>Emission Texture Error</value>
     </data>
+    <data name="EmissionAssimpException" xml:space="preserve">
+        <value>Emission ASSIMP Error</value>
+    </data>
 </root>

@@ -7297,6 +7297,13 @@ namespace Emission.Graphics.GL
         /// <param name="bufferMode">Identifies the mode used to capture the varying variables when transform feedback is active.<para>ust be GL_INTERLEAVED_ATTRIBS or GL_SEPARATE_ATTRIBS.</para></param>
         public static void glTransformFeedbackVaryings(uint program, int count, /*const*/ byte** varyings, int bufferMode) => _glTransformFeedbackVaryings(program, count, varyings, bufferMode);
 
+        /// <summary>
+        /// Specifies the parameters for patch primitives.
+        /// </summary>
+        /// <param name="pname">Specifies the name of the parameter to set. The symbolc constants GL_PATCH_VERTICES, GL_PATCH_DEFAULT_OUTER_LEVEL, and GL_PATCH_DEFAULT_INNER_LEVEL are accepted. </param>
+        /// <param name="value">Specifies the new value for the parameter given by pname. </param>
+        public static void glPatchParameteri(int pname, int value) => _glPatchParameteri(pname, value);
+
         public const int GL_DEPTH_BUFFER_BIT = 0x00000100;
         public const int GL_STENCIL_BUFFER_BIT = 0x00000400;
         public const int GL_COLOR_BUFFER_BIT = 0x00004000;
@@ -8115,6 +8122,9 @@ namespace Emission.Graphics.GL
         public const int GL_TIME_ELAPSED = 0x88BF;
         public const int GL_TIMESTAMP = 0x8E28;
         public const int GL_INT_2_10_10_10_REV = 0x8D9F;
+        public const int GL_PATCH_VERTICES = 0x8E72;
+        public const int GL_PATCH_DEFAULT_OUTER_LEVEL = 0x8E74;
+        public const int GL_PATCH_DEFAULT_INNER_LEVEL = 0x8E73;
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void PFNGLCULLFACEPROC(int mode);
@@ -9238,6 +9248,9 @@ namespace Emission.Graphics.GL
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void PFNGLSECONDARYCOLORP3UIVPROC(int type, /*const*/ uint* color);
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void PFNPARTCHPARAMETERI(int pname, int value);
+
         private static PFNGLCULLFACEPROC _glCullFace;
         private static PFNGLFRONTFACEPROC _glFrontFace;
         private static PFNGLHINTPROC _glHint;
@@ -9612,6 +9625,7 @@ namespace Emission.Graphics.GL
         private static PFNGLCOLORP4UIVPROC _glColorP4uiv;
         private static PFNGLSECONDARYCOLORP3UIPROC _glSecondaryColorP3ui;
         private static PFNGLSECONDARYCOLORP3UIVPROC _glSecondaryColorP3uiv;
+        private static PFNPARTCHPARAMETERI _glPatchParameteri;
 
         /// <summary>
         ///     Imports all OpenGL functions using the specified loader.
@@ -9996,6 +10010,7 @@ namespace Emission.Graphics.GL
             _glColorP4uiv = Marshal.GetDelegateForFunctionPointer<PFNGLCOLORP4UIVPROC>(loader.Invoke("glColorP4uiv"));
             _glSecondaryColorP3ui = Marshal.GetDelegateForFunctionPointer<PFNGLSECONDARYCOLORP3UIPROC>(loader.Invoke("glSecondaryColorP3ui"));
             _glSecondaryColorP3uiv = Marshal.GetDelegateForFunctionPointer<PFNGLSECONDARYCOLORP3UIVPROC>(loader.Invoke("glSecondaryColorP3uiv"));
+            _glPatchParameteri = Marshal.GetDelegateForFunctionPointer<PFNPARTCHPARAMETERI>(loader.Invoke("glPatchParameteri"));
         }
     }
 }

@@ -1,17 +1,20 @@
 ﻿using System;
 
+using Assimp;
+
 using Emission.IO;
-using static Emission.Graphics.GL.GL;
 using Emission.Mathematics;
-using Emission.Graphics;
+using static Emission.Graphics.GL.GL;
 
 namespace Emission.Graphics.Shading
 {
     public class Texture : IEquatable<Texture>, IDisposable
     {
-        public string Path { get => _path; }
-        public string Name { get => _name; }
-        public uint ID { get => _texId; }
+        public string Path => Sprite.Path;
+        public string Name => _name;
+
+        public uint ID => _texId;
+        public TextureSlot Slot => _slot;
         
         public Sprite Sprite { get; }
 
@@ -26,46 +29,69 @@ namespace Emission.Graphics.Shading
 
         public Rectangle Size => Sprite.Size;
 
-        private string _path;
         private string _name;
+        private TextureSlot _slot;
         private uint _texId;
         private int _texUnit;
 
-        public Texture(string name, Sprite sprite, TextureUnit unit = TextureUnit.Texture0) : this(sprite.Path, name, sprite, unit){}
-
-        public Texture(string path, string name, Sprite data, TextureUnit unit = TextureUnit.Texture0)
+        public Texture(TextureSlot slot, string path)
         {
-            Sprite = data;
-            _path = path;
-            _name = name;
-            _texUnit = (int)unit;
+            _slot = slot;
+            Sprite = new Sprite(path);
         }
 
         public Texture(string path, string name, TextureUnit unit = TextureUnit.Texture0)
         {
-            _path = path;
             _name = name;
             _texUnit = (int)unit;
             Sprite = new Sprite(path);
-            
         }
 
+        public Texture(Sprite sprite, string name, TextureUnit textureUnit)
+        {
+            Sprite = sprite;
+            TextureUnit = textureUnit;
+            _name = name;
+        }
+
+        /// <summary>
+        /// Load texture data into OpenGl.
+        /// </summary>
         public void Bind()
         {
             _texId = Renderer.BindTexture2D(Sprite.Bytes, Sprite.Width, Sprite.Height);
         }
         
+        /// <summary>
+        /// Make texture active for rendering.
+        /// </summary>
         public void Use()
         {
             glActiveTexture(_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
         }
 
+        /// <summary>
+        /// Make texture inactive for rendering.
+        /// </summary>
+        public void Close()
+        {
+            glActiveTexture(_texUnit);
+            glBindTexture(GL_TEXTURE_2D, _texId);
+        }
+
+        /// <summary>
+        /// Delete texture from OpenGl.
+        /// </summary>
         public void Dispose()
         {
             glDeleteTexture(_texId);
         }
         
+        /// <summary>
+        /// Define texture's wrap mode.
+        /// </summary>
+        /// <param name="wrap">OpenGl wrap mode.</param>
         public void TextureWrapping(int wrap)
         {
             glActiveTexture(_texUnit);
@@ -76,15 +102,24 @@ namespace Emission.Graphics.Shading
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
+        /// <summary>
+        /// Define texture's border color.
+        /// </summary>
+        /// <param name="color">Color</param>
         public void TextureBorderColor(Vector4 color)
         {
             glActiveTexture(_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
-            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, new [] { color.X, color.Y, color.Z, color.W });
+            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color.ToArray());
             glActiveTexture(_texUnit);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
+        /// <summary>
+        /// Define texture's filter.
+        /// </summary>
+        /// <param name="minFilter"></param>
+        /// <param name="magFilter"></param>
         public void TextureFilter(int minFilter, int magFilter)
         {
             glActiveTexture(_texUnit);

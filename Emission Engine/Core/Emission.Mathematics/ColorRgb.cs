@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Emission.Annotations;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -6,6 +7,7 @@ using System.Runtime.Serialization;
 namespace Emission.Mathematics
 {
     [Serializable]
+    [PageSerializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct ColorRgb : IEquatable<ColorRgb>
     {

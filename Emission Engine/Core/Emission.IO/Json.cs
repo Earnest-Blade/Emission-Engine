@@ -2,13 +2,11 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace Emission.IO
 {
     public class Json
     {
-        public static void Serialize([CanBeNull] object obj, string path)
+        public static void Serialize(object? obj, string path)
         {
             using (StreamWriter stream = new StreamWriter(path))
             {
@@ -17,7 +15,7 @@ namespace Emission.IO
             }
         }
         
-        public static void Serialize<T>([CanBeNull] T obj, string path)
+        public static void Serialize<T>(T? obj, string path)
         {
             using (StreamWriter stream = new StreamWriter(path))
             {
@@ -26,9 +24,9 @@ namespace Emission.IO
             }
         }
         
-        public static async Task SerializeAsync([CanBeNull] object obj, string path)
+        public static async Task SerializeAsync(object? obj, string path)
         {
-            await using (FileStream stream = System.IO.File.Create(path))
+            await using (FileStream stream = GameFile.Create(path))
             {
                 await JsonSerializer.SerializeAsync(stream, obj);
                 await stream.DisposeAsync();
@@ -37,7 +35,7 @@ namespace Emission.IO
 
         public static T Deserialize<T>(string path)
         {
-            string json = File.ReadAllText(path);
+            string json = GameFile.ReadAllText(path);
             return JsonSerializer.Deserialize<T>(json);
         }
         

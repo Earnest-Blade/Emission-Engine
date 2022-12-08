@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+using Emission.Annotations;
+using Newtonsoft.Json;
+
 namespace Emission.Mathematics
 {
+    [PageSerializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Vector4 : IEquatable<Vector4>
     {
@@ -18,9 +22,26 @@ namespace Emission.Mathematics
         public float Y;
         public float Z;
         public float W;
-        
+
+        [JsonIgnore]
         public readonly float Length => MathF.Sqrt(X * X + Y * Y + Z * Z + W * W);
+
+        [JsonIgnore]
         public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
+
+        [JsonIgnore]
+        public Vector3 Xyz
+        {
+            get => new Vector3(X, Y, Z);
+            set => this = new Vector4(value, 0);
+        }
+
+        [JsonIgnore]
+        public Vector2 Xy
+        {
+            get => new(X, Y);
+            set => this = new Vector4(value, 0, 0);
+        }
 
         public float this[int x]
         {
@@ -46,18 +67,6 @@ namespace Emission.Mathematics
             }
         }
 
-        public Vector3 Xyz
-        {
-            get => new Vector3(X, Y, Z);
-            set => this = new Vector4(value, 0);
-        }
-
-        public Vector2 Xy
-        {
-            get => new (X, Y);
-            set => this = new Vector4(value, 0, 0);
-        }
-        
         public Vector4(float value) : this(value, value, value, value) {}
         public Vector4(Vector2 value, float z, float w) : this(value.X, value.Y, z, w) {}
         public Vector4(Vector3 value, float w) : this(value.X, value.Y, value.Z, w) {}
@@ -68,7 +77,14 @@ namespace Emission.Mathematics
             Z = z;
             W = w;
         }
+
+        public Vector4 Normalize() => Normalize(this);
+        public Vector4 Pow(float exponent) => Pow(this, exponent);
+        public Vector4 Cross(Vector4 b) => Cross(this, b);
+        public Vector4 Negate() => Negate(this);
         
+        public float Dot(Vector4 b) => Dot(this, b);
+
         public Vector4 ToRadians()
         {
             return new Vector4(
@@ -89,11 +105,108 @@ namespace Emission.Mathematics
         
         public float[] ToArray() => new[] { X, Y, Z, W };
         
+        public static Vector4 Normalize(Vector4 vector)
+        {
+            float scale = 1.0f / vector.Length;
+            vector.X *= scale;
+            vector.Y *= scale;
+            vector.Z *= scale;
+            vector.W *= scale;
+
+            return vector;
+        }
+
+        public static Vector4 Pow(Vector4 vector, float exponent)
+        {
+            vector.X = MathF.Pow(vector.X, exponent);
+            vector.Y = MathF.Pow(vector.Y, exponent);
+            vector.Z = MathF.Pow(vector.Z, exponent);
+            vector.W = MathF.Pow(vector.W, exponent);
+            return vector;
+        }
+
+        public static float Dot(Vector4 left, Vector4 right)
+        {
+            return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z) + (left.W * right.W);
+        }
+
+        public static Vector4 Cross(Vector4 left, Vector4 right)
+        {
+            return new Vector4(Vector3.Cross(left.Xyz, right.Xyz), 0);
+        }
+
         public static Vector4 Negate(Vector4 value)
         {
             return new Vector4(-value.X, -value.Y, -value.Z, -value.W);
         }
-        
+
+        public static Vector4 Clamp(Vector4 value, float min, float max) => Clamp(value, new Vector4(min), new Vector4(max));
+        public static Vector4 Clamp(Vector4 value, Vector4 min, Vector4 max)
+        {
+            float x = value.X;
+            x = (x > max.X) ? max.X : x;
+            x = (x < min.X) ? min.X : x;
+
+            float y = value.Y;
+            y = (y > max.Y) ? max.Y : y;
+            y = (y < min.Y) ? min.Y : y;
+
+            float z = value.Z;
+            z = (z > max.Z) ? max.Z : z;
+            z = (z < min.Z) ? min.Z : z;
+
+            float w = value.X;
+            w = (w > max.W) ? max.W : w;
+            w = (w < min.W) ? min.W : w;
+
+            return new Vector4(x, y, z, w);
+        }
+
+        public static Vector4 Add(Vector4 left, Vector4 right)
+        {
+            return new Vector4(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
+        }
+
+        public static Vector4 Add(Vector4 left, float scale)
+        {
+            return new Vector4(left.X + scale, left.Y + scale, left.Z + scale, left.W + scale);
+        }
+
+        public static Vector4 Subtract(Vector4 left, Vector4 right)
+        {
+            return new Vector4(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
+        }
+
+        public static Vector4 Subtract(Vector4 left, float scale)
+        {
+            return new Vector4(left.X - scale, left.Y - scale, left.Z - scale, left.W - scale);
+        }
+
+        public static Vector4 Subtract(float scale, Vector4 right)
+        {
+            return new Vector4(scale - right.X, scale - right.Y, scale - right.Z, scale - right.W);
+        }
+
+        public static Vector4 Multiply(Vector4 left, Vector4 right)
+        {
+            return new Vector4(left.X * right.X, left.Y * right.Y, left.Z * right.Z, left.W * right.W);
+        }
+
+        public static Vector4 Multiply(Vector4 left, float scale)
+        {
+            return new Vector4(left.X * scale, left.Y * scale, left.Z * scale, left.W * scale);
+        }
+
+        public static Vector4 Divide(Vector4 left, Vector4 right)
+        {
+            return new Vector4(left.X / right.X, left.Y / right.Y, left.Z / right.Z, left.W / right.W);
+        }
+
+        public static Vector4 Divide(Vector4 left, float scale)
+        {
+            return new Vector4(left.X / scale, left.Y / scale, left.Z / scale, left.W / scale);
+        }
+
         public static Vector4 operator +(Vector4 left, Vector4 right)
         {
             left.X += right.X;

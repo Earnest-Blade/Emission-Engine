@@ -1,30 +1,40 @@
-﻿using System;
+﻿using Emission.Annotations;
+using Newtonsoft.Json;
+using System;
 
 namespace Emission.Mathematics
 {
     [Serializable]
+    [PageSerializable]
     public class Transform : IEquatable<Transform>
     {
         public static Transform Zero => new Transform(Vector3.Zero, Vector3.Zero, 1);
         
         public Vector3 Position;
         public Vector3 Scale;
-        
+
+        [JsonIgnore]
         public Quaternion Rotation;
 
         public Vector3 EulerAngle
         {
             get => Rotation.ToEulerAngles().ToDegrees();
-            set => Rotation = Quaternion.FromEulerAngles(value.ToRadians());
+            set => Rotation = Quaternion.FromEulerAngles(value);
         }
 
+        [JsonIgnore]
         public Vector3 Forward;
+        [JsonIgnore]
         public Vector3 Backward;
-        
+
+        [JsonIgnore]
         public Vector3 Right;
+        [JsonIgnore]
         public Vector3 Left;
-        
+
+        [JsonIgnore]
         public Vector3 Up;
+        [JsonIgnore]
         public Vector3 Down;
 
         public Transform() : this(Vector3.Zero, Vector3.Zero, Vector3.One) {}
@@ -51,9 +61,8 @@ namespace Emission.Mathematics
 
         public Matrix4 ToMatrix()
         {
-            Matrix4 matrix = Matrix4.Identity;
+            Matrix4 matrix = Matrix4.Scale(Scale);
 
-            matrix *= Matrix4.Scale(Scale);
             matrix *= Matrix4.Translation(Position);
             matrix *= Matrix4.RotationQuaternion(Rotation);
             

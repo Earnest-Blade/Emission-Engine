@@ -23,6 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
+      <PackageReference Include="FreeTypeSharp" Version="1.1.3" />
+      <PackageReference Include="ImGui.NET" Version="1.88.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
       <PackageReference Include="StbImageSharp" Version="2.27.13" />
     </ItemGroup>
 
@@ -32,9 +36,6 @@
       </Content>
       <Content Include="..\Assets\cube.shader">
         <Link>Assets\cube.shader</Link>
-      </Content>
-      <Content Include="..\Data\Assets.bundle">
-        <Link>Data\Assets.bundle</Link>
       </Content>
     </ItemGroup>
 
@@ -55,6 +56,12 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Errors.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="..\Data">
+        <Link>Data</Link>
+      </Folder>
     </ItemGroup>
 
 </Project>

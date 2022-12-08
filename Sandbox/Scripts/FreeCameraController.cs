@@ -9,7 +9,8 @@ namespace Sandbox.Scripts
         public Transform Transform => _camera.Transform;
     
         public IEngineBehaviour Behaviour => this;
-        
+        public bool IsActive { get; set; }
+
         private float _speed;
         private ICamera _camera;
 
@@ -27,8 +28,8 @@ namespace Sandbox.Scripts
             Vector3 rotation = new Vector3();
             if (Input.IsMouseButtonDown(MouseButton.Button2))
             {
-                rotation.Y = Input.DeltaMousePosition.Y * Input.Sensivity * Time.DeltaTime;
-                rotation.Z = Input.DeltaMousePosition.X * Input.Sensivity * Time.DeltaTime;
+                rotation.Y = Input.DeltaMousePosition.Y * Time.DeltaTime;
+                rotation.Z = Input.DeltaMousePosition.X * Time.DeltaTime;
             }
 
             Vector3 move = new Vector3();
@@ -37,7 +38,6 @@ namespace Sandbox.Scripts
             move += Input.Axis(Axis.Vertical) * Transform.Forward * _speed * Time.DeltaTime; // Forward-Backward
 
             _camera.Move(move, rotation);
-            //Debug.Log(((PerspectiveCamera)_camera).Transform.EulerAngle);
         }
 
         public void Render() { }

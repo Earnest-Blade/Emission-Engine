@@ -3,26 +3,27 @@ using System.Linq;
 
 namespace Emission
 {
-    public class EngineBehaviour
+    public static class EngineBehaviour
     {
         public static void Call(string func)
         {
             if (!HasEngineBehaviourDispatcher()) return;
+            
             foreach (var behaviour in EngineBehaviourDispatcher.Instance.Stack.Reverse())
             {
-                behaviour.GetType().GetMethod(func)?.Invoke(behaviour, null);
+                if(behaviour.IsActive) behaviour.GetType().GetMethod(func)?.Invoke(behaviour, null);
             }
         }
         
         public static void AddBehaviour(IEngineBehaviour behaviour)
         {
             if (!HasEngineBehaviourDispatcher()) return;
-            Instances.EngineBehaviourDispatcher.Attach(behaviour);
+            GameInstance.EngineBehaviourDispatcher.Attach(behaviour);
         }
 
         public static bool HasEngineBehaviourDispatcher()
         {
-            return Instances.EngineBehaviourDispatcher != null;
+            return GameInstance.EngineBehaviourDispatcher != null;
         }
         
         public static void CreateDispatcher()
@@ -33,7 +34,7 @@ namespace Emission
         public static void RemoveDispatcher()
         {
             if(!HasEngineBehaviourDispatcher()) return;
-            Instances.EngineBehaviourDispatcher.Clear();
+            GameInstance.EngineBehaviourDispatcher.Clear();
             EngineBehaviourDispatcher.Instance = null;
         }
         
@@ -70,7 +71,8 @@ namespace Emission
     public interface IEngineBehaviour
     {
         IEngineBehaviour Behaviour { get; }
-        
+        public abstract bool IsActive { get; set; }
+
         public void Initialize();
         public void Start();
         public void Update();
@@ -81,7 +83,7 @@ namespace Emission
         {
             if (EngineBehaviour.HasEngineBehaviourDispatcher())
             {
-                Instances.EngineBehaviourDispatcher.Attach(this);
+                GameInstance.EngineBehaviourDispatcher.Attach(Behaviour);
             }
         }
     }

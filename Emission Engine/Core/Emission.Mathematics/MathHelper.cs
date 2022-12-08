@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
+﻿
 namespace Emission.Mathematics
 {
     public class MathHelper

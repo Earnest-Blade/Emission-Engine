@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Emission.Annotations;
+using Newtonsoft.Json;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Emission.Mathematics
 {
+    [PageSerializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Vector3 : IEquatable<Vector3>
     {
@@ -18,10 +21,33 @@ namespace Emission.Mathematics
         public float Y;
         public float Z;
 
+        [JsonIgnore]
         public float Length => MathF.Sqrt(X * X + Y * Y + Z * Z);
 
+        [JsonIgnore]
         public float LengthSquared => X * X + Y * Y + Z * Z;
-        
+
+        [JsonIgnore]
+        public Vector2 Xy
+        {
+            get => new Vector2(X, Y);
+            set => this = new Vector3(value, 0);
+        }
+
+        [JsonIgnore]
+        public Vector2 Yx
+        {
+            get => new Vector2(Y, X);
+            set => this = new Vector3(value.Y, value.X, 0);
+        }
+
+        [JsonIgnore]
+        public Vector3 Zyx
+        {
+            get => new Vector3(Z, Y, X);
+            set => this = new Vector3(value.Z, value.Y, value.X);
+        }
+
         public float this[int x]
         {
             get => ToArray()[x];
@@ -43,24 +69,6 @@ namespace Emission.Mathematics
             }
         }
 
-        public Vector2 Xy
-        {
-            get => new Vector2(X, Y);
-            set => this = new Vector3(value, 0);
-        }
-
-        public Vector2 Yx
-        {
-            get => new Vector2(Y, X);
-            set => this = new Vector3(value.Y, value.X, 0);
-        }
-
-        public Vector3 Zyx
-        {
-            get => new Vector3(Z, Y, X);
-            set => this = new Vector3(value.Z, value.Y, value.X);
-        }
-        
         public Vector3(float value) : this(value, value, value) {}
         public Vector3(Vector2 value, float z) : this(value.X, value.Y, z) {}
         public Vector3(float x, float y, float z)
@@ -70,30 +78,31 @@ namespace Emission.Mathematics
             Z = z;
         }
 
-        public Vector3 ToRadians()
-        {
-            return new Vector3(
-                MathHelper.DegreesToRadians(X), 
-                MathHelper.DegreesToRadians(Y),
-                MathHelper.DegreesToRadians(Z));
-        }
-        
-        public Vector3 ToDegrees()
-        {
-            return new Vector3(
-                MathHelper.RadiansToDegrees(X), 
-                MathHelper.RadiansToDegrees(Y),
-                MathHelper.RadiansToDegrees(Z));
-        }
-
         public Vector3 Normalize() => Normalize(this);
         public Vector3 Pow(float exponent) => Pow(this, exponent);
         public Vector3 Cross(Vector3 b) => Cross(this, b);
         public Vector3 Negate() => Negate(this);
+
         public float Dot(Vector3 b) => Dot(this, b);
 
-        public float[] ToArray() => new[] { X, Y, Z };
+        public Vector3 ToRadians()
+        {
+            return new Vector3(
+                MathHelper.DegreesToRadians(X),
+                MathHelper.DegreesToRadians(Y),
+                MathHelper.DegreesToRadians(Z));
+        }
 
+        public Vector3 ToDegrees()
+        {
+            return new Vector3(
+                MathHelper.RadiansToDegrees(X),
+                MathHelper.RadiansToDegrees(Y),
+                MathHelper.RadiansToDegrees(Z));
+        }
+
+        public float[] ToArray() => new[] { X, Y, Z };
+        
         public static Vector3 Normalize(Vector3 vec)
         {
             float scale = 1.0f / vec.Length;
@@ -141,13 +150,70 @@ namespace Emission.Mathematics
             y = (y > max.Y) ? max.Y : y;
             y = (y < min.Y) ? min.Y : y;
 
-            float z = value.X;
+            float z = value.Z;
             z = (z > max.Z) ? max.Z : z;
             z = (z < min.Z) ? min.Z : z;
 
             return new Vector3(x, y, z);
         }
-        
+
+        public static Vector3 Rotate(Vector3 vector, Quaternion quaternion)
+        {
+            Vector3 vec = quaternion.Xyz;
+            Vector3 t = Cross(vec, vector);
+            Vector3 t2 = vector * quaternion.W;
+
+            t += t2;
+            t2 = Cross(vec, t);
+            t2 *= 2;
+            return vector * t2;
+        }
+
+        public static Vector3 Add(Vector3 left, Vector3 right)
+        {
+            return new Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        }
+
+        public static Vector3 Add(Vector3 left, float scale)
+        {
+            return new Vector3(left.X + scale, left.Y + scale, left.Z + scale);
+        }
+
+        public static Vector3 Subtract(Vector3 left, Vector3 right)
+        {
+            return new Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+        }
+
+        public static Vector3 Subtract(Vector3 left, float scale)
+        {
+            return new Vector3(left.X - scale, left.Y - scale, left.Z - scale);
+        }
+
+        public static Vector3 Subtract(float scale, Vector3 right)
+        {
+            return new Vector3(scale - right.X, scale - right.Y, scale - right.Z);
+        }
+
+        public static Vector3 Multiply(Vector3 left, Vector3 right)
+        {
+            return new Vector3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
+        }
+
+        public static Vector3 Multiply(Vector3 left, float scale)
+        {
+            return new Vector3(left.X * scale, left.Y * scale, left.Z * scale);
+        }
+
+        public static Vector3 Divide(Vector3 left, Vector3 right)
+        {
+            return new Vector3(left.X / right.X, left.Y / right.Y, left.Z / right.Z);
+        }
+
+        public static Vector3 Divide(Vector3 left, float scale)
+        {
+            return new Vector3(left.X / scale, left.Y / scale, left.Z / scale);
+        }
+
         public static Vector3 operator +(Vector3 left, Vector3 right)
         {
             left.X += right.X;

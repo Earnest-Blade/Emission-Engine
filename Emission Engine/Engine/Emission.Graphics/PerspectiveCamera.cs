@@ -4,7 +4,7 @@ using Emission.Mathematics;
 
 namespace Emission.Graphics
 {
-    public sealed class PerspectiveCamera : ICamera, IDisposable
+    public class PerspectiveCamera : ICamera, IDisposable
     {
         private const float MIN_DEPTH = 0.01f;
     
@@ -15,7 +15,7 @@ namespace Emission.Graphics
             {
                 if (value < 0 && value >= 90) throw new ArgumentOutOfRangeException(nameof(value));
                 _fov = value;
-                CalculateProjection();
+                UpdateProjection();
             }
         }
 
@@ -26,7 +26,7 @@ namespace Emission.Graphics
             {
                 if (value < MIN_DEPTH) throw new ArgumentOutOfRangeException(nameof(value));
                 Viewport.NearDepth = value;
-                CalculateProjection();
+                UpdateProjection();
             }
         }
         
@@ -36,7 +36,7 @@ namespace Emission.Graphics
             {
                 if (value < MIN_DEPTH) throw new ArgumentOutOfRangeException(nameof(value));
                 Viewport.FarDepth = value;
-                CalculateProjection();
+                UpdateProjection();
             }
         }
         
@@ -52,7 +52,7 @@ namespace Emission.Graphics
 
         private float _fov;
 
-        public PerspectiveCamera(global::Emission.Window.Window window, float fov, float nearDepth, float farDepth) 
+        public PerspectiveCamera(Window.Window window, float fov, float nearDepth, float farDepth) 
             : this(window.Viewport.Width, window.Viewport.Height, fov, nearDepth, farDepth) {}
         
         public PerspectiveCamera(float width, float height, float fov, float nearDepth, float farDepth)
@@ -63,12 +63,11 @@ namespace Emission.Graphics
             Viewport = viewport;
             Fov = fov;
             _transform = Transform.Zero;
-            _transform.Scale = new Vector3(0.5f);
             
             Event.AddDelegate<Vector2>(Event.WindowResize, Resize);
 
             ICamera.SetMain(this);
-            CalculateProjection();
+            UpdateProjection();
             Move(Vector3.Zero, Vector3.Zero);
         }
 
@@ -76,33 +75,37 @@ namespace Emission.Graphics
         public void Translate(Vector3 position) => Move(position, Vector3.Zero);
         public void Move(Vector3 position, Vector3 rotation)
         {
-            Transform.Rotation += Quaternion.FromEulerAngles(rotation);
+            if(rotation != Vector3.Zero)
+            {
+                Transform.Rotation += Quaternion.FromAxis(Vector3.UnitX, rotation.X);
+                Transform.Rotation += Quaternion.FromAxis(Vector3.UnitY, rotation.Y);
+                Transform.Rotation += Quaternion.FromAxis(Vector3.UnitZ, rotation.Z);
+            }
+
             Transform.Position += position;
 
-            Vector3 euler = Transform.EulerAngle;
-
-            Vector3 front = new Vector3()
+            Vector3 euler = Transform.Rotation.ToEulerAngles();
+            Vector3 direction = new Vector3
             {
-                X = MathF.Cos(MathHelper.DegreesToRadians(euler.Z)) * MathF.Cos(MathHelper.DegreesToRadians(euler.Y)),
-                Y = MathF.Sin(MathHelper.DegreesToRadians(euler.Y)),
-                Z = MathF.Sin(MathHelper.DegreesToRadians(euler.Z)) * MathF.Cos(MathHelper.DegreesToRadians(euler.Y))
+                Z = MathF.Cos(euler.Z) * MathF.Cos(euler.Y),
+                Y = MathF.Sin(euler.Y),
+                X = MathF.Sin(euler.Z) * MathF.Sin(euler.Y)
             };
-            
-            Transform.Forward = Vector3.Normalize(front);
-            Transform.Right = Vector3.Normalize(Vector3.Cross(Transform.Forward, Vector3.UnitY));
-            Transform.Up = Vector3.Normalize(Vector3.Cross(Transform.Right, Transform.Forward));
-            
-            _view = Matrix4.LookAt(Transform.Position, Transform.Position + Transform.Forward, Transform.Up);
 
-            //_view = Matrix4.One;
+            _view = Matrix4.LookAt(Transform.Position, Transform.Position + Vector3.Normalize(direction), Vector3.UnitY);
+            //Debug.Log(direction);
+        }
+
+        public void LookAt(Transform transform)
+        {
+            _view = Matrix4.LookAt(Transform.Position, transform.Position, Vector3.UnitY);
         }
         
         public void Resize(Vector2 size)
         {
-            Viewport.Width = size.X;
-            Viewport.Height = size.Y;
+            Viewport.Size = size;
             
-            CalculateProjection();
+            UpdateProjection();
         }
 
         public void Dispose()
@@ -110,7 +113,7 @@ namespace Emission.Graphics
             Event.RemoveDelegate<Vector2>(Event.WindowResize, Resize);   
         }
         
-        private void CalculateProjection()
+        private void UpdateProjection()
         {
             _projection = Matrix4.PerspectiveProjection(MathHelper.DegreesToRadians(_fov), Viewport.Aspect, Viewport.NearDepth, Viewport.FarDepth);
         }

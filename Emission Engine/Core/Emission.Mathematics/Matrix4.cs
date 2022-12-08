@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Emission.Annotations;
+using Newtonsoft.Json;
+using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Emission.Mathematics
 {
     [Serializable]
+    [PageSerializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public class Matrix4 : IEquatable<Matrix4>
+    public struct Matrix4 : IEquatable<Matrix4>
     {
         public static Matrix4 Identity => new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW);
         public static Matrix4 Zero => new Matrix4(Vector4.Zero, Vector4.Zero, Vector4.Zero, Vector4.Zero);
@@ -54,6 +57,7 @@ namespace Emission.Mathematics
             }
         }
 
+        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column0
         {
@@ -67,6 +71,7 @@ namespace Emission.Mathematics
             }
         }
 
+        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column1
         {
@@ -79,7 +84,8 @@ namespace Emission.Mathematics
                 Row3.Y = value.W;
             }
         }
-        
+
+        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column2
         {
@@ -93,6 +99,7 @@ namespace Emission.Mathematics
             }
         }
 
+        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column3
         {
@@ -105,10 +112,11 @@ namespace Emission.Mathematics
                 Row3.W = value.W;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the value at row 1, column 1 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M11
         {
             get => Row0.X;
@@ -118,6 +126,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 2 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M12
         {
             get => Row0.Y;
@@ -127,6 +136,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 3 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M13
         {
             get => Row0.Z;
@@ -136,6 +146,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 4 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M14
         {
             get => Row0.W;
@@ -145,6 +156,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 1 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M21
         {
             get => Row1.X;
@@ -154,6 +166,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 2 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M22
         {
             get => Row1.Y;
@@ -163,6 +176,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 3 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M23
         {
             get => Row1.Z;
@@ -172,6 +186,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 4 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M24
         {
             get => Row1.W;
@@ -181,6 +196,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 1 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M31
         {
             get => Row2.X;
@@ -190,6 +206,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 2 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M32
         {
             get => Row2.Y;
@@ -199,6 +216,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 3 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M33
         {
             get => Row2.Z;
@@ -208,6 +226,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 4 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M34
         {
             get => Row2.W;
@@ -217,6 +236,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 1 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M41
         {
             get => Row3.X;
@@ -226,6 +246,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 2 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M42
         {
             get => Row3.Y;
@@ -235,6 +256,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 3 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M43
         {
             get => Row3.Z;
@@ -244,6 +266,7 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 4 of this instance.
         /// </summary>
+        [JsonIgnore]
         public float M44
         {
             get => Row3.W;
@@ -266,6 +289,28 @@ namespace Emission.Mathematics
             Row1 = new Vector4(m10, m11, m12, m13);
             Row2 = new Vector4(m20, m21, m22, m23);
             Row3 = new Vector4(m30, m31, m32, m33);
+        }
+
+        public bool IsIdentity()
+        {
+            float epsilon = MathHelper.Epsilon;
+
+            return (M12 <= epsilon && M12 >= -epsilon &&
+                    M13 <= epsilon && M13 >= -epsilon &&
+                    M14 <= epsilon && M14 >= -epsilon &&
+                    M21 <= epsilon && M21 >= -epsilon &&
+                    M23 <= epsilon && M23 >= -epsilon &&
+                    M24 <= epsilon && M24 >= -epsilon &&
+                    M31 <= epsilon && M31 >= -epsilon &&
+                    M32 <= epsilon && M32 >= -epsilon &&
+                    M34 <= epsilon && M34 >= -epsilon &&
+                    M41 <= epsilon && M41 >= -epsilon &&
+                    M42 <= epsilon && M42 >= -epsilon &&
+                    M43 <= epsilon && M43 >= -epsilon &&
+                    M11 <= 1.0f + epsilon && M11 >= 1.0f - epsilon &&
+                    M22 <= 1.0f + epsilon && M22 >= 1.0f - epsilon &&
+                    M33 <= 1.0f + epsilon && M33 >= 1.0f - epsilon &&
+                    M44 <= 1.0f + epsilon && M44 >= 1.0f - epsilon);
         }
 
         public float Determinant()
@@ -717,7 +762,8 @@ namespace Emission.Mathematics
         /// <param name="nearPlane">Minimum z-value of the viewing volume</param>
         /// <param name="farPlane">Maximum z-value of the viewing volume</param>
         /// <returns></returns>
-        public static Matrix4 PerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+        public static Matrix4 PerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlane, 
+            float farPlane)
         {
             float rangeZ = farPlane / (farPlane - nearPlane);
 
@@ -733,69 +779,56 @@ namespace Emission.Mathematics
             };
         }
 
+        public static Matrix4 Orthographic(float width, float height, float nearDepth, float farDepth)
+        {
+            float halfWidth = width * 0.5f;
+            float halfHeight = height * 0.5f;
+
+            return OrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, nearDepth, farDepth);
+        }
+
         /// <summary>Creates an orthographic projection matrix.</summary>
         /// <param name="left">The left edge of the projection volume.</param>
         /// <param name="right">The right edge of the projection volume.</param>
         /// <param name="bottom">The bottom edge of the projection volume.</param>
         /// <param name="top">The top edge of the projection volume.</param>
-        /// <param name="depthNear">The near edge of the projection volume.</param>
-        /// <param name="depthFar">The far edge of the projection volume.</param>
+        /// <param name="nearPlane">The near edge of the projection volume.</param>
+        /// <param name="farPlane">The far edge of the projection volume.</param>
         /// <returns>The resulting Matrix4 instance.</returns>
-        public static Matrix4 OrthographicOffCenter(float left, float right, float bottom, float top, float depthNear,
-            float depthFar)
+        public static Matrix4 OrthographicOffCenter(float left, float right, float bottom, float top, float nearPlane,
+            float farPlane)
         {
-            return new Matrix4
+            float zRange = 1.0f / (farPlane - nearPlane);
+
+            return new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW)
             {
-                M11 = 2 / (right - left),
-                M14 = -(right + left) / (right - left),
-                M22 = 2 / (top - bottom),
-                M24 = -(top + bottom) / (top - bottom),
-                M33 = -2 / (depthFar - depthNear),
-                M34 = (depthFar + depthNear) / (depthFar - depthNear),
-                M44 = 1f,
+                M11 = 2.0f / (right - left),
+                M22 = 2.0f / (top - bottom),
+                M33 = zRange,
+                M41 = (left + right) / (left - right),
+                M42 = (top + bottom) / (top - bottom),
+                M43 = -nearPlane * zRange
             };
         }
 
-        /// <summary>Build a world space to camera space matrix </summary>
-        /// <param name="eyeX">Eye X (camera) position in world space.</param>
-        /// <param name="eyeY">Eye Y (camera) position in world space.</param>
-        /// <param name="eyeZ">Eye Z (camera) position in world space.</param>
-        /// <param name="targetX">Target X position in world space.</param>
-        /// <param name="targetY">Target Y position in world space.</param>
-        /// <param name="targetZ">Target Z position in world space.</param> 
-        /// <param name="upX">Up X vector in world space</param>
-        /// <param name="upY">Up Y vector in world space</param>
-        /// <param name="upZ">Up Z vector in world space</param>
-        /// <returns>A Matrix4 that transforms world space to camera space.</returns>
-        public static Matrix4 LookAt(float eyeX, float eyeY, float eyeZ, float targetX, float targetY, float targetZ,
-            float upX, float upY, float upZ)
-        {
-            return LookAt(new Vector3(eyeX, eyeY, eyeZ), new Vector3(targetX, targetY, targetZ),
-                new Vector3(upX, upY, upZ));
-        }
-
         /// <summary>Build a world space to camera space matrix.</summary>
-        /// <param name="eye">Eye (camera) position in world space.</param>
+        /// <param name="eye">Viewer in world space.</param>
         /// <param name="target">Target position in world space.</param>
         /// <param name="yUnit">Up vector in world space (should not be parallel to the camera direction, that is target - eye).</param>
         /// <returns>A Matrix4 that transforms world space to camera space.</returns>
         public static Matrix4 LookAt(Vector3 eye, Vector3 target, Vector3 yUnit)
         {
-            Vector3 zAxis = Vector3.Normalize(eye - target);
-            Vector3 xAxis = Vector3.Normalize(Vector3.Cross(yUnit, zAxis));
-            Vector3 yAxis = Vector3.Cross(zAxis, xAxis);
-            
-            // Create identity matrix
-            Matrix4 matrix = new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW)
+            Vector3 forward = Vector3.Normalize(eye - target);
+            Vector3 side = Vector3.Normalize(Vector3.Cross(yUnit, forward));
+            Vector3 up = Vector3.Cross(forward, side);
+
+            return new Matrix4
             {
-                Row0 = new Vector4(xAxis.X, yAxis.X, zAxis.X, 0),
-                Row1 = new Vector4(xAxis.Y, yAxis.Y,zAxis.Y, 0),
-                Row2 = new Vector4(xAxis.Z, yAxis.Z, zAxis.Z, 0),
-                Row3 = new Vector4(-xAxis.X * eye.X - xAxis.Y * eye.Y - xAxis.Z * eye.Z, 
-                    -yAxis.X * eye.X - yAxis.Y * eye.Y - yAxis.Z * eye.Z, 
-                    -zAxis.X * eye.X - zAxis.Y * eye.Y - zAxis.Z * eye.Z, 1)
+                Row0 = new Vector4(side, Vector3.Dot(side, eye)),
+                Row1 = new Vector4(up, Vector3.Dot(up, eye)),
+                Row2 = new Vector4(-forward, Vector3.Dot(forward, eye)),
+                Row3 = Vector4.UnitW
             };
-            return matrix;
         }
 
         public static Matrix4 operator +(Matrix4 left, Matrix4 right) => Add(left, right);
@@ -807,6 +840,17 @@ namespace Emission.Mathematics
         public static Matrix4 operator /(Matrix4 left, Matrix4 right) => Divide(left, right);
         public static bool operator ==(Matrix4 left, Matrix4 right) => left!.Equals(right);
         public static bool operator !=(Matrix4 left, Matrix4 right) => !(left == right);
+
+        public static implicit operator Matrix4(Matrix3 mat)
+        {
+            return new Matrix4()
+            {
+                Row0 = new Vector4(mat.Row0, 0),
+                Row1 = new Vector4(mat.Row1, 0),
+                Row2 = new Vector4(mat.Row2, 0),
+                Row3 = Vector4.UnitW
+            };
+        }
 
         public bool Equals(Matrix4 other)
         {

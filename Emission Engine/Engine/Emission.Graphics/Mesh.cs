@@ -1,59 +1,76 @@
 ﻿using System;
-using Emission;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+using Emission.Mathematics;
+using Emission.Graphics.Shading;
+using static Emission.Graphics.GL.GL;
 
 namespace Emission.Graphics
 {
-    public abstract class Mesh : IEquatable<Mesh>, IDisposable
+    public unsafe struct Mesh : IDisposable
     {
-        protected uint _vao;
-        protected uint _vbo;
-        protected uint _ebo;
+        public List<Vertex> Vertices;
+        public List<uint> Indices;
+        public List<Texture> Textures;
 
-        protected float[] _data;
-        protected int[] _indices;
-
-        public virtual void Initialize(float[] data, int[] indices)
+        private uint _vao;
+        private uint _vbo;
+        private uint _ebo;
+        
+        public Mesh(List<Vertex> vertices, List<uint> indices, List<Texture> textures)
         {
-            if (data == null || indices == null)
-                throw new EmissionException(Errors.EmissionOpenGlException, "Data or Indices are null");
-            
-            _data = data;
-            _indices = indices;
+            Vertices = vertices;
+            Indices = indices;
+            Textures = textures;
+
+            _vao = 0;
+            _vbo = 0;
+            _ebo = 0;
+
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             _vao = Renderer.BindVertexArray();
-            _vbo = Renderer.BindVertexBuffer(0, data);
-            _ebo = Renderer.BindIndices(indices);
+            _vbo = Renderer.BindStructBuffer(Vertices.ToArray());
+            _ebo = Renderer.BindIndices(Indices.ToArray());
             
-            Renderer.EnableVertexArray(0, Renderer.STRIDE, 0);
-            Renderer.EnableVertexArray(1, Renderer.STRIDE, 3);
-            Renderer.EnableVertexArray(2, Renderer.STRIDE, 5);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void*)0);
+            
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(Vertex), (void*)Marshal.OffsetOf(typeof(Vertex), "Normal"));
+            
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(Vertex), (void*)Marshal.OffsetOf(typeof(Vertex), "TextureCoords"));
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
         }
         
-        public abstract void Update();
-        public abstract void Draw();
+        public void Draw(Shader shader)
+        {
+            foreach (var t in Textures)
+                t.Use();
+            
+            glBindVertexArray(_vao);
+            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
+            glEnableVertexAttribArray(2);
 
-        public virtual void Dispose()
+            glDrawElements(GL_TRIANGLES, Indices.Count, GL_UNSIGNED_INT, (void*)0);
+            
+            glDisableVertexAttribArray(0);
+            glDisableVertexAttribArray(1);
+            glDisableVertexAttribArray(2);
+            glBindVertexArray(0);
+        }
+
+        public void Dispose()
         {
             Renderer.Clear(_vao, _vbo, _ebo);
-        }
-
-        public bool Equals(Mesh other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return _vao == other._vao && _vbo == other._vbo && _ebo == other._ebo;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Mesh)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_vao, _vbo, _ebo);
         }
     }
 }

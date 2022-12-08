@@ -79,7 +79,7 @@ namespace Emission
         public static Vector2 MousePosition => _instance._mousePosition;
 
         [Obsolete]
-        public static Vector2 MousePositionCenter => _instance._mousePosition - Instances.Window.WindowSize / 2;
+        public static Vector2 MousePositionCenter => _instance._mousePosition - GameInstance.Window.WindowSize / 2;
 
         /// <summary>
         /// Return value of <see cref="MousePosition"/> before update.
@@ -87,7 +87,7 @@ namespace Emission
         public static Vector2 LastMousePosition => _instance._lastMousePosition;
 
         [Obsolete]
-        public static Vector2 LastMousePositionCenter => _instance._lastMousePosition - Instances.Window.WindowSize / 2;
+        public static Vector2 LastMousePositionCenter => _instance._lastMousePosition - GameInstance.Window.WindowSize / 2;
 
         /// <summary>
         /// Return the result of the difference between <see cref="MousePosition"/> and <see cref="LastMousePosition"/>.
@@ -100,7 +100,7 @@ namespace Emission
             get
             {
                 if (DeltaMousePosition == Vector2.Zero)  return Vector2.Zero;
-                return DeltaMousePosition - Instances.Window.WindowSize / 2;
+                return DeltaMousePosition - GameInstance.Window.WindowSize / 2;
             }
         }
 

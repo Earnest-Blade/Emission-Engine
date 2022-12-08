@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Diagnostics.CodeAnalysis;
+
 using Emission.Mathematics;
 
 namespace Emission
 {
-    [SuppressMessage("Interoperability", "CA1416:Valider la compatibilité de la plateforme")]
     public class Debug : TextWriter, IDisposable
     {
         public const string LOG_FILE_PATH = ".log";
@@ -108,11 +107,12 @@ namespace Emission
 
         public static void Print(string str)
         {
-            if(HasInstance()) Instances.Debugger.Write(str);
+            if (str == null) str = "null";
+            if(HasInstance()) GameInstance.Debugger.Write(str);
             else Console.WriteLine(str);
         }
 
-        public static bool HasInstance() => Instances.Debugger != null;
+        public static bool HasInstance() => GameInstance.Debugger != null;
         
         #endregion
     }

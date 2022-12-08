@@ -61,6 +61,15 @@ namespace Emission {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emission ASSIMP Error.
+        /// </summary>
+        internal static string EmissionAssimpException {
+            get {
+                return ResourceManager.GetString("EmissionAssimpException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emission Event Error.
         /// </summary>
         internal static string EmissionEventException {

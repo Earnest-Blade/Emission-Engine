@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Emission.Annotations;
+using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Emission.Mathematics
 {
     [Serializable]
+    [PageSerializable]
     public struct Rectangle : IEquatable<Rectangle>
     {
         public static readonly Rectangle Zero = new Rectangle(0, 0, 0, 0);

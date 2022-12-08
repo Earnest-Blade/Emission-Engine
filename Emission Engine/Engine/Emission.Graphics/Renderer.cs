@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Emission;
 using Emission.IO;
 using static Emission.Graphics.GL.GL;
@@ -20,7 +22,7 @@ namespace Emission.Graphics
         /// <summary>
         /// Check if a current instance of a Renderer already exists.
         /// </summary>
-        public static bool HasInstance() => Instances.Renderer != null;
+        public static bool HasInstance() => GameInstance.Renderer != null;
 
         private List<uint> _loadedVao;
         private List<uint> _loadedVbo;
@@ -50,9 +52,26 @@ namespace Emission.Graphics
         }
 
         /// <summary>
+        /// Load and Create a new buffer.
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public uint Buffer(int size, IntPtr data)
+        {
+            uint vbo = glGenBuffer();
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+
+            _loadedVbo.Add(vbo);
+            return vbo;
+
+        }
+
+        /// <summary>
         /// Load a dimensional buffer with float array as data.
         /// Bind data and buffer then Define an array of generic vertex attribute data using the the location, a stride and an offset.
-        /// Add buffer ID the <see cref="Loaded_VBO"/>.
+        /// Add buffer ID the <see cref="_loadedVbo"/>.
         /// </summary>
         /// <param name="location">Location of the buffer.</param>
         /// <param name="data">Data to send width the buffer.</param>
@@ -67,9 +86,21 @@ namespace Emission.Graphics
             fixed (float* v = &data[0])
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.Length, v, GL_STATIC_DRAW);
             
-
             _loadedVbo.Add(vbo);
             return vbo;
+        }
+
+        public uint BufferStruct<T>(T[] data) where T : struct
+        {
+            uint buffer = glGenBuffer();
+            glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            glBufferData(GL_ARRAY_BUFFER, Marshal.SizeOf(default(T)) * data.Length, handle.AddrOfPinnedObject(), GL_STATIC_DRAW);
+            handle.Free();
+            
+            _loadedVbo.Add(buffer);
+            return buffer;
         }
 
         /// <summary>
@@ -78,13 +109,13 @@ namespace Emission.Graphics
         /// </summary>
         /// <param name="data">Data to store.</param>
         /// <returns>Element Buffer ID</returns>
-        public uint Indices(int[] data)
+        public uint Indices(uint[] data)
         {
             uint ebo = glGenBuffer();
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
             
-            fixed(int* v = &data[0])
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * data.Length, v, GL_STATIC_DRAW);
+            fixed(uint* v = &data[0])
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.Length, v, GL_STATIC_DRAW);
             
             _loadedEbo.Add(ebo);
             return ebo;
@@ -109,6 +140,16 @@ namespace Emission.Graphics
         /// <returns></returns>
         public uint Texture2D(byte[] data, int width, int height, uint location = SHADER_TEXTURE_COORDS_LOCATION, int stride = STRIDE)
         {
+            fixed(byte* v = &data[0]) 
+                return Texture2D(v, width, height, location, stride); 
+        }
+
+        /// <summary>
+        /// Load 2D texture. See static for more information.
+        /// </summary>
+        /// <returns></returns>
+        public uint Texture2D(void* data, int width, int height, uint location = SHADER_TEXTURE_COORDS_LOCATION, int stride = STRIDE)
+        {
             uint tid = glGenTexture();
             glBindTexture(GL_TEXTURE_2D, tid);
             
@@ -116,8 +157,7 @@ namespace Emission.Graphics
             EnableVertexArray(location, stride, 3);
             if (data != null)
             {
-                fixed(byte* d = &data[0])
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, d);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
                 glGenerateMipmap(GL_TEXTURE_2D);
                 
                 // Define attributes
@@ -230,7 +270,7 @@ namespace Emission.Graphics
         /// Add it to vertex array clearing list.
         /// </summary>
         /// <returns>Vertex Array ID</returns>
-        public static uint BindVertexArray() => Instances.Renderer.VertexArray();
+        public static uint BindVertexArray() => GameInstance.Renderer.VertexArray();
 
         /// <summary>
         /// Load a generic buffer with float array as data.
@@ -242,7 +282,16 @@ namespace Emission.Graphics
         /// <param name="stride">Stride of data attribute</param>
         /// <param name="offset">Offset of data attribute</param>
         /// <returns></returns>
-        public static uint BindBuffer(int location, float[] data, int stride, int offset) => Instances.Renderer.Buffer(location, data, stride, offset);
+        public static uint BindBuffer(int location, float[] data, int stride, int offset) => GameInstance.Renderer.Buffer(location, data, stride, offset);
+
+        /// <summary>
+        /// Load and create a new buffer using a size and data to bind.
+        /// Add buffer ID to buffer list.
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static uint BindBuffer(int size, IntPtr data) => GameInstance.Renderer.Buffer(size, data);
 
         /// <summary>
         /// Load a 2D dimensional buffer with float array as data.
@@ -250,7 +299,7 @@ namespace Emission.Graphics
         /// </summary>
         /// <param name="location">Location of the buffer.</param>
         /// <param name="data">Data to send width the buffer.</param>
-        public static uint Bind2DBuffer(int location, float[] data) => Instances.Renderer.Buffer(location, data, 2, 0);
+        public static uint Bind2DBuffer(int location, float[] data) => GameInstance.Renderer.Buffer(location, data, 2, 0);
         
         /// <summary>
         /// Load a 3D dimensional buffer with float array as data.
@@ -258,7 +307,7 @@ namespace Emission.Graphics
         /// </summary>
         /// <param name="location">Location of the buffer.</param>
         /// <param name="data">Data to send width the buffer.</param>
-        public static uint Bind3DBuffer(int location, float[] data) => Instances.Renderer.Buffer(location, data, 3, 0);
+        public static uint Bind3DBuffer(int location, float[] data) => GameInstance.Renderer.Buffer(location, data, 3, 0);
         
         /// <summary>
         /// Load a 4D dimensional buffer with float array as data.
@@ -266,7 +315,7 @@ namespace Emission.Graphics
         /// </summary>
         /// <param name="location">Location of the buffer.</param>
         /// <param name="data">Data to send width the buffer.</param>
-        public static uint Bind4DBuffer(int location, float[] data) => Instances.Renderer.Buffer(location, data, 4, 0);
+        public static uint Bind4DBuffer(int location, float[] data) => GameInstance.Renderer.Buffer(location, data, 4, 0);
 
         /// <summary>
         /// Load a 8D dimensional buffer with float array as data. This buffer is designed
@@ -275,14 +324,23 @@ namespace Emission.Graphics
         /// </summary>
         /// <param name="location">Location of the buffer.</param>
         /// <param name="data">Data to send width the buffer.</param>
-        public static uint BindVertexBuffer(int location, float[] data) => Instances.Renderer.Buffer(location, data, STRIDE, 0);
+        public static uint BindVertexBuffer(int location, float[] data) => GameInstance.Renderer.Buffer(location, data, STRIDE, 0);
 
+        /// <summary>
+        /// Load a <see cref="struct"/> array as buffer.
+        /// Add buffer ID to buffer list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static uint BindStructBuffer<T>(T[] data) where T : struct => GameInstance.Renderer.BufferStruct(data);
+        
         /// <summary>
         /// Load an element buffer with int array as data.
         /// Add buffer ID to element buffer list.
         /// </summary>
         /// <param name="data">Data to send width the buffer.</param>
-        public static uint BindIndices(int[] data) => Instances.Renderer.Indices(data);
+        public static uint BindIndices(uint[] data) => GameInstance.Renderer.Indices(data);
 
         /// <summary>
         /// Load a 2 dimensional texture buffer with an image load with a path.
@@ -295,7 +353,20 @@ namespace Emission.Graphics
         /// <param name="stride">Stride in vertex array</param>
         /// <returns></returns>
         public static uint BindTexture2D(string path, ref int width, ref int height, int location = SHADER_TEXTURE_COORDS_LOCATION, int stride = STRIDE) 
-            => Instances.Renderer.Texture2D(path, ref width, ref height, location, stride);
+            => GameInstance.Renderer.Texture2D(path, ref width, ref height, location, stride);
+
+        /// <summary>
+        /// Load a 2 dimensional texture buffer with an image load with a path.
+        /// The location use in the shader and the stride of vertex data can be change but by default it's <see cref="SHADER_TEXTURE_COORDS_LOCATION"/>
+        /// and <see cref="STRIDE"/>.
+        /// Bind data and buffer then Define an array of generic vertex attribute data using the the location, a stride and an offset.
+        /// </summary>
+        /// <param name="data">Pointer to image's data</param>
+        /// <param name="location">Location in shader layout</param>
+        /// <param name="stride">Stride in vertex array</param>
+        /// <returns></returns>
+        public static uint BindTexture2D(IntPtr data, int width, int height, uint location = SHADER_TEXTURE_COORDS_LOCATION, int stride = STRIDE)
+            => GameInstance.Renderer.Texture2D(data.ToPointer(), width, height, location, stride);
 
         /// <summary>
         /// Load a 2 dimensional texture buffer with an image load with a path.
@@ -308,12 +379,12 @@ namespace Emission.Graphics
         /// <param name="stride">Stride in vertex array</param>
         /// <returns></returns>
         public static uint BindTexture2D(byte[] data, int width, int height, uint location = SHADER_TEXTURE_COORDS_LOCATION, int stride = STRIDE)
-            => Instances.Renderer.Texture2D(data, width, height, location, stride);
+            => GameInstance.Renderer.Texture2D(data, width, height, location, stride);
 
         /// <summary>
         /// Clear all buffers and clear buffers list.
         /// </summary>
-        public static void Clear() => Instances.Renderer.ClearAll();
+        public static void Clear() => GameInstance.Renderer.ClearAll();
 
         /// <summary>
         /// Clear buffers at specifics IDs, remove them from the list.
@@ -321,7 +392,7 @@ namespace Emission.Graphics
         /// <param name="vao">Vertex Array ID</param>
         /// <param name="vbo">Vertex Buffer ID</param>
         /// <param name="ebo">Element Buffer ID</param>
-        public static void Clear(uint vao, uint vbo, uint ebo) => Instances.Renderer.ClearId(vao, vbo, ebo);
+        public static void Clear(uint vao, uint vbo, uint ebo) => GameInstance.Renderer.ClearId(vao, vbo, ebo);
 
         #endregion
     }

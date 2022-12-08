@@ -1,20 +1,17 @@
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\net5.0\Emission Engine.deps.json
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\net5.0\Emission Engine.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\Debug\net5.0\Emission Engine.pdb
+D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.deps.json
+D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.dll
+D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.pdb
+D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.xml
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.csproj.AssemblyReference.cache
+D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission_Engine.Errors.resources
+D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission_Engine.Strings.resources
+D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.csproj.GenerateResource.cache
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.GeneratedMSBuildEditorConfig.editorconfig
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.AssemblyInfoInputs.cache
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.AssemblyInfo.cs
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.csproj.CoreCompileInputs.cache
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.dll
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\refint\Emission Engine.dll
+D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.xml
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.pdb
 D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\ref\Emission Engine.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.csproj.GenerateResource.cache
-D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission_Engine.Strings.resources
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.deps.json
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.dll
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.pdb
-D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission_Engine.Errors.resources
-D:\Projets\Code\C#\Emission Engine\Emission Engine\bin\net5.0\Emission Engine.xml
-D:\Projets\Code\C#\Emission Engine\Emission Engine\obj\Debug\net5.0\Emission Engine.xml

@@ -161,12 +161,13 @@ namespace Emission.Window
         /// Viewport of the window.
         /// Countains WindowSize and Window Position
         /// </summary>
-        public Viewport Viewport => new Viewport(0, 0, WindowSize.X, WindowSize.Y);
+        public Viewport Viewport => new Viewport(0, 0, WindowSize.X, WindowSize.Y, 0.1f, 400f);
 
         /// <summary>
         /// Engine Behaviour of the Window.
         /// </summary>
         public IEngineBehaviour Behaviour => this;
+        public bool IsActive { get => true; set {} }
 
         private string _title;
         private Vector2 _lastWinSize;
@@ -197,19 +198,18 @@ namespace Emission.Window
             Glfw.WindowHint(WindowHint.Visible, Parameters.IsVisible);
             Glfw.WindowHint(WindowHint.CenterCursor, Parameters.IsCursorCentered);
             Glfw.WindowHint(WindowHint.FocusOnShow, Parameters.IsFocusedOnShow);
-            
+
             Handle = Glfw.CreateWindow(Parameters.Width, Parameters.Height, Parameters.Title, Monitor.None, IntPtr.Zero);
             if (Handle == IntPtr.Zero) throw new EmissionException(Errors.EmissionGlfwException, "Failed to create GLFW Window!");
 
+            AssignContext();
             Debug.Log("[INFO] New window has been created!");
-            
-            Glfw.MakeContextCurrent(Handle);
-            Import(Glfw.GetProcAddress);
             
             Debug.Log($"[INFO] Using OpenGL {glGetString(GL_VERSION)}");
             Debug.Log($"[INFO] Using GLSL {glGetString(GL_SHADING_LANGUAGE_VERSION)}");
             Debug.Log($"[INFO] Running with OpenGL Vendor {glGetString(GL_VENDOR)}");
             Debug.Log($"[INFO] Running with OpenGL Renderer {glGetString(GL_RENDERER)}");
+            Debug.Log($"[INFO] Running with GLFW {Glfw.Version}");
 
             if (!string.IsNullOrEmpty(parameters.Icon))
                 SetIcon(parameters.Icon);
@@ -218,7 +218,7 @@ namespace Emission.Window
         public void Initialize()
         {
             glEnable(GL_BLEND);
-            glEnable(GL_DEPTH_CLAMP);
+            glEnable(GL_DEPTH_TEST);
             glEnable(GL_TEXTURE_2D);
             
             glDepthFunc(GL_LESS);
@@ -233,7 +233,7 @@ namespace Emission.Window
             Event.AddDelegate<bool>(Event.WindowMaximize, OnMaximize);
             Event.AddDelegate<bool>(Event.WindowFocus, OnFocus);
             
-            Input ptr = Instances.Input;
+            Input ptr = GameInstance.Input;
             Event.AddDelegate<(Keys, InputState)>(Event.Key, ptr.KeyCallback);
             Event.AddDelegate<(MouseButton, InputState)>(Event.Button, ptr.MouseCallback);
             Event.AddDelegate<double>(Event.MouseScroll, ptr.ScrollCallback);
@@ -273,6 +273,16 @@ namespace Emission.Window
             Glfw.SwapBuffers(Handle);
         }
 
+        public void AssignContext()
+        {
+            Glfw.MakeContextCurrent(Handle);
+            Import(Glfw.GetProcAddress);
+        }
+
+        /// <summary>
+        /// Define Window's Icon using an image.
+        /// </summary>
+        /// <param name="path">Path to the image</param>
         public void SetIcon(string path)
         {
             Glfw.SetWindowIcon(Handle, 1, new []{new Icon(path)});

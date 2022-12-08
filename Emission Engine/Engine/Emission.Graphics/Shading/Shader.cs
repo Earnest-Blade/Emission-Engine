@@ -1,37 +1,98 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Emission.IO;
-using static Emission.Graphics.GL.GL;
 using Emission.Mathematics;
+using static Emission.Graphics.GL.GL;
 
 namespace Emission.Graphics.Shading
 {
-    public class Shader : IDisposable, IEquatable<Shader>
+    public class Shader : IEquatable<Shader>, IDisposable
     {
         public const string UNIFORM_TRANSFORM = "uTransform";
         public const string UNIFORM_VIEW = "uView";
         public const string UNIFORM_PROJECTION = "uProjection";
-    
+
         // public variables
-        public string Name { get; private set; }
-        public uint Program {  get => _program; }
+        public string Name => "shader" + _program;
+        public uint ID => _program;
 
         // private variables
         private uint _program;
         private uint _vertex;
         private uint _fragment;
+        private uint _geometry;
+
+        private uint _tcs;
+        private uint _tes;
 
         // constructor
         public Shader(string path)
         {
-            (string vertex, string fragment) file = ParseShader(path);
-            Load(file.vertex, file.fragment);
+            ShaderLoader.ShaderStruct shader = ShaderLoader.LoadShader(GameFile.ReadLines(path));
+            Initialize(shader);
         }
         
         // constructor
         public Shader(string vertex, string fragment)
         {
-            Load(vertex, fragment);
+            Initialize(new ShaderLoader.ShaderStruct(vertex, fragment));
+        }
+
+        /// <summary>
+        /// Initialize a shader from a <seealso cref="ShaderLoader.ShaderStruct"/>.
+        /// Create program ID, load vertex shader, fragment shader and geometry shader.
+        /// </summary>
+        /// <param name="shader"></param>
+        public void Initialize(ShaderLoader.ShaderStruct shader)
+        {
+            // Catch when trying to re-init the shader. 
+            if(_program != 0)
+            {
+                Debug.Warning($"[WARNING] Shader '{Name}' is already initialize!");
+                return;
+            }
+
+            _program = glCreateProgram();
+
+            if (shader.HasVertexShader)
+            {
+                _vertex = ShaderLoader.CompileShader(ShaderLoader.VERTEX_SHADER, ref shader.VertexData);
+                glAttachShader(_program, _vertex);
+            }
+
+            if (shader.HasFragmentShader)
+            { 
+                _fragment = ShaderLoader.CompileShader(ShaderLoader.FRAGMENT_SHADER, ref shader.FragmentData);
+                glAttachShader(_program, _fragment);
+            }
+
+            if (shader.HasGeometryShade)
+            {
+                _geometry = ShaderLoader.CompileShader(ShaderLoader.GEOMETRY_SHADER, ref shader.GeomertyData);
+                glAttachShader(_program, _geometry);
+            }
+
+            if (shader.HasTesselationShader)
+            {
+                glPatchParameteri(GL_PATCH_VERTICES, 3);
+
+                _tcs = ShaderLoader.CompileShader(ShaderLoader.TESSELATION_CONTROL_SHADER, ref shader.TCSData);
+                glAttachShader(_program, _tcs);
+
+                _tes = ShaderLoader.CompileShader(ShaderLoader.TESSELATION_EVAL_SHADER, ref shader.TESData);
+                glAttachShader(_program, _tes);
+            }
+
+            glLinkProgram(_program);
+
+            glDeleteShader(_vertex);
+            glDeleteShader(_fragment);
+            glDeleteShader(_geometry);
+            glDeleteShader(_tcs);
+            glDeleteShader(_tes);
+
+            Debug.Log($"[INFO] Successfully compile shader '{Name}'");
         }
 
         /// <summary>
@@ -149,136 +210,6 @@ namespace Emission.Graphics.Shading
             glUniformMatrix4fv(GetUniformLocation(name), 1, true, value.ToArray());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vertex"></param>
-        /// <param name="fragment"></param>
-        protected void Load(string vertex, string fragment)
-        {
-            _vertex = LoadShader(GL_VERTEX_SHADER, ShaderType.Vertex, vertex);
-            _fragment = LoadShader(GL_FRAGMENT_SHADER, ShaderType.Fragment, fragment);
-
-            _program = glCreateProgram();
-            Name = "shader" + _program;
-            
-            glAttachShader(_program, _vertex);
-            glAttachShader(_program, _fragment);
-
-            glLinkProgram(_program);
-
-            glDeleteShader(_vertex);
-            glDeleteShader(_fragment);
-            
-            Debug.Log($"[INFO] {Name} initialized!");
-        }
-
-        /// <summary>
-        /// OpenGL Loading of a shader.
-        /// Type of shade is defined using <see cref="ShaderType"/>.
-        /// </summary>
-        /// <param name="type">type of loading shader</param>
-        /// <param name="content">shader string content</param>
-        /// <returns></returns>
-        protected uint LoadShader(int type, ShaderType enumType, string content)
-        {
-            uint shader = glCreateShader((int)type);
-            glShaderSource(shader, content);
-            glCompileShader(shader);
-
-            string shaderLogs = glGetShaderInfoLog(shader);
-            if (shaderLogs != "") throw new EmissionException(Errors.EmissionOpenGlException, shaderLogs);
-            
-            Debug.Log($"[SHADER] Successfully compile {enumType} shader!");
-
-            return shader;
-        }
-
-        /// <summary>
-        /// Recreate full shader file using splited file.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        protected static (string vertex, string fragment) ParseShader(string path)
-        {
-            string[] data = SplitShader(path);
-            return (data[2] + data[0], data[2] + data[1]);
-        }
-
-        /// <summary>
-        /// Parse shader file in order to separate vertex part and fragment part use keywords
-        /// 'vertex:' and 'fragment:' or 'define:'.
-        /// Read file using path.
-        /// </summary>
-        /// <param name="path">Path to shader file</param>
-        /// <returns>Vertex and fragment shader content</returns>
-        protected static string[] SplitShader(string path)
-        {
-            IEnumerable<string> lines = File.ReadLines(path);
-            string[] content = new string[3];
-            var type = ShaderType.None;
-
-            void WriteToShader(string line, ShaderType shaderType)
-            {
-                switch (shaderType)
-                {
-                    // Add line to vertex content at array position
-                    case ShaderType.Vertex:
-                        content[0] += line + "\n";
-                        break;
-                    case ShaderType.Fragment:
-                        content[1] += line + "\n";
-                        break;
-                    case ShaderType.Define:
-                        content[2] += line + "\n";
-                        break;
-                }
-            }
-            
-            foreach(string line in lines)
-            {
-                if (line.Contains(":") && !line.StartsWith("//"))
-                {
-                    // Define shader type by checking if line contain attribute
-
-                    // Define type for vertex shader
-                    if (line.Contains("vertex:")) type = ShaderType.Vertex;
-
-                    // Define type for fragment shader
-                    else if (line.Contains("fragment:")) type = ShaderType.Fragment;
-                    
-                    // Define header statement
-                    else if (line.Contains("define:")) type = ShaderType.Define;
-                }
-                else if (line.Contains("#"))
-                {
-                    string[] data = line.Replace("#", "").Trim().Split(' ');
-                    // check special calls
-                    switch (data[0])
-                    {
-                        // import code from other file
-                        case "include":
-                            var include = SplitShader(data[1]);
-                            content[2] += include[2] + '\n';
-                            WriteToShader(type == ShaderType.Vertex ? include[0] : include[1], type);
-                            break;
-                        
-                        // define shader version
-                        case "version":
-                            WriteToShader(line, type);
-                            break;
-                    }
-                }
-                else
-                {
-                    WriteToShader(line, type);
-                }
-            }
-
-            // Retun a struct that contains all parsed content
-            return (content);
-        }
-
         public bool Equals(Shader other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -296,7 +227,7 @@ namespace Emission.Graphics.Shading
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_program, _vertex, _fragment);
+            return _program.GetHashCode() + _vertex.GetHashCode() + _fragment.GetHashCode();
         }
     }
 }

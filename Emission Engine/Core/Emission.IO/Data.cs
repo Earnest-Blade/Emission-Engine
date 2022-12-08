@@ -11,7 +11,7 @@ namespace Emission.IO
         {
             _bundles = new List<Bundle>();
 
-            foreach (var file in Directory.EnumerateFiles(File.DATA_FILE))
+            foreach (var file in GameDirectory.EnumerateFiles(GameFile.DATA_FILE))
             {
                 _bundles.Add(Bundle.Load(file));
             }

@@ -2,12 +2,24 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
+using Emission.Mathematics;
+
 namespace Emission.Graphics
 {
     [DataContract]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Viewport : IEquatable<Viewport>
     {
+        public Vector2 Size
+        {
+            get => new Vector2(Width, Height);
+            set
+            {
+                Width = value.X;
+                Height = value.Y;
+            }
+        }
+
         public int X;
         public int Y;
         

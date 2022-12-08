@@ -2,15 +2,20 @@
 using Emission.IO;
 using Emission.Window;
 using Emission.Graphics;
+using System.Threading;
+using Emission.Page;
 
 namespace Emission
 {
+    // TODO: Multi-threading
     public class Game
     {
         public Window.Window Window;
         public Renderer Renderer;
         public Debug Debugger;
         public Data Data;
+
+        public PageManager PageManager;
 
         public bool IsRunning { get; private set; }
 
@@ -34,6 +39,7 @@ namespace Emission
             Data ??= new Data();
             Window ??= new Window.Window(WindowParameters.Default("Window"));
             Renderer ??= new Renderer();
+            PageManager ??= new PageManager();
             
             Window.Initialize();
             EngineBehaviour.Call(Event.Initialize);
@@ -43,9 +49,9 @@ namespace Emission
         {
             Window.Start();
             EngineBehaviour.Call(Event.Start);
-            
 
-            if (!IsRunning) Loop();
+            if (!IsRunning)
+                Loop();
         }
 
         private void Loop()
@@ -68,7 +74,7 @@ namespace Emission
                     previousTime = Time.GlfwTime();
                 }
 
-                Instances.Input.Update();
+                GameInstance.Input.Update();
                 
                 Window.Update();
                 Event.Invoke(Event.Update);
@@ -79,6 +85,7 @@ namespace Emission
                 Window.Swap();
             }
 
+            // Close program.
             IsRunning = false;
             Event.Invoke(Event.Stop, 0);
         }
@@ -103,6 +110,7 @@ namespace Emission
             Event.DisposeEventDispatcher();
             EngineBehaviour.RemoveDispatcher();
             
+            // Dipose Debugger
             Debug.Log($"[INFO] Application stopped with exit code: {status}!");
             Debugger.Dispose();
             

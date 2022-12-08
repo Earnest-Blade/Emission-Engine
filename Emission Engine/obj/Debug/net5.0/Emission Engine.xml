@@ -64,6 +64,148 @@
             The value for which all absolute numbers smaller than are considered equal to zero.
             </summary>
         </member>
+        <member name="P:Emission.Mathematics.Matrix3.M11">
+            <summary>
+            Gets or sets the value at row 1, column 1 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M12">
+            <summary>
+            Gets or sets the value at row 1, column 2 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M13">
+            <summary>
+            Gets or sets the value at row 1, column 3 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M21">
+            <summary>
+            Gets or sets the value at row 2, column 1 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M22">
+            <summary>
+            Gets or sets the value at row 2, column 2 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M23">
+            <summary>
+            Gets or sets the value at row 2, column 3 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M31">
+            <summary>
+            Gets or sets the value at row 3, column 1 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M32">
+            <summary>
+            Gets or sets the value at row 3, column 2 of this instance.
+            </summary>
+        </member>
+        <member name="P:Emission.Mathematics.Matrix3.M33">
+            <summary>
+            Gets or sets the value at row 3, column 3 of this instance.
+            </summary>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromEulerAnglesXYZ(System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a rotation matrix from a set of euler angles.
+            </summary>
+            <param name="x">Rotation angle about the x-axis, in radians.</param>
+            <param name="y">Rotation angle about the y-axis, in radians.</param>
+            <param name="z">Rotation angle about the z-axis, in radians.</param>
+            <returns>The rotation matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromEulerAnglesXYZ(Emission.Mathematics.Vector3)">
+            <summary>
+            Creates a rotation matrix from a set of euler angles.
+            </summary>
+            <param name="angles">Vector containing the rotation angles about the x, y, z axes, in radians.</param>
+            <returns>The rotation matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromRotationX(System.Single)">
+            <summary>
+            Creates a rotation matrix for a rotation about the x-axis.
+            </summary>
+            <param name="radians">Rotation angle in radians.</param>
+            <returns>The rotation matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromRotationY(System.Single)">
+            <summary>
+            Creates a rotation matrix for a rotation about the y-axis.
+            </summary>
+            <param name="radians">Rotation angle in radians.</param>
+            <returns>The rotation matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromRotationZ(System.Single)">
+            <summary>
+            Creates a rotation matrix for a rotation about the z-axis.
+            </summary>
+            <param name="radians">Rotation angle in radians.</param>
+            <returns>The rotation matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromAngleAxis(System.Single,Emission.Mathematics.Vector3)">
+            <summary>
+            Creates a rotation matrix for a rotation about an arbitrary axis.
+            </summary>
+            <param name="radians">Rotation angle, in radians</param>
+            <param name="axis">Rotation axis, which should be a normalized vector.</param>
+            <returns>The rotation matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromScaling(Emission.Mathematics.Vector3)">
+            <summary>
+            Creates a scaling matrix.
+            </summary>
+            <param name="scaling">Scaling vector</param>
+            <returns>The scaling vector</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.FromToMatrix(Emission.Mathematics.Vector3,Emission.Mathematics.Vector3)">
+            <summary>
+            Creates a rotation matrix that rotates a vector called "from" into another
+            vector called "to". Based on an algorithm by Tomas Moller and John Hudges:
+            <para>
+            "Efficiently Building a Matrix to Rotate One Vector to Another"         
+            Journal of Graphics Tools, 4(4):1-4, 1999
+            </para>
+            </summary>
+            <param name="from">Starting vector</param>
+            <param name="to">Ending vector</param>
+            <returns>Rotation matrix to rotate from the start to end.</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.op_Equality(Emission.Mathematics.Matrix3,Emission.Mathematics.Matrix3)">
+            <summary>
+            Tests equality between two matrices.
+            </summary>
+            <param name="a">First matrix</param>
+            <param name="b">Second matrix</param>
+            <returns>True if the matrices are equal, false otherwise</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.op_Inequality(Emission.Mathematics.Matrix3,Emission.Mathematics.Matrix3)">
+            <summary>
+            Tests inequality between two matrices.
+            </summary>
+            <param name="a">First matrix</param>
+            <param name="b">Second matrix</param>
+            <returns>True if the matrices are not equal, false otherwise</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.op_Multiply(Emission.Mathematics.Matrix3,Emission.Mathematics.Matrix3)">
+            <summary>
+            Performs matrix multiplication.Multiplication order is B x A. That way, SRT concatenations
+            are left to right.
+            </summary>
+            <param name="a">First matrix</param>
+            <param name="b">Second matrix</param>
+            <returns>Multiplied matrix</returns>
+        </member>
+        <member name="M:Emission.Mathematics.Matrix3.op_Implicit(Emission.Mathematics.Matrix4)~Emission.Mathematics.Matrix3">
+            <summary>
+            Implicit conversion from a 4x4 matrix to a 3x3 matrix.
+            </summary>
+            <param name="mat">4x4 matrix</param>
+            <returns>3x3 matrix</returns>
+        </member>
         <member name="P:Emission.Mathematics.Matrix4.M11">
             <summary>
             Gets or sets the value at row 1, column 1 of this instance.
@@ -254,29 +396,38 @@
             <param name="right">The right edge of the projection volume.</param>
             <param name="bottom">The bottom edge of the projection volume.</param>
             <param name="top">The top edge of the projection volume.</param>
-            <param name="depthNear">The near edge of the projection volume.</param>
-            <param name="depthFar">The far edge of the projection volume.</param>
+            <param name="nearPlane">The near edge of the projection volume.</param>
+            <param name="farPlane">The far edge of the projection volume.</param>
             <returns>The resulting Matrix4 instance.</returns>
-        </member>
-        <member name="M:Emission.Mathematics.Matrix4.LookAt(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
-            <summary>Build a world space to camera space matrix </summary>
-            <param name="eyeX">Eye X (camera) position in world space.</param>
-            <param name="eyeY">Eye Y (camera) position in world space.</param>
-            <param name="eyeZ">Eye Z (camera) position in world space.</param>
-            <param name="targetX">Target X position in world space.</param>
-            <param name="targetY">Target Y position in world space.</param>
-            <param name="targetZ">Target Z position in world space.</param> 
-            <param name="upX">Up X vector in world space</param>
-            <param name="upY">Up Y vector in world space</param>
-            <param name="upZ">Up Z vector in world space</param>
-            <returns>A Matrix4 that transforms world space to camera space.</returns>
         </member>
         <member name="M:Emission.Mathematics.Matrix4.LookAt(Emission.Mathematics.Vector3,Emission.Mathematics.Vector3,Emission.Mathematics.Vector3)">
             <summary>Build a world space to camera space matrix.</summary>
-            <param name="eye">Eye (camera) position in world space.</param>
+            <param name="eye">Viewer in world space.</param>
             <param name="target">Target position in world space.</param>
             <param name="yUnit">Up vector in world space (should not be parallel to the camera direction, that is target - eye).</param>
             <returns>A Matrix4 that transforms world space to camera space.</returns>
+        </member>
+        <member name="T:Emission.Mathematics.Ray">
+            <summary>
+            Defines a 3D ray with a point of origin and a direction.
+            </summary>
+        </member>
+        <member name="F:Emission.Mathematics.Ray.Position">
+            <summary>
+            Origin of the Ray in space.
+            </summary>
+        </member>
+        <member name="F:Emission.Mathematics.Ray.Direction">
+            <summary>
+            Direction of the Ray.
+            </summary>
+        </member>
+        <member name="M:Emission.Mathematics.Ray.#ctor(Emission.Mathematics.Vector3,Emission.Mathematics.Vector3)">
+            <summary>
+            Constructs a new Ray.
+            </summary>
+            <param name="position">Origin of the ray.</param>
+            <param name="direction">Direction of the ray.</param>
         </member>
         <member name="T:Emission.Graphics.GL.GetProcAddressHandler">
             <summary>
@@ -5977,6 +6128,13 @@
             <param name="varyings">An array of count zero-terminated strings specifying the names of the varying variables to use for transform feedback.</param>
             <param name="bufferMode">Identifies the mode used to capture the varying variables when transform feedback is active.<para>ust be GL_INTERLEAVED_ATTRIBS or GL_SEPARATE_ATTRIBS.</para></param>
         </member>
+        <member name="M:Emission.Graphics.GL.GL.glPatchParameteri(System.Int32,System.Int32)">
+            <summary>
+            Specifies the parameters for patch primitives.
+            </summary>
+            <param name="pname">Specifies the name of the parameter to set. The symbolc constants GL_PATCH_VERTICES, GL_PATCH_DEFAULT_OUTER_LEVEL, and GL_PATCH_DEFAULT_INNER_LEVEL are accepted. </param>
+            <param name="value">Specifies the new value for the parameter given by pname. </param>
+        </member>
         <member name="M:Emission.Graphics.GL.GL.Import(Emission.Graphics.GL.GetProcAddressHandler)">
             <summary>
                 Imports all OpenGL functions using the specified loader.
@@ -6005,11 +6163,19 @@
             </summary>
             <returns>Vertex Array ID</returns>
         </member>
+        <member name="M:Emission.Graphics.Renderer.Buffer(System.Int32,System.IntPtr)">
+            <summary>
+            Load and Create a new buffer.
+            </summary>
+            <param name="size"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
         <member name="M:Emission.Graphics.Renderer.Buffer(System.Int32,System.Single[],System.Int32,System.Int32)">
             <summary>
             Load a dimensional buffer with float array as data.
             Bind data and buffer then Define an array of generic vertex attribute data using the the location, a stride and an offset.
-            Add buffer ID the <see cref="!:Loaded_VBO"/>.
+            Add buffer ID the <see cref="F:Emission.Graphics.Renderer._loadedVbo"/>.
             </summary>
             <param name="location">Location of the buffer.</param>
             <param name="data">Data to send width the buffer.</param>
@@ -6017,7 +6183,7 @@
             <param name="offset">Offset of data attribute</param>
             <returns></returns>
         </member>
-        <member name="M:Emission.Graphics.Renderer.Indices(System.Int32[])">
+        <member name="M:Emission.Graphics.Renderer.Indices(System.UInt32[])">
             <summary>
             Load element buffer with a int array as data.
             Add element id to <see cref="!:Loaded_EBO"/> and return element id.
@@ -6032,6 +6198,12 @@
             <returns></returns>
         </member>
         <member name="M:Emission.Graphics.Renderer.Texture2D(System.Byte[],System.Int32,System.Int32,System.UInt32,System.Int32)">
+            <summary>
+            Load 2D texture. See static for more information.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Emission.Graphics.Renderer.Texture2D(System.Void*,System.Int32,System.Int32,System.UInt32,System.Int32)">
             <summary>
             Load 2D texture. See static for more information.
             </summary>
@@ -6100,6 +6272,15 @@
             <param name="offset">Offset of data attribute</param>
             <returns></returns>
         </member>
+        <member name="M:Emission.Graphics.Renderer.BindBuffer(System.Int32,System.IntPtr)">
+            <summary>
+            Load and create a new buffer using a size and data to bind.
+            Add buffer ID to buffer list.
+            </summary>
+            <param name="size"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
         <member name="M:Emission.Graphics.Renderer.Bind2DBuffer(System.Int32,System.Single[])">
             <summary>
             Load a 2D dimensional buffer with float array as data.
@@ -6133,7 +6314,16 @@
             <param name="location">Location of the buffer.</param>
             <param name="data">Data to send width the buffer.</param>
         </member>
-        <member name="M:Emission.Graphics.Renderer.BindIndices(System.Int32[])">
+        <member name="M:Emission.Graphics.Renderer.BindStructBuffer``1(``0[])">
+            <summary>
+            Load a <see cref="!:struct"/> array as buffer.
+            Add buffer ID to buffer list.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Emission.Graphics.Renderer.BindIndices(System.UInt32[])">
             <summary>
             Load an element buffer with int array as data.
             Add buffer ID to element buffer list.
@@ -6148,6 +6338,18 @@
             Bind data and buffer then Define an array of generic vertex attribute data using the the location, a stride and an offset.
             </summary>
             <param name="path">Image's path</param>
+            <param name="location">Location in shader layout</param>
+            <param name="stride">Stride in vertex array</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emission.Graphics.Renderer.BindTexture2D(System.IntPtr,System.Int32,System.Int32,System.UInt32,System.Int32)">
+            <summary>
+            Load a 2 dimensional texture buffer with an image load with a path.
+            The location use in the shader and the stride of vertex data can be change but by default it's <see cref="F:Emission.Graphics.Renderer.SHADER_TEXTURE_COORDS_LOCATION"/>
+            and <see cref="F:Emission.Graphics.Renderer.STRIDE"/>.
+            Bind data and buffer then Define an array of generic vertex attribute data using the the location, a stride and an offset.
+            </summary>
+            <param name="data">Pointer to image's data</param>
             <param name="location">Location in shader layout</param>
             <param name="stride">Stride in vertex array</param>
             <returns></returns>
@@ -6272,6 +6474,13 @@
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
+        <member name="M:Emission.Graphics.Shading.Shader.Initialize(Emission.Graphics.Shading.ShaderLoader.ShaderStruct)">
+            <summary>
+            Initialize a shader from a <seealso cref="T:Emission.Graphics.Shading.ShaderLoader.ShaderStruct"/>.
+            Create program ID, load vertex shader, fragment shader and geometry shader.
+            </summary>
+            <param name="shader"></param>
+        </member>
         <member name="M:Emission.Graphics.Shading.Shader.Start">
             <summary>
             Enable shader to be use.
@@ -6350,37 +6559,60 @@
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.Load(System.String,System.String)">
+        <member name="M:Emission.Graphics.Shading.ShaderLoader.LoadShader(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            
+            Create a <see cref="T:Emission.Graphics.Shading.ShaderLoader.ShaderStruct"/> from an array of line.
             </summary>
-            <param name="vertex"></param>
-            <param name="fragment"></param>
+            <param name="data">Data to parse.</param>
+            <returns>Shader parsed content.</returns>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.LoadShader(System.Int32,Emission.Graphics.Shading.ShaderType,System.String)">
+        <member name="M:Emission.Graphics.Shading.ShaderLoader.CompileShader(System.Int32,System.String@)">
             <summary>
-            OpenGL Loading of a shader.
-            Type of shade is defined using <see cref="T:Emission.Graphics.Shading.ShaderType"/>.
+            Compile Shader using OpenGL.
             </summary>
-            <param name="type">type of loading shader</param>
-            <param name="content">shader string content</param>
+            <param name="type">Shader type to compile</param>
+            <param name="data">Shader data to compile</param>
             <returns></returns>
+            <exception cref="T:Emission.EmissionException"></exception>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.ParseShader(System.String)">
+        <member name="M:Emission.Graphics.Shading.Texture.Bind">
             <summary>
-            Recreate full shader file using splited file.
+            Load texture data into OpenGl.
             </summary>
-            <param name="path"></param>
-            <returns></returns>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.SplitShader(System.String)">
+        <member name="M:Emission.Graphics.Shading.Texture.Use">
             <summary>
-            Parse shader file in order to separate vertex part and fragment part use keywords
-            'vertex:' and 'fragment:' or 'define:'.
-            Read file using path.
+            Make texture active for rendering.
             </summary>
-            <param name="path">Path to shader file</param>
-            <returns>Vertex and fragment shader content</returns>
+        </member>
+        <member name="M:Emission.Graphics.Shading.Texture.Close">
+            <summary>
+            Make texture inactive for rendering.
+            </summary>
+        </member>
+        <member name="M:Emission.Graphics.Shading.Texture.Dispose">
+            <summary>
+            Delete texture from OpenGl.
+            </summary>
+        </member>
+        <member name="M:Emission.Graphics.Shading.Texture.TextureWrapping(System.Int32)">
+            <summary>
+            Define texture's wrap mode.
+            </summary>
+            <param name="wrap">OpenGl wrap mode.</param>
+        </member>
+        <member name="M:Emission.Graphics.Shading.Texture.TextureBorderColor(Emission.Mathematics.Vector4)">
+            <summary>
+            Define texture's border color.
+            </summary>
+            <param name="color">Color</param>
+        </member>
+        <member name="M:Emission.Graphics.Shading.Texture.TextureFilter(System.Int32,System.Int32)">
+            <summary>
+            Define texture's filter.
+            </summary>
+            <param name="minFilter"></param>
+            <param name="magFilter"></param>
         </member>
         <member name="P:Emission.Input.Any">
             <summary>
@@ -7216,7 +7448,7 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHintString(Emission.Window.GLFW.WindowHint,System.Byte[])">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values until
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values until
                 changed by a call to this function or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the library is terminated.
                 <para>
                     Some hints are platform specific. These may be set on any platform but they will only affect their
@@ -7856,18 +8088,18 @@
                 Gets the handle of the monitor that the specified window is in full screen on.
             </summary>
             <param name="window">A window instance.</param>
-            <returns>The monitor, or <see cref="F:Emission.Monitor.None" /> if the window is in windowed mode or an error occurred.</returns>
+            <returns>The monitor, or <see cref="F:Emission.Window.Monitor.None" /> if the window is in windowed mode or an error occurred.</returns>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.SetWindowMonitor(System.IntPtr,Emission.Monitor,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Emission.Window.GLFW.Glfw.SetWindowMonitor(System.IntPtr,Emission.Window.Monitor,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
                 Sets the monitor that the window uses for full screen mode or, if the monitor is
-                <see cref="F:Emission.Monitor.None" />, makes it windowed mode.
+                <see cref="F:Emission.Window.Monitor.None" />, makes it windowed mode.
                 <para>
                     When setting a monitor, this function updates the width, height and refresh rate of the desired video mode
                     and switches to the video mode closest to it. The window position is ignored when setting a monitor.
                 </para>
                 <para>
-                    When the monitor is <see cref="F:Emission.Monitor.None" />, the position, width and height are used to place the window
+                    When the monitor is <see cref="F:Emission.Window.Monitor.None" />, the position, width and height are used to place the window
                     client area. The refresh rate is ignored when no monitor is specified.
                 </para>
                 <para>
@@ -7880,14 +8112,14 @@
                 </para>
             </summary>
             <param name="window">A window instance.</param>
-            <param name="monitor">The desired monitor, or <see cref="F:Emission.Monitor.None" /> to set windowed mode.</param>
+            <param name="monitor">The desired monitor, or <see cref="F:Emission.Window.Monitor.None" /> to set windowed mode.</param>
             <param name="x">The desired x-coordinate of the upper-left corner of the client area.</param>
             <param name="y">The desired y-coordinate of the upper-left corner of the client area.</param>
             <param name="width">The desired width, in screen coordinates, of the client area or video mode.</param>
             <param name="height">The desired height, in screen coordinates, of the client area or video mode.</param>
             <param name="refreshRate">The desired refresh rate, in Hz, of the video mode, or <see cref="F:Emission.Window.GLFW.Constants.Default" />.</param>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.SetGammaRamp(Emission.Monitor,Emission.Window.GLFW.GammaRamp)">
+        <member name="M:Emission.Window.GLFW.Glfw.SetGammaRamp(Emission.Window.Monitor,Emission.Window.GLFW.GammaRamp)">
             <summary>
                 Sets the current gamma ramp for the specified monitor.
                 <para>
@@ -7899,10 +8131,10 @@
             <param name="monitor">The monitor whose gamma ramp to set.</param>
             <param name="gammaRamp">The gamma ramp to use.</param>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.SetGamma(Emission.Monitor,System.Single)">
+        <member name="M:Emission.Window.GLFW.Glfw.SetGamma(Emission.Window.Monitor,System.Single)">
             <summary>
                 This function generates a 256-element gamma ramp from the specified exponent and then calls
-                <see cref="M:Emission.Window.GLFW.Glfw.SetGammaRamp(Emission.Monitor,Emission.Window.GLFW.GammaRamp)" /> with it.
+                <see cref="M:Emission.Window.GLFW.Glfw.SetGammaRamp(Emission.Window.Monitor,Emission.Window.GLFW.GammaRamp)" /> with it.
                 <para>The value must be a finite number greater than zero.</para>
             </summary>
             <param name="monitor">The monitor whose gamma ramp to set.</param>
@@ -8105,7 +8337,7 @@
             <param name="numerator">The numerator of the desired aspect ratio.</param>
             <param name="denominator">The denominator of the desired aspect ratio.</param>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.GetMonitorPhysicalSize(Emission.Monitor,System.Int32@,System.Int32@)">
+        <member name="M:Emission.Window.GLFW.Glfw.GetMonitorPhysicalSize(Emission.Window.Monitor,System.Int32@,System.Int32@)">
             <summary>
                 Gets the size, in millimeters, of the display area of the specified monitor.
             </summary>
@@ -8113,7 +8345,7 @@
             <param name="width">The width, in millimeters, of the monitor's display area.</param>
             <param name="height">The height, in millimeters, of the monitor's display area.</param>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.GetMonitorPosition(Emission.Monitor,System.Int32@,System.Int32@)">
+        <member name="M:Emission.Window.GLFW.Glfw.GetMonitorPosition(Emission.Window.Monitor,System.Int32@,System.Int32@)">
             <summary>
                 Gets the position, in screen coordinates, of the upper-left corner of the specified monitor.
             </summary>
@@ -8286,13 +8518,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8306,7 +8538,7 @@
             <param name="attribute">The attribute to retrieve.</param>
             <returns>The value of the <paramref name="attribute" />.</returns>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.String,Emission.Monitor,System.IntPtr)">
+        <member name="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.String,Emission.Window.Monitor,System.IntPtr)">
             <summary>
                 This function creates a window and its associated OpenGL or OpenGL ES context. Most of the options controlling how
                 the window and its context should be created are specified with window hints.
@@ -8314,7 +8546,7 @@
             <param name="width">The desired width, in screen coordinates, of the window. This must be greater than zero.</param>
             <param name="height">The desired height, in screen coordinates, of the window. This must be greater than zero.</param>
             <param name="title">The initial window title.</param>
-            <param name="monitor">The monitor to use for full screen mode, or <see cref="F:Emission.Monitor.None" /> for windowed mode.</param>
+            <param name="monitor">The monitor to use for full screen mode, or <see cref="F:Emission.Window.Monitor.None" /> for windowed mode.</param>
             <param name="share">
                 A window instance whose context to share resources with, or <see cref="!:Window.None" /> to not share
                 resources..
@@ -8358,7 +8590,7 @@
             <param name="extension">The extension name.</param>
             <returns><c>true</c> if the extension is supported; otherwise <c>false</c>.</returns>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.GetGammaRamp(Emission.Monitor)">
+        <member name="M:Emission.Window.GLFW.Glfw.GetGammaRamp(Emission.Window.Monitor)">
             <summary>
                 Gets the current gamma ramp of the specified monitor.
             </summary>
@@ -8423,7 +8655,7 @@
             <param name="scanCode">The scancode of the key to query.</param>
             <returns>The localized name of the key.</returns>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.GetMonitorName(Emission.Monitor)">
+        <member name="M:Emission.Window.GLFW.Glfw.GetMonitorName(Emission.Window.Monitor)">
             <summary>
                 Gets a human-readable name, encoded as UTF-8, of the specified monitor.
                 <para>
@@ -8458,7 +8690,7 @@
             <param name="window">A window instance.</param>
             <returns>Current set value of the robustness.</returns>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.GetVideoMode(Emission.Monitor)">
+        <member name="M:Emission.Window.GLFW.Glfw.GetVideoMode(Emission.Window.Monitor)">
             <summary>
                 Gets the current video mode of the specified monitor.
                 <para>
@@ -8469,7 +8701,7 @@
             <param name="monitor">The monitor to query.</param>
             <returns>The current mode of the monitor, or <c>null</c> if an error occurred.</returns>
         </member>
-        <member name="M:Emission.Window.GLFW.Glfw.GetVideoModes(Emission.Monitor)">
+        <member name="M:Emission.Window.GLFW.Glfw.GetVideoModes(Emission.Window.Monitor)">
             <summary>
                 Gets an array of all video modes supported by the specified monitor.
                 <para>
@@ -8504,13 +8736,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Boolean)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8518,13 +8750,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,Emission.Window.GLFW.ClientApi)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8532,13 +8764,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,Emission.Window.GLFW.Constants)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8546,13 +8778,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,Emission.Window.GLFW.ContextApi)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8560,13 +8792,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,Emission.Window.GLFW.Robustness)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8574,13 +8806,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,Emission.Window.GLFW.Profile)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -8588,13 +8820,13 @@
         </member>
         <member name="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,Emission.Window.GLFW.ReleaseBehavior)">
             <summary>
-                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />. The hints, once set, retain their values
+                Sets hints for the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />. The hints, once set, retain their values
                 until changed by a call to <see cref="M:Emission.Window.GLFW.Glfw.WindowHint(Emission.Window.GLFW.WindowHint,System.Int32)" /> or <see cref="M:Emission.Window.GLFW.Glfw.DefaultWindowHints" />, or until the
                 library is
                 terminated.
                 <para>
                     This function does not check whether the specified hint values are valid. If you set hints to invalid values
-                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Monitor,System.IntPtr)" />.
+                    this will instead be reported by the next call to <see cref="M:Emission.Window.GLFW.Glfw.CreateWindow(System.Int32,System.Int32,System.Byte[],Emission.Window.Monitor,System.IntPtr)" />.
                 </para>
             </summary>
             <param name="windowHint">The hint.</param>
@@ -9143,6 +9375,43 @@
             </summary>
             <seealso cref="T:Emission.Window.Cursor" />
         </member>
+        <member name="F:Emission.Window.Monitor.None">
+            <summary>
+            Represent a null monitor
+            </summary>
+        </member>
+        <member name="P:Emission.Window.Monitor.PrimaryMonitor">
+            <summary>
+            Get Current monitor.
+            </summary>
+        </member>
+        <member name="P:Emission.Window.Monitor.Monitors">
+            <summary>
+            Get an array of all recognize monitors.
+            </summary>
+        </member>
+        <member name="P:Emission.Window.Monitor.Name">
+            <summary>
+            Return the name of the monitor.
+            </summary>
+        </member>
+        <member name="P:Emission.Window.Monitor.WorkArea">
+            <summary>
+            Get a <see cref="T:Emission.Mathematics.Rectangle"/> that represent the position and the size with the monitor.
+            </summary>
+        </member>
+        <member name="P:Emission.Window.Monitor.ContentScale">
+            <summary>
+            Retrieves the content scale for the specified monitor.
+            The content scale is the ratio between the current DPI and the platform's default DPI.
+            </summary>
+        </member>
+        <member name="P:Emission.Window.Monitor.UserPointer">
+            <summary>
+            Returns the current value of the user-defined pointer of the specified monitor.
+            The user-pointer, or <see cref="F:System.IntPtr.Zero"/> if none is defined.
+            </summary>
+        </member>
         <member name="P:Emission.Window.Window.Handle">
             <summary>
             Pointer to Glfw Window object. Represent window. Public get and can be only set class constructor.
@@ -9234,6 +9503,12 @@
             <summary>
             Engine Behaviour of the Window.
             </summary>
+        </member>
+        <member name="M:Emission.Window.Window.SetIcon(System.String)">
+            <summary>
+            Define Window's Icon using an image.
+            </summary>
+            <param name="path">Path to the image</param>
         </member>
         <member name="F:Emission.Keys.Unknown">
             <summary>
@@ -9900,41 +10175,65 @@
                 The highest mouse button available.
             </summary>
         </member>
-        <member name="F:Emission.Monitor.None">
+        <member name="M:Emission.Page.PageManager.Enable(Emission.Page.Page)">
             <summary>
-            Represent a null monitor
+            Enable a new page with all visible pages.
+            </summary>
+            <param name="page">Page to enable</param>
+        </member>
+        <member name="M:Emission.Page.PageManager.Invoke(Emission.Page.Page)">
+            <summary>
+            Enable a new page and disable all loaded pages.
+            </summary>
+            <param name="page">Page to enable</param>
+        </member>
+        <member name="M:Emission.Page.PageManager.Find(System.String)">
+            <summary>
+            Try to find a page in active pages. 
+            Return null if the page is not in active pages.
+            </summary>
+            <param name="name">Page's name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emission.Page.PageManager.IsPageActive(System.String)">
+            <summary>
+            Check if a page is active or not. Return true if active, false otherwise.
+            </summary>
+            <param name="name">Page's name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emission.Page.PageManager.IsPageActive(Emission.Page.Page)">
+            <summary>
+            Check if a page is active or not. Return true if active, false otherwise.
+            </summary>
+            <param name="page">Page to check</param>
+            <returns></returns>
+        </member>
+        <member name="M:Emission.Page.PageManager.Disable(Emission.Page.Page)">
+            <summary>
+            Disable an active page.
+            </summary>
+            <param name="page">Page to disable</param>
+        </member>
+        <member name="M:Emission.Page.PageManager.DisableAll">
+            <summary>
+            Disable all loaded pages.
             </summary>
         </member>
-        <member name="P:Emission.Monitor.PrimaryMonitor">
+        <member name="M:Emission.UI.ImGuiController.Render">
             <summary>
-            Get Current monitor.
+            Renders the ImGui draw list data.
             </summary>
         </member>
-        <member name="P:Emission.Monitor.Monitors">
+        <member name="M:Emission.UI.ImGuiController.Update(System.Single)">
             <summary>
-            Get an array of all recognize monitors.
+            Updates ImGui input and IO configuration state.
             </summary>
         </member>
-        <member name="P:Emission.Monitor.Name">
+        <member name="M:Emission.UI.ImGuiController.SetPerFrameImGuiData(System.Single)">
             <summary>
-            Return the name of the monitor.
-            </summary>
-        </member>
-        <member name="P:Emission.Monitor.WorkArea">
-            <summary>
-            Get a <see cref="T:Emission.Mathematics.Rectangle"/> that represent the position and the size with the monitor.
-            </summary>
-        </member>
-        <member name="P:Emission.Monitor.ContentScale">
-            <summary>
-            Retrieves the content scale for the specified monitor.
-            The content scale is the ratio between the current DPI and the platform's default DPI.
-            </summary>
-        </member>
-        <member name="P:Emission.Monitor.UserPointer">
-            <summary>
-            Returns the current value of the user-defined pointer of the specified monitor.
-            The user-pointer, or <see cref="F:System.IntPtr.Zero"/> if none is defined.
+            Sets per-frame data based on the associated window.
+            This is called by Update(float).
             </summary>
         </member>
         <member name="M:Emission.Time.GlfwTime">
@@ -9992,6 +10291,11 @@
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Emission.Errors.EmissionAssimpException">
+            <summary>
+              Looks up a localized string similar to Emission ASSIMP Error.
             </summary>
         </member>
         <member name="P:Emission.Errors.EmissionEventException">
@@ -10126,7 +10430,7 @@
             </summary>
             <example>
                 <code>
-            public void Foo([ItemNotNull]List&lt;string&gt; books)
+            internal void Foo([ItemNotNull]List&lt;string&gt; books)
             {
               foreach (var book in books) {
                 if (book != null) // Warning: Expression is always true
@@ -10144,7 +10448,7 @@
             </summary>
             <example>
                 <code>
-            public void Foo([ItemCanBeNull]List&lt;string&gt; books)
+            internal void Foo([ItemCanBeNull]List&lt;string&gt; books)
             {
               foreach (var book in books)
               {
@@ -10187,18 +10491,18 @@
                 <code>
             namespace TestNamespace
             {
-              public class Constants
+              internal class Constants
               {
-                public static int INT_CONST = 1;
-                public const string STRING_CONST = "1";
+                internal static int INT_CONST = 1;
+                internal const string STRING_CONST = "1";
               }
             
-              public class Class1
+              internal class Class1
               {
-                [ValueProvider("TestNamespace.Constants")] public int myField;
-                public void Foo([ValueProvider("TestNamespace.Constants")] string str) { }
+                [ValueProvider("TestNamespace.Constants")] internal int myField;
+                internal void Foo([ValueProvider("TestNamespace.Constants")] string str) { }
             
-                public void Test()
+                internal void Test()
                 {
                   Foo(/*try completion here*/);//
                   myField = /*try completion here*/
@@ -10251,15 +10555,15 @@
             </remarks>
             <example>
                 <code>
-            public class Foo : INotifyPropertyChanged {
-              public event PropertyChangedEventHandler PropertyChanged;
+            internal class Foo : INotifyPropertyChanged {
+              internal event PropertyChangedEventHandler PropertyChanged;
             
               [NotifyPropertyChangedInvocator]
               protected virtual void NotifyChanged(string propertyName) { ... }
             
               string _name;
             
-              public string Name {
+              internal string Name {
                 get { return _name; }
                 set { _name = value; NotifyChanged("LastName"); /* Warning */ }
               }
@@ -10308,19 +10612,19 @@
                     <item>
                         <code>
             [ContractAnnotation("=&gt; halt")]
-            public void TerminationMethod()
+            internal void TerminationMethod()
             </code>
                     </item>
                     <item>
                         <code>
             [ContractAnnotation("null &lt;= param:null")] // reverse condition syntax
-            public string GetName(string surname)
+            internal string GetName(string surname)
             </code>
                     </item>
                     <item>
                         <code>
             [ContractAnnotation("s:null =&gt; true")]
-            public bool IsNullOrEmpty(string s) // string.IsNullOrEmpty()
+            internal bool IsNullOrEmpty(string s) // string.IsNullOrEmpty()
             </code>
                     </item>
                     <item>
@@ -10328,13 +10632,13 @@
             // A method that returns null if the parameter is null,
             // and not null if the parameter is not null
             [ContractAnnotation("null =&gt; null; notnull =&gt; notnull")]
-            public object Transform(object data)
+            internal object Transform(object data)
             </code>
                     </item>
                     <item>
                         <code>
             [ContractAnnotation("=&gt; true, result: notnull; =&gt; false, result: null")]
-            public bool TryParse(string s, out Person result)
+            internal bool TryParse(string s, out Person result)
             </code>
                     </item>
                 </list>
@@ -10441,9 +10745,9 @@
         <member name="F:JetBrains.Annotations.ImplicitUseTargetFlags.WithMembers">
             <summary>Entity marked with attribute and all its members considered used.</summary>
         </member>
-        <member name="T:JetBrains.Annotations.PublicAPIAttribute">
+        <member name="T:JetBrains.Annotations.internalAPIAttribute">
             <summary>
-                This attribute is intended to mark publicly available API
+                This attribute is intended to mark internally available API
                 which should not be removed and so is treated as used.
             </summary>
         </member>
@@ -10524,7 +10828,7 @@
                 of enumerable types, producing ordinary C# 'foreach' statement and placing caret inside block:
                 <code>
             [SourceTemplate]
-            public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; xs) {
+            internal static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; xs) {
               foreach (var x in xs) {
                  //$ $END$
               }
@@ -10546,7 +10850,7 @@
                 Applying the attribute on a source template method:
                 <code>
             [SourceTemplate, Macro(Target = "item", Expression = "suggestVariableName()")]
-            public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; collection) {
+            internal static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; collection) {
               foreach (var item in collection) {
                 //$ $END$
               }
@@ -10555,7 +10859,7 @@
                 Applying the attribute on a template method parameter:
                 <code>
             [SourceTemplate]
-            public static void something(this Entity x, [Macro(Expression = "guid()", Editable = -1)] string newguid) {
+            internal static void something(this Entity x, [Macro(Expression = "guid()", Editable = -1)] string newguid) {
               /*$ var $x$Id = "$newguid$" + x.ToString();
               x.DoSomething($x$Id); */
             }
@@ -10681,7 +10985,7 @@
             <example>
                 <code>
             [ActionName("Foo")]
-            public ActionResult Login(string returnUrl) {
+            internal ActionResult Login(string returnUrl) {
               ViewBag.ReturnUrl = Url.Action("Foo"); // OK
               return RedirectToAction("Bar"); // Error: Cannot resolve action
             }
@@ -10706,17 +11010,17 @@
             </remarks>
             <example>
                 <code>
-            public class MyStringCollection : List&lt;string&gt;
+            internal class MyStringCollection : List&lt;string&gt;
             {
               [CollectionAccess(CollectionAccessType.Read)]
-              public string GetFirstString()
+              internal string GetFirstString()
               {
                 return this.ElementAt(0);
               }
             }
             class Test
             {
-              public void Foo()
+              internal void Foo()
               {
                 // Warning: Contents of the collection is never updated
                 var col = new MyStringCollection();

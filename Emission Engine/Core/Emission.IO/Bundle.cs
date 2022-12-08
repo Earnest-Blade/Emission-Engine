@@ -28,7 +28,7 @@ namespace Emission.IO
         {
             _files = new List<BundleFile>();
             _name = path;
-            _directory = new DirectoryInfo(Directory.GetCurrentDirectory() + "/" + path);
+            _directory = new DirectoryInfo(GameDirectory.GetCurrentDirectory() + "/" + path);
             _pointer = 0;
             _bytes = "";
 
@@ -39,7 +39,7 @@ namespace Emission.IO
         public void AddFile(string file) => AddFile(new FileInfo(file));
         public void AddFile(FileInfo info)
         {
-            string fileCtnt = File.ReadAllText(info.FullName);
+            string fileCtnt = GameFile.ReadAllText(info.FullName);
             _files.Add(new BundleFile(
                 info.Name,
                 _pointer, (uint)fileCtnt.Length
@@ -55,7 +55,7 @@ namespace Emission.IO
             string header = _files.Aggregate(_name + FILE_SEPARATOR_CHAR, (current, f) => current + (f.FileName + FILE_INFO_SEPARATOR_CHAR + f.Pointer.start + FILE_INFO_SEPARATOR_CHAR + f.Length + FILE_SEPARATOR_CHAR));
             header += '\n';
             
-            FileStream fs = System.IO.File.Create(File.DATA_FILE + fileName + ".bundle");
+            FileStream fs = System.IO.File.Create(GameFile.DATA_FILE + fileName + ".bundle");
             
             fs.Write(Encoding.UTF8.GetBytes(header));
             fs.Write(LzwCompressor.Compress(_bytes));
@@ -65,10 +65,10 @@ namespace Emission.IO
 
         public void Open(string path)
         { 
-            if (!File.Exists(path))
+            if (!GameFile.Exists(path))
                 throw new EmissionException(Errors.EmissionIOException, $"'{path}' Does not Exists!");
             
-            string[] header = File.ReadLine(path, 0).Split(FILE_SEPARATOR_CHAR);
+            string[] header = GameFile.ReadLine(path, 0).Split(FILE_SEPARATOR_CHAR);
             string content = LzwCompressor.DecompressStr(System.IO.File.ReadAllBytes(path).Skip(string.Join("",header).Length + header.Length).ToArray());
             _name = header[0];
             _bytes = content;

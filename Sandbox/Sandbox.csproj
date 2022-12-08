@@ -9,6 +9,18 @@
         <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Emission Engine\Emission Engine.csproj" />
     </ItemGroup>

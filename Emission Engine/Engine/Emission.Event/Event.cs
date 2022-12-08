@@ -34,7 +34,7 @@ namespace Emission
         {
             if (HasEventDispatcher() && EventExists(type))
             {
-                Instances.EventDispatcher.Add(type, handler);
+                GameInstance.EventDispatcher.Add(type, handler);
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace Emission
         {
             if (HasEventDispatcher() && EventExists(type))
             {
-                Instances.EventDispatcher.Add(type, handler);
+                GameInstance.EventDispatcher.Add(type, handler);
                 return;
             }
             
@@ -56,7 +56,7 @@ namespace Emission
         {
             if (HasEventDispatcher() && EventExists(type))
             {
-                Instances.EventDispatcher.Remove(type, handler);
+                GameInstance.EventDispatcher.Remove(type, handler);
                 return;
             }
             
@@ -67,7 +67,7 @@ namespace Emission
         {
             if (HasEventDispatcher() && EventExists(type))
             {
-                Instances.EventDispatcher.Remove(type, handler);
+                GameInstance.EventDispatcher.Remove(type, handler);
                 return;
             }
             
@@ -80,7 +80,7 @@ namespace Emission
             {
                 try
                 {
-                    Instances.EventDispatcher.Invoke(type);
+                    GameInstance.EventDispatcher.Invoke(type);
                 }
                 catch (Exception e) { throw new EmissionException(Errors.EmissionEventException, e); }
                 return;
@@ -95,7 +95,7 @@ namespace Emission
             {
                 try
                 {
-                    Instances.EventDispatcher.Invoke<T>(type, args);
+                    GameInstance.EventDispatcher.Invoke<T>(type, args);
                 }
                 catch (Exception e) { throw new EmissionException(Errors.EmissionEventException, e); }
                 return;
@@ -106,13 +106,13 @@ namespace Emission
         
         public static bool HasEventDispatcher()
         {
-            return Instances.EventDispatcher != null;
+            return GameInstance.EventDispatcher != null;
         }
 
         public static bool EventExists(string name)
         {
             if (HasEventDispatcher())
-                return Instances.EventDispatcher.GetEvent("On" + name) != null;
+                return GameInstance.EventDispatcher.GetEvent("On" + name) != null;
             
             return false;
         }
@@ -126,8 +126,8 @@ namespace Emission
         {
             if (!HasEventDispatcher()) 
                 throw new EmissionException(Errors.EmissionEventException, $"Event Dispatcher isn't initialize!");
-            
-            Instances.EventDispatcher.Dispose();
+
+            GameInstance.EventDispatcher.Dispose();
             EventDispatcher.Instance = null;
         }
 
@@ -135,7 +135,6 @@ namespace Emission
         {
             public static EventDispatcher Instance;
             
-#pragma warning disable CS0067
             public event EmissionHandler OnInitialize;
             public event EmissionHandler OnStart;
             public event EmissionHandler OnUpdate;
@@ -154,7 +153,6 @@ namespace Emission
             
             public event EmissionHandler<Vector2> OnMouseMove;
             public event EmissionHandler<double> OnMouseScroll;
-#pragma warning restore CS0067
 
             //private string _current;
 
@@ -185,7 +183,7 @@ namespace Emission
                 var eventDel = (MulticastDelegate)GetType().GetField("On" + name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Instance);
                 if (eventDel == null) throw new EmissionException(Errors.EmissionEventException, $"Cannot find delegate {name}");
                 
-                foreach (var handle in eventDel.GetInvocationList())
+                foreach (Delegate handle in eventDel.GetInvocationList())
                 {
                     handle.Method.Invoke(handle.Target, Array.Empty<object>());
                 }
@@ -196,7 +194,7 @@ namespace Emission
                 var eventDel = (MulticastDelegate)GetType().GetField("On" + name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Instance);
                 if (eventDel == null) throw new EmissionException(Errors.EmissionEventException, $"Cannot find delegate {name}");
                 
-                foreach (var handle in eventDel.GetInvocationList())
+                foreach (Delegate handle in eventDel.GetInvocationList())
                 {
                     handle.Method.Invoke(handle.Target, new object[] { args });
                 }
