@@ -1,4 +1,4 @@
-samedi 4 février 2023 15:43:13
+samedi 4 février 2023 16:33:11
 Win32NT - 10.0.19044.0
 Emission Engine - Development Ver.
 
@@ -18,30 +18,6 @@ Emission Engine - Development Ver.
 [INFO] Using GLSL 4.30 - Build 31.0.101.2112
 [INFO] Running with OpenGL Vendor Intel
 [INFO] Running with OpenGL Renderer Intel(R) UHD Graphics 630
-[IO] Reading file 'Assets/Shaders/textureObj.shader'
 [INFO] Successfully compile shader 'shader1'
-[ERROR][GL][1282] ERROR raised from API 
-GL ERROR CALLBACK : Error has been generated. GL error GL_INVALID_OPERATION in TexStorage2D: (ID: 3202140462) Generic error
-   at Emission.Debug.Error(Object[] str) in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Debugger.cs:line 229
-   at Emission.Debug.Error(String str) in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Debugger.cs:line 220
-   at Emission.Natives.GL.GlError.ErrorCallback(UInt32 source, UInt32 type, UInt32 id, UInt32 severity, Int32 length, Char* message, Void* userParam) in D:\Projets\Code\C#\Emission Engine\Emission Engine\Core\Natives\OpenGL\GlError.cs:line 87
-   at Emission.UI.ImGuiController.RecreateFontDeviceTexture() in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Emission.UI\ImGUI\ImGuiController.cs:line 143
-   at Emission.UI.ImGuiController.CreateDeviceResources() in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Emission.UI\ImGUI\ImGuiController.cs:line 85
-   at Emission.UI.ImGuiController..ctor() in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Emission.UI\ImGUI\ImGuiController.cs:line 52
-   at Sandbox.RuntimePages.BasicPlane..ctor() in D:\Projets\Code\C#\Emission Engine\Sandbox\RuntimePages\BasicPlane.cs:line 25
-   at Sandbox.Program.Main(String[] args) in D:\Projets\Code\C#\Emission Engine\Sandbox\Program.cs:line 22
-
-[ERROR][GL][1281] ERROR raised from API 
-GL ERROR CALLBACK : Error has been generated. GL error GL_INVALID_VALUE in TexSubImage2D: (ID: 2719005830) Generic error
-   at Emission.Debug.Error(Object[] str) in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Debugger.cs:line 229
-   at Emission.Debug.Error(String str) in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Debugger.cs:line 220
-   at Emission.Natives.GL.GlError.ErrorCallback(UInt32 source, UInt32 type, UInt32 id, UInt32 severity, Int32 length, Char* message, Void* userParam) in D:\Projets\Code\C#\Emission Engine\Emission Engine\Core\Natives\OpenGL\GlError.cs:line 87
-   at Emission.UI.ImGuiController.RecreateFontDeviceTexture() in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Emission.UI\ImGUI\ImGuiController.cs:line 147
-   at Emission.UI.ImGuiController.CreateDeviceResources() in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Emission.UI\ImGUI\ImGuiController.cs:line 85
-   at Emission.UI.ImGuiController..ctor() in D:\Projets\Code\C#\Emission Engine\Emission Engine\Engine\Emission.UI\ImGUI\ImGuiController.cs:line 52
-   at Sandbox.RuntimePages.BasicPlane..ctor() in D:\Projets\Code\C#\Emission Engine\Sandbox\RuntimePages\BasicPlane.cs:line 25
-   at Sandbox.Program.Main(String[] args) in D:\Projets\Code\C#\Emission Engine\Sandbox\Program.cs:line 22
-
-[INFO] Successfully compile shader 'ImGUIShader4'
-[INFO] Successfully initialize mesh2!
+[INFO] Successfully initialize mesh1!
 [INFO] Application stopped with exit code: 0!

@@ -1,27 +1,100 @@
 # Emission Engine
 
-Emission is custom game and rendering engine made in C# using OpenTk, a warper of OpenGL. 
+Emission is custom game and rendering engine made in C# using custom warper of OpenGl. 
 Emission engine can run on Window/MacOS/Linux.
 I'm currently using this engine to create my own game, and it grows by technicals stuff that I need. 
 
 ## Engine 
 It's the main project use for rendering.
-Rendering take his foundations on Modern OpenGL and GLFW. 
+Rendering take his foundations on Modern OpenGL and GLFW. Also use OpenAL and Assimp.
 It uses faces arrays to render differents kinds of meshes. It also use pre-compiled statics meshes and debug rendering.
-Emission cannot render bones animations but im working on this features. 
+Emission cannot render bones animations but im working on these features. 
 
-## I/O
+## Page
+Emission Engine is a scene based engine. A scene is named "page". Each page has his own Camera. 
+
+## I/O System
+### File formats
 Emission Engine come with his own io system.
 Emission I/O tools can use:
-- Images Files (Png, Jpg, Bmp...)
-- Fonts 
-- 3D Objects (Obj)
+- Images Files (Png, Jpg, Bmp...) with STB Images
+- 3D Objects (Obj, Dae, Fbx...) with Assimp
 
-## Build System
-Currently in development, Emission come with his own build system and compression system in order to build games.
+### Build System
+Currently working on custom building system and custom asset compression.
 
+#
 
-## License
+## Exemple Code
+This following code display a simple orange square.
+```
+    public class BasicPlane : Page
+    {
+        // Define vertex shader content
+        private const string _vertexShaderSource = "#version 330 core\n"
+                                                   + "layout (location = 0) in vec3 aPos;\n"
+                                                   + "void main()\n"
+                                                   + "{\n"
+                                                   + "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                                   + "}\0";
+
+        // Define fragement shader content.
+        private const string _fragmentShaderSource = "#version 330 core\n"
+                                                     + "out vec4 FragColor;\n"
+                                                     + "void main()\n"
+                                                     + "{\n"
+                                                     + "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                                     + "}\n\0";
+
+        private Shader _shader;
+        private Model _model;
+        
+        public BasicPlane() : base("Triangle Scene", new EmptyActor())
+        {
+            Camera = new PerspectiveCamera(Window, 90f, 0.1f, 400f);
+            Camera.Translate((0, 0, -20));
+            
+            _shader = new Shader(new ShaderLoader.ShaderStruct(_vertexShaderSource, _fragmentShaderSource));
+            _model = ModelPrimitive.PrimitiveFrontPlane(0.5f, 0.5f);
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            if(Input.IsKeyDown(Keys.Escape)) GameController.Stop(0);
+        }
+
+        public override void Render()
+        {
+            base.Render();
+            
+            _model.Draw(_shader);
+        }
+
+        public static void Main()
+        {
+            GameController.Create(EngineSettings.FromJson(".settings"));
+            GameController.CreateWindow(WindowConfig.Default("Window"));
+            GameController.Initiate();
+
+            PageManager.Enable(new BasicPlane());
+            
+            GameController.Start();
+        }
+    }
+```
+
+# Third Party Software
+
+Emission uses the following open-source projects :
+- [LTP.Interop.OpenGL](https://github.com/latet-party/LTP.Interop.OpenGL)
+- [ASSIMP-NET](https://github.com/assimp/assimp-net)
+- [OpenAL-CS](https://github.com/flibitijibibo/OpenAL-CS)
+- [Stb Image Sharp](https://github.com/StbSharp/StbImageSharp)
+- [Win32](https://github.com/lstratman/Win32Interop)
+
+# License
 
 MIT License
 

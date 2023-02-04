@@ -31,6 +31,7 @@ namespace Emission.Graphics.Shading
         public Shader(string path, string name) : this(ShaderLoader.LoadShader(GameFile.ReadLines(path)), name) {}
         
         // constructor
+        public Shader(ShaderLoader.ShaderStruct shaderStruct) : this(shaderStruct, null) {}
         public Shader(ShaderLoader.ShaderStruct shaderStruct, string name)
         {
             _name = name;

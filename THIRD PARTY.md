@@ -5,3 +5,4 @@ Emission uses the following open-source projects :
 - [ASSIMP-NET](https://github.com/assimp/assimp-net)
 - [OpenAL-CS](https://github.com/flibitijibibo/OpenAL-CS)
 - [Stb Image Sharp](https://github.com/StbSharp/StbImageSharp)
+- [Win32](https://github.com/lstratman/Win32Interop)

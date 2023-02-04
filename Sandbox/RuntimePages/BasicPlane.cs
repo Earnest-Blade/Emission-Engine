@@ -4,7 +4,7 @@ using Emission.UI;
 using Emission.Page;
 using Emission.Graphics;
 using Emission.Graphics.Shading;
-using Emission.Mathematics;
+using Emission.Window;
 
 namespace Sandbox.RuntimePages
 {
@@ -12,20 +12,36 @@ namespace Sandbox.RuntimePages
     {
         private Shader _shader;
         private Model _model;
+        
+        private const string _vertexShaderSource = "#version 330 core\n"
+                                                   + "layout (location = 0) in vec3 aPos;\n"
+                                                   + "void main()\n"
+                                                   + "{\n"
+                                                   + "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                                   + "}\0";
 
-        private ImGuiController _guiController;
+        private const string _fragmentShaderSource = "#version 330 core\n"
+                                                     + "out vec4 FragColor;\n"
+                                                     + "void main()\n"
+                                                     + "{\n"
+                                                     + "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                                     + "}\n\0";
+
+        //private ImGuiController _guiController;
         
         public BasicPlane() : base("Triangle Scene", new EmptyActor())
         {
             Camera = new PerspectiveCamera(Window, 90f, 0.1f, 400f);
-            Camera.Move((0, -20, -20), (0, 0, -00));
+            Camera.Translate((0, 0, -20));
             
-            _shader = new Shader("Assets/Shaders/textureObj.shader");
+            _shader = new Shader(new ShaderLoader.ShaderStruct(_vertexShaderSource, _fragmentShaderSource));
 
-            _guiController = new ImGuiController();
+            _model = ModelPrimitive.PrimitiveFrontPlane(0.5f, 0.5f);
 
-            _model = ModelBuilder.FromFile("Assets/Models/duck.dae", "Assets/Textures/");
-            _model.Transform.Position.Z = 200;
+            /* _guiController = new ImGuiController();
+ 
+             _model = ModelBuilder.FromFile("Assets/Models/duck.dae", "Assets/Textures/");
+             _model.Transform.Position.Z = 200;*/
         }
 
         public override void Update()
