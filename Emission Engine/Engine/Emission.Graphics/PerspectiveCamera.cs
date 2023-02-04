@@ -66,7 +66,7 @@ namespace Emission.Graphics
             
             Event.AddDelegate<Vector2>(Event.WindowResize, Resize);
 
-            ICamera.SetMain(this);
+            ICamera.SetCurrentCamera(this);
             UpdateProjection();
             Move(Vector3.Zero, Vector3.Zero);
         }

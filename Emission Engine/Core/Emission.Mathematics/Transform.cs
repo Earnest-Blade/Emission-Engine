@@ -5,7 +5,6 @@ using System;
 namespace Emission.Mathematics
 {
     [Serializable]
-    [PageSerializable]
     public class Transform : IEquatable<Transform>
     {
         public static Transform Zero => new Transform(Vector3.Zero, Vector3.Zero, 1);

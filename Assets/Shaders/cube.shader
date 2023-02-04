@@ -24,6 +24,7 @@ vertex:
         oNormals = mat3(transpose(inverse(uTransform))) * iNormals;
         //oNormals = iNormals;
 
+        //uProjection * uView * uTransform * 
         gl_Position = uProjection * uView * uTransform * vec4(iPosition, 1.0);
 
         mat3 normalMat3 = mat3(transpose(inverse(uView * uTransform)));
@@ -71,7 +72,8 @@ fragment:
         vec4 specular = specularStrength * spec * specularColor;
 
         //fragColor = texture2D(texture0, oTexCoords);
-        fragColor = color * sampled * (ambientColor + diffuse + specular);
+        //fragColor = color * sampled * (ambientColor + diffuse + specular);
+        fragColor = sampled;
     }
 
 //geometry:

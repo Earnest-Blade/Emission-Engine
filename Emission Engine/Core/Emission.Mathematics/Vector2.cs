@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace Emission.Mathematics
 {
-    [PageSerializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Vector2 : IEquatable<Vector2>
     {

@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 namespace Emission.Mathematics
 {
     [Serializable]
-    [PageSerializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Matrix3 : IEquatable<Matrix3>
     {

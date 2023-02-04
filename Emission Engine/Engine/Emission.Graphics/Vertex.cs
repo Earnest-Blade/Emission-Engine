@@ -1,7 +1,9 @@
-﻿using Emission.Mathematics;
+﻿using System.Runtime.InteropServices;
+using Emission.Mathematics;
 
 namespace Emission.Graphics
 {
+    [StructLayout(LayoutKind.Sequential)]
     public struct Vertex
     {
         public Vector3 Position;

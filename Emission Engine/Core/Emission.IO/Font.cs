@@ -7,7 +7,7 @@ using static FreeTypeSharp.Native.FT;
 
 using Emission.UI;
 using Emission.Mathematics;
-using static Emission.Graphics.GL.GL;
+using static Emission.Natives.GL.Gl;
 using Emission.Graphics;
 using Assimp;
 using System.Runtime.InteropServices;
@@ -56,7 +56,7 @@ namespace Emission.IO
             FT_Set_Pixel_Sizes(_faceHandle, 0, (uint)FontSize);
 
             if (FT_Load_Char(_faceHandle, 'X', FT_LOAD_RENDER) != FT_Error.FT_Err_Ok)
-                throw new EmissionException(Errors.EmissionIOException, $"Cannot load glyph from '{path}'!");
+                throw new EmissionException(EmissionErrors.EmissionIOException, $"Cannot load glyph from '{path}'!");
 
             InitializeGlyphs();
 
@@ -76,13 +76,14 @@ namespace Emission.IO
                     continue;
                 }
 
-                uint texID = glGenTexture();
+                uint texID;
+                glGenTextures(1, &texID);
                 glBindTexture(GL_TEXTURE_2D, texID);
 
                 //if (Glyph.bitmap.buffer == IntPtr.Zero)
                 //    throw new EmissionException(Errors.EmissionIOException, $"Cannot load bitmap from font '{_path}'!");
 
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, (int)Glyph.bitmap.width, (int)Glyph.bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, Glyph.bitmap.buffer);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, (int)Glyph.bitmap.width, (int)Glyph.bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, Glyph.bitmap.buffer.ToPointer());
 
                 // Define attributes
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

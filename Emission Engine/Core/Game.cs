@@ -3,6 +3,7 @@ using Emission.IO;
 using Emission.Window;
 using Emission.Graphics;
 using System.Threading;
+using Emission.Graphics.RenderConfig;
 using Emission.Page;
 
 namespace Emission
@@ -10,6 +11,8 @@ namespace Emission
     // TODO: Multi-threading
     public class Game
     {
+        public EngineSettings Settings;
+        
         public Window.Window Window;
         public Renderer Renderer;
         public Debug Debugger;
@@ -19,10 +22,14 @@ namespace Emission
 
         public bool IsRunning { get; private set; }
 
-        internal Game()
+        internal Game(EngineSettings settings)
         {
+            Settings = settings;
             IsRunning = false;
             
+            if(Settings.Directory != EngineSettings.DEFAULT_DIRECTORY)
+                GameDirectory.SetCurrentDirectory(Settings.Directory);
+
             EngineBehaviour.CreateDispatcher();
             Event.CreateEventDispatcher();
 
@@ -31,17 +38,24 @@ namespace Emission
             Event.AddDelegate(Event.Update, Update);
             Event.AddDelegate(Event.Render, Render);
             Event.AddDelegate<int>(Event.Stop, Exit);
+            
+            Debug.Log("[INFO] Creating game event handlers");
+            Debug.Log($"[INFO] Running with Emission Engine '{Settings.VersionAsStr}' ({Settings.Version})");
+            Debug.Log($"[INFO] Running with FPS limit {Settings.Framerate}");
         }
 
         private void Initialize()
         {
             Debugger ??= new Debug("Emission Console");
             Data ??= new Data();
-            Window ??= new Window.Window(WindowParameters.Default("Window"));
-            Renderer ??= new Renderer();
+            Window ??= new Window.Window(WindowConfig.Default("Window"));
+            Renderer ??= new Renderer(new GlConfig().GetDefault());
             PageManager ??= new PageManager();
             
+            ModelBuilder.InitializeContext();
+            
             Window.Initialize();
+            Renderer.Initialize();
             EngineBehaviour.Call(Event.Initialize);
         }
         
@@ -50,7 +64,7 @@ namespace Emission
             Window.Start();
             EngineBehaviour.Call(Event.Start);
 
-            if (!IsRunning)
+            if (!IsRunning) 
                 Loop();
         }
 
@@ -63,11 +77,12 @@ namespace Emission
             while (!Window.ShouldClose)
             {
                 IsRunning = true;
+                Time.SetFrameTime(Time.GlfwTime());
                 Time.SetDeltaTime(Time.GlfwTime() - totalElapsedTime);
                 totalElapsedTime = Time.GlfwTime();
 
                 frameCount++;
-                if (Time.GlfwTime() - previousTime >= 1.0)
+                if (Time.GlfwTime() - previousTime >= 1.0 / Settings.Framerate)
                 {
                     Time.SetFps(frameCount);
                     frameCount = 0;
@@ -106,6 +121,8 @@ namespace Emission
             EngineBehaviour.Call(Event.Stop);
             Window.Stop();
 
+            ModelBuilder.ReleaseContext();
+            
             // Dispose Observators
             Event.DisposeEventDispatcher();
             EngineBehaviour.RemoveDispatcher();

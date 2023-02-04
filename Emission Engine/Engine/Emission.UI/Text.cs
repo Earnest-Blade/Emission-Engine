@@ -4,7 +4,7 @@ using Emission.IO;
 using Emission.Graphics;
 using Emission.Mathematics;
 using Emission.Graphics.Shading;
-using static Emission.Graphics.GL.GL;
+using static Emission.Natives.GL.Gl;
 
 namespace Emission.UI
 {
@@ -17,8 +17,8 @@ namespace Emission.UI
 
         private Matrix4 _projection;
 
-        private uint _vao;
-        private uint _vbo;
+        private VertexArrayBuffer _vao;
+        private VertexBufferObject _vbo;
 
         public Text(Font font, Shader shader)
         {
@@ -50,10 +50,10 @@ namespace Emission.UI
 
             Shader.UseUniformVec3("color", new Vector3(color.R, color.G, color.B));
 
-            Shader.UseUniformProjectionMat4(Shader.UNIFORM_PROJECTION, ICamera.GetMain().Projection);
+            Shader.UseUniformProjectionMat4(Shader.UNIFORM_PROJECTION, ICamera.GetCurrent().Projection);
 
             glActiveTexture(GL_TEXTURE0);
-            glBindVertexArray(_vao);
+            glBindVertexArray(_vao.Id);
 
             foreach (char c in text)
             {
@@ -77,19 +77,20 @@ namespace Emission.UI
 
                 glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 
-                glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+                glBindBuffer(GL_ARRAY_BUFFER, _vbo.Id);
 
+                int size = sizeof(float) * vertices.Length;
                 fixed (float* f = &vertices[0, 0])
-                    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * vertices.Length, f);
+                    glBufferSubData(GL_ARRAY_BUFFER, (int*)0, &size, f);
 
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
                 x += (ch.Advance >> 6) * scale;
             }
 
-            glBindVertexArray(_vao);
+            glBindVertexArray(_vao.Id);
             glBindTexture(GL_TEXTURE_2D, 0);
-
+            
             Shader.Stop();
         }
     }

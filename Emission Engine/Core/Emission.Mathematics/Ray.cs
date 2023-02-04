@@ -8,7 +8,6 @@ namespace Emission.Mathematics
     /// Defines a 3D ray with a point of origin and a direction.
     /// </summary>
     [Serializable]
-    [PageSerializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Ray
     {

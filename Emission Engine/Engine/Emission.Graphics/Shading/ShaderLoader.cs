@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using static Emission.Graphics.GL.GL;
+using System.Runtime.InteropServices;
+using System.Text;
+using Emission.Natives.GL;
+using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics.Shading
 {
-    public class ShaderLoader
+    public unsafe class ShaderLoader
     {
         public const string COMMENT = "//";
 
@@ -62,20 +66,38 @@ namespace Emission.Graphics.Shading
         /// <param name="data">Shader data to compile</param>
         /// <returns></returns>
         /// <exception cref="EmissionException"></exception>
-        public static uint CompileShader(int type, ref string data)
+        public static uint CompileShader(uint type, ref string data)
         {
-            uint shader = glCreateShader(type);
+            uint shader = glCreateShader((uint)type);
 
-            glShaderSource(shader, data);
+            GlUtils.StrToByteArrayPtr(data, out byte** ptr, out byte[] buffer);
+            int length = buffer.Length;
+            glShaderSource(shader, 1, ptr, &length);
+
             glCompileShader(shader);
 
-            string info = glGetShaderInfoLog(shader);
-            if (!string.IsNullOrEmpty(info))
-            {
-                throw new EmissionException(Errors.EmissionOpenGlException, info);
-            }
+            int shaderStatus;
+            glGetShaderiv(shader, GL_COMPILE_STATUS, &shaderStatus);
 
+            if (shaderStatus != GL_TRUE)
+            {
+                string info = GetShaderInfo(shader);
+                throw new EmissionException(EmissionErrors.EmissionOpenGlException, info);
+            }
+            
             return shader;
+        }
+
+        private static string GetShaderInfo(uint program, int bufferSize = 1064)
+        {
+            IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+            int length;
+            byte* source = (byte*)buffer.ToPointer();
+            glGetProgramInfoLog(program, bufferSize, &length, source);
+            string info = Marshal.PtrToStringUTF8(buffer, length);
+            
+            Marshal.FreeHGlobal(buffer);
+            return info;
         }
 
         public struct ShaderStruct
@@ -108,6 +130,8 @@ namespace Emission.Graphics.Shading
                 FragmentData = fragmentData;
                 TCSData = null;
                 TESData = null;
+                HasVertexShader = true;
+                HasFragmentShader = true;
             }
 
             public ShaderStruct(string vertexData, string geomertyData, string fragmentData)
@@ -117,6 +141,9 @@ namespace Emission.Graphics.Shading
                 FragmentData = fragmentData;
                 TCSData = null;
                 TESData = null;
+                HasVertexShader = true;
+                HasFragmentShader = true;
+                HasGeometryShade = true;
             }
 
             public void Write(int type, string line)

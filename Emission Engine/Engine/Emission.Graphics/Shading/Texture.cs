@@ -4,11 +4,11 @@ using Assimp;
 
 using Emission.IO;
 using Emission.Mathematics;
-using static Emission.Graphics.GL.GL;
+using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics.Shading
 {
-    public class Texture : IEquatable<Texture>, IDisposable
+    public unsafe class Texture : IEquatable<Texture>, IDisposable
     {
         public string Path => Sprite.Path;
         public string Name => _name;
@@ -23,7 +23,7 @@ namespace Emission.Graphics.Shading
             get => (TextureUnit)_texUnit;
             set
             {
-                _texUnit = (int)value;
+                _texUnit = (uint)value;
             }
         }
 
@@ -32,26 +32,31 @@ namespace Emission.Graphics.Shading
         private string _name;
         private TextureSlot _slot;
         private uint _texId;
-        private int _texUnit;
+        private uint _texUnit;
+        private bool _isBind;
 
         public Texture(TextureSlot slot, string path)
         {
             _slot = slot;
+            _isBind = false;
+            TextureUnit = TextureUnit.Texture0;
             Sprite = new Sprite(path);
         }
 
         public Texture(string path, string name, TextureUnit unit = TextureUnit.Texture0)
         {
             _name = name;
-            _texUnit = (int)unit;
+            _isBind = false;
             Sprite = new Sprite(path);
+            TextureUnit = unit;
         }
 
         public Texture(Sprite sprite, string name, TextureUnit textureUnit)
         {
+            _name = name;
+            _isBind = false;
             Sprite = sprite;
             TextureUnit = textureUnit;
-            _name = name;
         }
 
         /// <summary>
@@ -60,6 +65,7 @@ namespace Emission.Graphics.Shading
         public void Bind()
         {
             _texId = Renderer.BindTexture2D(Sprite.Bytes, Sprite.Width, Sprite.Height);
+            _isBind = true;
         }
         
         /// <summary>
@@ -67,7 +73,11 @@ namespace Emission.Graphics.Shading
         /// </summary>
         public void Use()
         {
-            glActiveTexture(_texUnit);
+            if (!_isBind)
+                throw new EmissionException(EmissionErrors.EmissionOpenGlException, 
+                    "Trying to use a texture without binding it!");
+
+            glActiveTexture((uint)_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
         }
 
@@ -76,7 +86,7 @@ namespace Emission.Graphics.Shading
         /// </summary>
         public void Close()
         {
-            glActiveTexture(_texUnit);
+            glActiveTexture((uint)_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
         }
 
@@ -85,7 +95,8 @@ namespace Emission.Graphics.Shading
         /// </summary>
         public void Dispose()
         {
-            glDeleteTexture(_texId);
+            uint textureId = _texId;
+            glDeleteTextures(1, &textureId);
         }
         
         /// <summary>
@@ -94,11 +105,11 @@ namespace Emission.Graphics.Shading
         /// <param name="wrap">OpenGl wrap mode.</param>
         public void TextureWrapping(int wrap)
         {
-            glActiveTexture(_texUnit);
+            glActiveTexture((uint)_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
-            glActiveTexture(_texUnit);
+            glActiveTexture(0);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
@@ -108,10 +119,12 @@ namespace Emission.Graphics.Shading
         /// <param name="color">Color</param>
         public void TextureBorderColor(Vector4 color)
         {
-            glActiveTexture(_texUnit);
+            glActiveTexture((uint)_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
-            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color.ToArray());
-            glActiveTexture(_texUnit);
+            
+            fixed(float* data = &color.ToArray()[0])
+                glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, data);
+            glActiveTexture(0);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
@@ -122,11 +135,11 @@ namespace Emission.Graphics.Shading
         /// <param name="magFilter"></param>
         public void TextureFilter(int minFilter, int magFilter)
         {
-            glActiveTexture(_texUnit);
+            glActiveTexture((uint)_texUnit);
             glBindTexture(GL_TEXTURE_2D, _texId);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-            glActiveTexture(_texUnit);
+            glActiveTexture((uint)_texUnit);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 

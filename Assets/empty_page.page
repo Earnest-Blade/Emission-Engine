@@ -1,0 +1,27 @@
+{
+  "Name": "Empty",
+  "Path": null,
+  "Root": {
+    "Components": [],
+    "Childs": [],
+    "Transform": {
+      "Position": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "Scale": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+      },
+      "EulerAngle": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    },
+    "IsActive": false
+  },
+  "IsActive": false
+}

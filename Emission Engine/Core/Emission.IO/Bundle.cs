@@ -66,7 +66,7 @@ namespace Emission.IO
         public void Open(string path)
         { 
             if (!GameFile.Exists(path))
-                throw new EmissionException(Errors.EmissionIOException, $"'{path}' Does not Exists!");
+                throw new EmissionException(EmissionErrors.EmissionIOException, $"'{path}' Does not Exists!");
             
             string[] header = GameFile.ReadLine(path, 0).Split(FILE_SEPARATOR_CHAR);
             string content = LzwCompressor.DecompressStr(System.IO.File.ReadAllBytes(path).Skip(string.Join("",header).Length + header.Length).ToArray());

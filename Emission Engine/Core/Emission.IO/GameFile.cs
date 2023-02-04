@@ -13,7 +13,7 @@ namespace Emission.IO
 
         public static string CURRENT_DIRECTORY => GameDirectory.GetCurrentDirectory();
 
-        private const int DEFAULT_BUFFER_SIZE = 4096;
+        internal const int DEFAULT_BUFFER_SIZE = 4096;
 
         public static string ReadLine(string path, int line)
         {
@@ -78,7 +78,7 @@ namespace Emission.IO
 
         public static void Delete(string path)
         {
-            if (path == null) throw new EmissionException(Errors.EmissionIOException, $"{nameof(path)} is null");
+            if (path == null) throw new EmissionException(EmissionErrors.EmissionIOException, $"{nameof(path)} is null");
             FileSystem.DeleteFile(Path.GetFullPath(path));
         }
 
@@ -88,19 +88,19 @@ namespace Emission.IO
 
         public static StreamReader OpenText(string path)
         {
-            if (path == null) throw new EmissionException(Errors.EmissionIOException, $"{nameof(path)} is null");
+            if (path == null) throw new EmissionException(EmissionErrors.EmissionIOException, $"{nameof(path)} is null");
             return new StreamReader(path);
         }
 
         public static StreamWriter CreateText(string path)
         {
-            if (path == null) throw new EmissionException(Errors.EmissionIOException, $"{nameof(path)} is null");
+            if (path == null) throw new EmissionException(EmissionErrors.EmissionIOException, $"{nameof(path)} is null");
             return new StreamWriter(path, append:false);
         }
         
         public static StreamWriter AppendText(string path)
         {
-            if (path == null) throw new EmissionException(Errors.EmissionIOException, $"{nameof(path)} is null");
+            if (path == null) throw new EmissionException(EmissionErrors.EmissionIOException, $"{nameof(path)} is null");
             return new StreamWriter(path, append:true);
         }
 
@@ -132,7 +132,7 @@ namespace Emission.IO
 
         private static void FileNotFound(string path)
         {
-            throw new EmissionException(Errors.EmissionIOException, $"'{path}': File Not Found!");
+            throw new EmissionException(EmissionErrors.EmissionIOException, $"'{path}': File Not Found!");
         }
 
         private static void LogReading(string path)

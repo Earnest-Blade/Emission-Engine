@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
+using Emission.Graphics;
 using ImGuiNET;
 
 using Emission.Mathematics;
 using Emission.Graphics.Shading;
-using static Emission.Graphics.GL.GL;
+using Emission.Natives.GL;
+using static Emission.Natives.GL.Gl;
 
 namespace Emission.UI
 {
@@ -14,21 +15,28 @@ namespace Emission.UI
     {
         private bool _frameBegun;
 
-        private uint _vertexArray;
-        private uint _vertexBuffer;
+        private VertexArrayBuffer _vertexArray;
+        private VertexBufferObject _vertexBuffer;
         private int _vertexBufferSize;
-        private uint _indexBuffer;
+        private ElementBufferObject _indexBuffer;
         private int _indexBufferSize;
 
         private uint _fontTexture;
 
         private Shader _shader;
+        
+        private readonly List<char> _pressedChars = new List<char>();
+
+        private static bool KHRDebugAvailable = false;
 
         public ImGuiController()
         {
-            int major = glGetInteger(GL_MAJOR_VERSION);
-            int minor = glGetInteger(GL_MINOR_VERSION);
-
+            int major, minor;
+            glGetIntegerv(GL_MINOR_VERSION, &minor);
+            glGetIntegerv(GL_MAJOR_VERSION, &major);
+            
+            KHRDebugAvailable = (major == 4 && minor >= 3) || IsExtensionSupported("KHR_debug");
+            
             IntPtr ctx = ImGui.CreateContext();
             ImGui.SetCurrentContext(ctx);
 
@@ -55,48 +63,53 @@ namespace Emission.UI
             _vertexBufferSize = 10000;
             _indexBufferSize = 2000;
 
-            uint prevVAO = (uint)glGetInteger(GL_VERTEX_ARRAY_BINDING);
-            uint prevArrayBuffer = (uint)glGetInteger(GL_ARRAY_BUFFER_BINDING);
+            int prevVao;
+            glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &prevVao);
+            int prevArrayBuffer;
+            glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &prevArrayBuffer);
 
-            _vertexArray = glGenVertexArray();
-            glBindVertexArray(_vertexArray);
+            _vertexArray = new VertexArrayBuffer();
+            _vertexArray.Bind();
+            LabelObject(GL_VERTEX_ARRAY, _vertexArray, "ImGui");
 
-            _vertexBuffer = glGenBuffer();
-            glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, _vertexBufferSize, IntPtr.Zero, GL_DYNAMIC_DRAW);
+            _vertexBuffer = new VertexBufferObject();
+            _vertexBuffer.Bind();
+            LabelObject(GL_BUFFER, _vertexBuffer, "VBO: ImGui");
+            _vertexBuffer.PushData(_vertexBufferSize, IntPtr.Zero, GL_DYNAMIC_DRAW);
 
-            _indexBuffer = glGenBuffer();
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indexBufferSize, IntPtr.Zero, GL_DYNAMIC_DRAW);
+            _indexBuffer = new ElementBufferObject();
+            _indexBuffer.Bind();
+            LabelObject(GL_BUFFER, _indexBuffer, "EBO: ImGui");
+            _indexBuffer.PushData(_indexBufferSize, IntPtr.Zero, GL_DYNAMIC_DRAW);
 
             RecreateFontDeviceTexture();
 
             string VertexSource = @"#version 330 core
-            uniform mat4 projection_matrix;
-            layout(location = 0) in vec2 in_position;
-            layout(location = 1) in vec2 in_texCoord;
-            layout(location = 2) in vec4 in_color;
-            out vec4 color;
-            out vec2 texCoord;
-            void main()
-            {
-                gl_Position = projection_matrix * vec4(in_position, 0, 1);
-                color = in_color;
-                texCoord = in_texCoord;
-            }";
+                                    uniform mat4 projection_matrix;
+                                    layout(location = 0) in vec2 in_position;
+                                    layout(location = 1) in vec2 in_texCoord;
+                                    layout(location = 2) in vec4 in_color;
+                                    out vec4 color;
+                                    out vec2 texCoord;
+                                    void main()
+                                    {
+                                        gl_Position = projection_matrix * vec4(in_position, 0, 1);
+                                        color = in_color;
+                                        texCoord = in_texCoord;
+                                    }";
 
             string FragmentSource = @"#version 330 core
-            uniform sampler2D in_fontTexture;
-            in vec4 color;
-            in vec2 texCoord;
-            out vec4 outputColor;
-            void main()
-            {
-                // * texture(in_fontTexture, texCoord)
-                outputColor = color;
-            }";
+                                    uniform sampler2D in_fontTexture;
+                                    in vec4 color;
+                                    in vec2 texCoord;
+                                    out vec4 outputColor;
+                                    void main()
+                                    {
+                                        //texture(in_fontTexture, texCoord)
+                                        outputColor = color;
+                                    }";
 
-            _shader = new Shader(VertexSource, FragmentSource);
+            _shader = new Shader(new ShaderLoader.ShaderStruct(VertexSource, FragmentSource), "ImGUIShader");
 
             int stride = Unsafe.SizeOf<ImDrawVert>();
             glVertexAttribPointer(0, 2, GL_FLOAT, false, stride, (void*)0);
@@ -107,8 +120,8 @@ namespace Emission.UI
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
 
-            glBindVertexArray(prevVAO);
-            glBindBuffer(GL_ARRAY_BUFFER, prevArrayBuffer);
+            glBindVertexArray((uint)prevVao);
+            glBindBuffer(GL_ARRAY_BUFFER, (uint)prevArrayBuffer);
         }
 
         public void RecreateFontDeviceTexture()
@@ -118,15 +131,20 @@ namespace Emission.UI
 
             int mips = (int)Math.Floor(Math.Log(Math.Max(width, height), 2));
 
-            int prevActiveTexture = glGetInteger(GL_ACTIVE_TEXTURE);
+            int prevActiveTexture;
+            glGetIntegerv(GL_ACTIVE_TEXTURE, &prevActiveTexture);
             glActiveTexture((int)TextureUnit.Texture0);
-            uint prevTexture2D = (uint)glGetInteger(GL_TEXTURE_BINDING_2D);
+            int prevTexture2D;
+            glGetIntegerv(GL_TEXTURE_BINDING_2D, &prevTexture2D);
 
-            _fontTexture = glGenTexture();
+            uint tid;
+            glGenTextures(1, &tid);
             glBindTexture(GL_TEXTURE_2D, _fontTexture);
-            //glTexStor(GL_TEXTURE_2D, mips, GL_RGBA8, width, height);
+            glTexStorage2D(GL_TEXTURE_2D, mips, GL_RGBA8, width, height);
+            LabelObject(GL_TEXTURE, tid, "ImGui Text Atlas");
+            _fontTexture = tid;
 
-            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, pixels.ToPointer());
 
             glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -137,10 +155,10 @@ namespace Emission.UI
 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+            
             // Restore state
-            glBindTexture(GL_TEXTURE_2D, prevTexture2D);
-            glActiveTexture(prevActiveTexture);
+            glBindTexture(GL_TEXTURE_2D, (uint)prevTexture2D);
+            glActiveTexture((uint)prevActiveTexture);
 
             io.Fonts.SetTexID((IntPtr)_fontTexture);
 
@@ -163,14 +181,14 @@ namespace Emission.UI
         /// <summary>
         /// Updates ImGui input and IO configuration state.
         /// </summary>
-        public void Update(float deltaSeconds)
+        public void Update()
         {
             if (_frameBegun)
             {
                 ImGui.Render();
             }
 
-            SetPerFrameImGuiData(deltaSeconds);
+            SetPerFrameImGuiData(Time.DeltaTime);
             UpdateImGuiInput();
 
             _frameBegun = true;
@@ -179,29 +197,38 @@ namespace Emission.UI
 
         public void Dispose()
         {
-            glDeleteVertexArray(_vertexArray);
-            glDeleteBuffer(_vertexBuffer);
-            glDeleteBuffer(_indexBuffer);
+            _vertexArray.Delete();
+            _vertexArray.Delete();
+            _indexBuffer.Delete();
 
-            glDeleteTexture(_fontTexture);
+            uint tid = _fontTexture;
+            glDeleteTextures(1, &tid);
 
             _shader.Dispose();
+        }
+
+        public static void LabelObject(uint objLabelIdent, uint glObject, string name)
+        {
+            GlUtils.StrToByteArrayPtr(name, out byte** ptr, out byte[] buffer);
+            if (KHRDebugAvailable)
+            {
+                glObjectLabel(objLabelIdent, glObject, buffer.Length, ptr);
+            }
         }
 
         /// <summary>
         /// Sets per-frame data based on the associated window.
         /// This is called by Update(float).
         /// </summary>
-        private void SetPerFrameImGuiData(float deltaSeconds)
+        private void SetPerFrameImGuiData(float delta)
         {
             ImGuiIOPtr io = ImGui.GetIO();
             Vector2 windowSize = GameInstance.Window.WindowSize;
             io.DisplaySize = new System.Numerics.Vector2(windowSize.X, windowSize.Y);
             io.DisplayFramebufferScale = System.Numerics.Vector2.One;
-            io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
+            io.DeltaTime = delta; // DeltaTime is in seconds.
         }
 
-        readonly List<char> PressedChars = new List<char>();
 
         private void UpdateImGuiInput()
         {
@@ -224,11 +251,11 @@ namespace Emission.UI
                 io.KeysDown[(int)key] = Input.IsKeyDown(key);
             }
 
-            foreach (var c in PressedChars)
+            foreach (var c in _pressedChars)
             {
                 io.AddInputCharacter(c);
             }
-            PressedChars.Clear();
+            _pressedChars.Clear();
 
             io.KeyCtrl = Input.IsKeyDown(Keys.LeftControl) || Input.IsKeyDown(Keys.RightControl);
             io.KeyAlt = Input.IsKeyDown(Keys.LeftAlt) || Input.IsKeyDown(Keys.RightAlt);
@@ -238,7 +265,7 @@ namespace Emission.UI
 
         internal void PressChar(char keyChar)
         {
-            PressedChars.Add(keyChar);
+            _pressedChars.Add(keyChar);
         }
 
         internal void MouseScroll(Vector2 offset)
@@ -251,35 +278,48 @@ namespace Emission.UI
 
         private void RenderImDrawData(ImDrawDataPtr draw_data)
         {
-            if (draw_data.CmdListsCount == 0)
-            {
-                return;
-            }
+            if (draw_data.CmdListsCount == 0) return;
 
             // Get intial state.
-            int prevVAO = glGetInteger(GL_VERTEX_ARRAY_BINDING);
-            int prevArrayBuffer = glGetInteger(GL_ARRAY_BUFFER_BINDING);
-            int prevProgram = glGetInteger(GL_CURRENT_PROGRAM);
-            bool prevBlendEnabled = glGetBoolean(GL_BLEND);
-            bool prevScissorTestEnabled = glGetBoolean(GL_SCISSOR_TEST);
-            int prevBlendEquationRgb = glGetInteger(GL_BLEND_EQUATION_RGB);
-            int prevBlendEquationAlpha = glGetInteger(GL_BLEND_EQUATION_ALPHA);
-            int prevBlendFuncSrcRgb = glGetInteger(GL_BLEND_SRC_RGB);
-            int prevBlendFuncSrcAlpha = glGetInteger(GL_BLEND_SRC_ALPHA);
-            int prevBlendFuncDstRgb = glGetInteger(GL_BLEND_DST_RGB);
-            int prevBlendFuncDstAlpha = glGetInteger(GL_BLEND_DST_ALPHA);
-            bool prevCullFaceEnabled = glGetBoolean(GL_CULL_FACE);
-            bool prevDepthTestEnabled = glGetBoolean(GL_DEPTH_TEST);
-            int prevActiveTexture = glGetInteger(GL_ACTIVE_TEXTURE);
-            glActiveTexture((int)TextureUnit.Texture0);
-            int prevTexture2D = glGetInteger(GL_TEXTURE_BINDING_2D);
-            Span<int> prevScissorBox = stackalloc int[4];
+            //int prevVAO = glGetInteger(GL_VERTEX_ARRAY_BINDING);
+            int prevArrayBuffer,
+                prevBlendEquationRgb,
+                prevBlendEquationAlpha,
+                prevBlendFuncSrcRgb,
+                prevBlendFuncSrcAlpha,
+                prevBlendFuncDstRgb,
+                prevBlendFuncDstAlpha,
+                prevActiveTexture;
+            bool prevBlendEnabled, 
+                prevScissorTestEnabled, 
+                prevCullFaceEnabled, 
+                prevDepthTestEnabled;
             
+            glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &prevArrayBuffer);
+            //int prevProgram = glGetInteger(GL_CURRENT_PROGRAM);
+            glGetBooleanv(GL_BLEND, &prevBlendEnabled);
+            glGetBooleanv(GL_SCISSOR_TEST, &prevScissorTestEnabled);
+            glGetIntegerv(GL_BLEND_EQUATION_RGB, &prevBlendEquationRgb);
+            glGetIntegerv(GL_BLEND_EQUATION_ALPHA, &prevBlendEquationAlpha);
+            glGetIntegerv(GL_BLEND_SRC_RGB, &prevBlendFuncSrcRgb);
+            glGetIntegerv(GL_BLEND_SRC_ALPHA, &prevBlendFuncSrcAlpha);
+            glGetIntegerv(GL_BLEND_DST_RGB, &prevBlendFuncDstRgb);
+            glGetIntegerv(GL_BLEND_DST_ALPHA, &prevBlendFuncDstAlpha);
+            glGetBooleanv(GL_CULL_FACE, &prevCullFaceEnabled);
+            glGetBooleanv(GL_DEPTH_TEST, &prevDepthTestEnabled);
+            glGetIntegerv(GL_ACTIVE_TEXTURE, &prevActiveTexture);
+            glActiveTexture((int)TextureUnit.Texture0);
+            //int prevTexture2D = glGetInteger(GL_TEXTURE_BINDING_2D);
+            Span<int> prevScissorBox = stackalloc int[4];
+            fixed (int* iptr = &prevScissorBox[0])
+            {
+                glGetIntegeri_v(GL_SCISSOR_BOX, 0, iptr);
+            }
 
             // Bind the element buffer (thru the VAO) so that we can resize it.
-            glBindVertexArray(_vertexArray);
+            glBindVertexArray(_vertexArray.Id);
             // Bind the vertex buffer so that we can resize it.
-            glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer.Id);
             for (int i = 0; i < draw_data.CmdListsCount; i++)
             {
                 ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
@@ -288,33 +328,34 @@ namespace Emission.UI
                 if (vertexSize > _vertexBufferSize)
                 {
                     int newSize = (int)Math.Max(_vertexBufferSize * 1.5f, vertexSize);
-
-                    glBufferData(GL_ARRAY_BUFFER, newSize, IntPtr.Zero, GL_DYNAMIC_DRAW);
+                    
+                    glBufferData(GL_ARRAY_BUFFER, new IntPtr(newSize), IntPtr.Zero.ToPointer(), GL_DYNAMIC_DRAW);
                     _vertexBufferSize = newSize;
 
-                    Console.WriteLine($"Resized dear imgui vertex buffer to new size {_vertexBufferSize}");
+                    Debug.Warning($"[WARNING][ImGui] Resized dear ImGui vertex buffer to new size {_vertexBufferSize}");
                 }
 
                 int indexSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
                 if (indexSize > _indexBufferSize)
                 {
                     int newSize = (int)Math.Max(_indexBufferSize * 1.5f, indexSize);
-                    glBufferData(GL_ELEMENT_ARRAY_BUFFER, newSize, IntPtr.Zero, GL_DYNAMIC_DRAW);
+                    glBufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(newSize), IntPtr.Zero.ToPointer(), GL_DYNAMIC_DRAW);
                     _indexBufferSize = newSize;
 
-                    Console.WriteLine($"Resized dear imgui index buffer to new size {_indexBufferSize}");
+                    Debug.Warning($"[WARNING][ImGui] Resized dear ImGui index buffer to new size {_indexBufferSize}");
                 }
             }
 
             // Setup orthographic projection matrix into our constant buffer
             ImGuiIOPtr io = ImGui.GetIO();
-            Matrix4 mvp = Matrix4.OrthographicOffCenter(0.0f, io.DisplaySize.X, io.DisplaySize.Y, 0.0f, -1.0f, 1.0f);
-
+            Viewport viewport = GameInstance.Window.Viewport;
+            Matrix4 mvp = Matrix4.Orthographic(viewport.Width, viewport.Height, 0.01f, 400.0f);
+            
             _shader.Start();
             _shader.UseUniformProjectionMat4("projection_matrix", mvp);
             _shader.UseUniform1f("in_fontTexture", 0);
 
-            glBindVertexArray(_vertexArray);
+            glBindVertexArray(_vertexArray.Id);
 
             draw_data.ScaleClipRects(io.DisplayFramebufferScale);
 
@@ -330,34 +371,30 @@ namespace Emission.UI
             {
                 ImDrawListPtr cmd_list = draw_data.CmdListsRange[n];
 
-                glBufferSubData(GL_ARRAY_BUFFER, 0, cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>(), cmd_list.VtxBuffer.Data);
+                int size = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
+                glBufferSubData(GL_ARRAY_BUFFER, (int*)0, &size, cmd_list.VtxBuffer.Data.ToPointer());
 
-                glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, cmd_list.IdxBuffer.Size * sizeof(ushort), cmd_list.IdxBuffer.Data);
+                int bufferSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
+                glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (int*)0, &bufferSize, cmd_list.IdxBuffer.Data.ToPointer());
 
                 for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
                 {
                     ImDrawCmdPtr pcmd = cmd_list.CmdBuffer[cmd_i];
-                    if (pcmd.UserCallback != IntPtr.Zero)
+                    if (pcmd.UserCallback != IntPtr.Zero) throw new NotImplementedException();
+
+                    glActiveTexture((int)TextureUnit.Texture0);
+                    glBindTexture(GL_TEXTURE_2D, (uint)pcmd.TextureId);
+                    
+                    var clip = pcmd.ClipRect;
+                    glScissor((int)clip.X, (int)(GameInstance.Window.WindowSize.Y - clip.W), (int)(clip.Z - clip.X), (int)(clip.W - clip.Y));
+
+                    if ((io.BackendFlags & ImGuiBackendFlags.RendererHasVtxOffset) != 0)
                     {
-                        throw new NotImplementedException();
+                        glDrawElementsBaseVertex(GL_TRIANGLES, (int)pcmd.ElemCount, GL_UNSIGNED_SHORT, (void*)(pcmd.IdxOffset * sizeof(ushort)), unchecked((int)pcmd.VtxOffset));
                     }
                     else
                     {
-                        glActiveTexture((int)TextureUnit.Texture0);
-                        glBindTexture(GL_TEXTURE_2D, (uint)pcmd.TextureId);
-
-                        // We do _windowHeight - (int)clip.W instead of (int)clip.Y because gl has flipped Y when it comes to these coordinates
-                        var clip = pcmd.ClipRect;
-                        glScissor((int)clip.X, (int)(GameInstance.Window.WindowSize.Y - clip.W), (int)(clip.Z - clip.X), (int)(clip.W - clip.Y));
-
-                        if ((io.BackendFlags & ImGuiBackendFlags.RendererHasVtxOffset) != 0)
-                        {
-                            glDrawElementsBaseVertex(GL_TRIANGLES, (int)pcmd.ElemCount, GL_UNSIGNED_SHORT, (void*)(pcmd.IdxOffset * sizeof(ushort)), unchecked((int)pcmd.VtxOffset));
-                        }
-                        else
-                        {
-                            glDrawElements(GL_TRIANGLES, (int)pcmd.ElemCount, GL_UNSIGNED_SHORT, (void*)(pcmd.IdxOffset * sizeof(ushort)));
-                        }
+                        glDrawElements(GL_TRIANGLES, (int)pcmd.ElemCount, GL_UNSIGNED_SHORT, (void*)(pcmd.IdxOffset * sizeof(ushort)));
                     }
                 }
             }
@@ -365,19 +402,21 @@ namespace Emission.UI
             glDisable(GL_BLEND);
             glDisable(GL_SCISSOR_TEST);
 
+            _shader.Stop();
+            
             // Reset state
-            glBindTexture(GL_TEXTURE_2D, (uint)prevTexture2D);
-            glActiveTexture(prevActiveTexture);
-            glUseProgram((uint)prevProgram);
-            glBindVertexArray((uint)prevVAO);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glActiveTexture((uint)prevActiveTexture);
+            
+            glBindVertexArray(0);
             glScissor(prevScissorBox[0], prevScissorBox[1], prevScissorBox[2], prevScissorBox[3]);
             glBindBuffer(GL_ARRAY_BUFFER, (uint)prevArrayBuffer);
-            glBlendEquationSeparate(prevBlendEquationRgb, prevBlendEquationAlpha);
+            glBlendEquationSeparate((uint)prevBlendEquationRgb, (uint)prevBlendEquationAlpha);
             glBlendFuncSeparate(
-                prevBlendFuncSrcRgb,
-                prevBlendFuncDstRgb,
-                prevBlendFuncSrcAlpha,
-                prevBlendFuncDstAlpha);
+                (uint)prevBlendFuncSrcRgb,
+                (uint)prevBlendFuncDstRgb,
+                (uint)prevBlendFuncSrcAlpha,
+                (uint)prevBlendFuncDstAlpha);
             if (prevBlendEnabled) glEnable(GL_BLEND); else glDisable(GL_BLEND);
             if (prevDepthTestEnabled) glEnable(GL_DEPTH_TEST); else glDisable(GL_DEPTH_TEST);
             if (prevCullFaceEnabled) glEnable(GL_CULL_FACE); else glDisable(GL_CULL_FACE);
@@ -406,6 +445,21 @@ namespace Emission.UI
             io.KeyMap[(int)ImGuiKey.X] = (int)Keys.X;
             io.KeyMap[(int)ImGuiKey.Y] = (int)Keys.Y;
             io.KeyMap[(int)ImGuiKey.Z] = (int)Keys.Z;
+        }
+
+        private static bool IsExtensionSupported(string name)
+        {
+            int n;
+            glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+            
+            for (uint i = 0; i < n; i++)
+            {
+                string extension = GlUtils.PtrToStringUTF8(glGetStringi(GL_EXTENSIONS, i));
+                
+                if (extension == name) return true;
+            }
+
+            return false;
         }
     }
 }

@@ -37,12 +37,11 @@ namespace Emission.IO
 
         public unsafe Icon(string path)
         {
-            byte[] buffer = GameFile.ReadAllBytes(path);
-            ImageResult image = ImageResult.FromMemory(buffer, ColorComponents.RedGreenBlueAlpha);
+            Sprite sprite = new Sprite(path);
 
-            Width = image.Width;
-            Height = image.Height;
-            Data = image.Data;
+            Width = sprite.Width;
+            Height = sprite.Height;
+            Data = sprite.Bytes;
 
             fixed (byte* ptr = &Data[0])
             {

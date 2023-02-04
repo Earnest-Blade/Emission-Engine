@@ -5,7 +5,7 @@ namespace Emission.Graphics
 {
     public interface ICamera
     {
-        private static ICamera _main { get; set; }
+        private static ICamera _current { get; set; }
 
         public Transform Transform { get; }
         public Matrix4 Projection { get; }
@@ -19,8 +19,8 @@ namespace Emission.Graphics
 
         public void Resize(Vector2 size);
         
-        public static void SetMain(ICamera camera) => _main = camera;
-        public static ICamera GetMain() => _main;
-        public static bool Exists() => _main != null;
+        public static void SetCurrentCamera(ICamera camera) => _current = camera;
+        public static ICamera GetCurrent() => _current;
+        public static bool Exists() => _current != null;
     }
 }

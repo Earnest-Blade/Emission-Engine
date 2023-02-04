@@ -38,7 +38,7 @@ namespace Emission
                 return;
             }
 
-            throw new EmissionException(Errors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
         }
         
         public static void AddDelegate<T>(string type, EmissionHandler<T> handler)
@@ -49,7 +49,7 @@ namespace Emission
                 return;
             }
             
-            throw new EmissionException(Errors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
         }
         
         public static void RemoveDelegate(string type, EmissionHandler handler)
@@ -60,7 +60,7 @@ namespace Emission
                 return;
             }
             
-            throw new EmissionException(Errors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
         }
         
         public static void RemoveDelegate<T>(string type, EmissionHandler<T> handler)
@@ -71,7 +71,7 @@ namespace Emission
                 return;
             }
             
-            throw new EmissionException(Errors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
         }
 
         public static void Invoke(string type)
@@ -82,11 +82,11 @@ namespace Emission
                 {
                     GameInstance.EventDispatcher.Invoke(type);
                 }
-                catch (Exception e) { throw new EmissionException(Errors.EmissionEventException, e); }
+                catch (Exception e) { throw new EmissionException(EmissionErrors.EmissionEventException, e); }
                 return;
             }
             
-            throw new EmissionException(Errors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
         }
         
         public static void Invoke<T>(string type, T args)
@@ -97,11 +97,11 @@ namespace Emission
                 {
                     GameInstance.EventDispatcher.Invoke<T>(type, args);
                 }
-                catch (Exception e) { throw new EmissionException(Errors.EmissionEventException, e); }
+                catch (Exception e) { throw new EmissionException(EmissionErrors.EmissionEventException, e); }
                 return;
             }
             
-            throw new EmissionException(Errors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
         }
         
         public static bool HasEventDispatcher()
@@ -125,7 +125,7 @@ namespace Emission
         public static void DisposeEventDispatcher()
         {
             if (!HasEventDispatcher()) 
-                throw new EmissionException(Errors.EmissionEventException, $"Event Dispatcher isn't initialize!");
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Event Dispatcher isn't initialize!");
 
             GameInstance.EventDispatcher.Dispose();
             EventDispatcher.Instance = null;
@@ -181,7 +181,7 @@ namespace Emission
             public void Invoke([NotNull]string name)
             {
                 var eventDel = (MulticastDelegate)GetType().GetField("On" + name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Instance);
-                if (eventDel == null) throw new EmissionException(Errors.EmissionEventException, $"Cannot find delegate {name}");
+                if (eventDel == null) throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find delegate {name}");
                 
                 foreach (Delegate handle in eventDel.GetInvocationList())
                 {
@@ -192,7 +192,7 @@ namespace Emission
             public void Invoke<T>([NotNull]string name, T args)
             {
                 var eventDel = (MulticastDelegate)GetType().GetField("On" + name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Instance);
-                if (eventDel == null) throw new EmissionException(Errors.EmissionEventException, $"Cannot find delegate {name}");
+                if (eventDel == null) throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find delegate {name}");
                 
                 foreach (Delegate handle in eventDel.GetInvocationList())
                 {

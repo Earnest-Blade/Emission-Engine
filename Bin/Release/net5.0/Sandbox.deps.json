@@ -197,25 +197,6 @@
           }
         }
       },
-      "protobuf-net/3.1.25": {
-        "dependencies": {
-          "protobuf-net.Core": "3.1.25"
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.dll": {
-            "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.1.25.24892"
-          }
-        }
-      },
-      "protobuf-net.Core/3.1.25": {
-        "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.Core.dll": {
-            "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.1.25.24892"
-          }
-        }
-      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -832,8 +813,8 @@
           "AssimpNet": "5.0.0-beta1",
           "FreeTypeSharp": "1.1.3",
           "ImGui.NET": "1.88.0",
-          "StbImageSharp": "2.27.13",
-          "protobuf-net": "3.1.25"
+          "Newtonsoft.Json": "13.0.1",
+          "StbImageSharp": "2.27.13"
         },
         "runtime": {
           "Emission Engine.dll": {}
@@ -902,20 +883,6 @@
       "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
       "path": "newtonsoft.json/13.0.1",
       "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
-    },
-    "protobuf-net/3.1.25": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-vej8g3+5KpwuwA20xoOMJK9nUM/hr7maSu56pIqItmX28JbXF0co1/pD6Mg84+mhLYRQpKiSlOxIDvtaYojKWA==",
-      "path": "protobuf-net/3.1.25",
-      "hashPath": "protobuf-net.3.1.25.nupkg.sha512"
-    },
-    "protobuf-net.Core/3.1.25": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-LqDpeU+rbzO/uD2iYUBIGCgaeCBrxwmCDGVmUNZ67yShrGLlLJHwFMcDsGZUCxE2iHdRJawMUkTfs3HYIXiqWg==",
-      "path": "protobuf-net.core/3.1.25",
-      "hashPath": "protobuf-net.core.3.1.25.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

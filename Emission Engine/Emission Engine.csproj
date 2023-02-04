@@ -44,14 +44,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Errors.resx">
+      <EmbeddedResource Update="EmissionErrors.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+        <LastGenOutput>EmissionErrors.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Errors.Designer.cs">
+      <Compile Update="EmissionErrors.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Errors.resx</DependentUpon>
@@ -62,6 +62,8 @@
       <Folder Include="..\Data">
         <Link>Data</Link>
       </Folder>
+      <Folder Include="Core\Natives" />
+      <Folder Include="Engine\Emission.Audio" />
     </ItemGroup>
 
 </Project>

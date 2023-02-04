@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 namespace Emission.Mathematics
 {
-    [PageSerializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Vector4 : IEquatable<Vector4>
     {

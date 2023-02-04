@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Emission.IO;
 using Emission.Mathematics;
-using static Emission.Graphics.GL.GL;
+using Emission.Natives.GL;
+using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics.Shading
 {
-    public class Shader : IEquatable<Shader>, IDisposable
+    public unsafe class Shader : IEquatable<Shader>, IDisposable
     {
         public const string UNIFORM_TRANSFORM = "uTransform";
         public const string UNIFORM_VIEW = "uView";
         public const string UNIFORM_PROJECTION = "uProjection";
 
         // public variables
-        public string Name => "shader" + _program;
+        public string Name => _name;
         public uint ID => _program;
-
+        
         // private variables
+        private string _name;
         private uint _program;
         private uint _vertex;
         private uint _fragment;
@@ -27,16 +27,15 @@ namespace Emission.Graphics.Shading
         private uint _tes;
 
         // constructor
-        public Shader(string path)
-        {
-            ShaderLoader.ShaderStruct shader = ShaderLoader.LoadShader(GameFile.ReadLines(path));
-            Initialize(shader);
-        }
+        public Shader(string path) : this(ShaderLoader.LoadShader(GameFile.ReadLines(path)), null) {}
+        public Shader(string path, string name) : this(ShaderLoader.LoadShader(GameFile.ReadLines(path)), name) {}
         
         // constructor
-        public Shader(string vertex, string fragment)
+        public Shader(ShaderLoader.ShaderStruct shaderStruct, string name)
         {
-            Initialize(new ShaderLoader.ShaderStruct(vertex, fragment));
+            _name = name;
+            
+            Initialize(shaderStruct);
         }
 
         /// <summary>
@@ -92,6 +91,9 @@ namespace Emission.Graphics.Shading
             glDeleteShader(_tcs);
             glDeleteShader(_tes);
 
+            if (_name == null) _name = $"shader{_program}";
+            else _name += _program.ToString();
+
             Debug.Log($"[INFO] Successfully compile shader '{Name}'");
         }
 
@@ -126,7 +128,7 @@ namespace Emission.Graphics.Shading
         /// <returns>Attribute's location</returns>
         public int GetAttributeLocation(string name)
         {
-            return glGetAttribLocation(_program, name);
+            return glGetAttribLocation(_program, GlUtils.StrToBytePtr(name));
         }
         
         /// <summary>
@@ -136,8 +138,7 @@ namespace Emission.Graphics.Shading
         /// <returns>Uniform's location</returns>
         public int GetUniformLocation(string name)
         {
-            int location = glGetUniformLocation(_program, name);
-            return location;
+            return glGetUniformLocation(_program, GlUtils.StrToBytePtr(name));
         }
         
         /// <summary>
@@ -197,7 +198,8 @@ namespace Emission.Graphics.Shading
         /// <param name="value">New value of uniform</param>
         public void UseUniformProjectionMat4(string name, Matrix4 value)
         {
-            glUniformMatrix4fv(GetUniformLocation(name), 1, false, value.ToArray());
+            fixed (float* v = &value.ToArray()[0])
+                glUniformMatrix4fv(GetUniformLocation(name), 1, false, v);
         }
 
         /// <summary>
@@ -207,7 +209,8 @@ namespace Emission.Graphics.Shading
         /// <param name="value">New value of uniform</param>
         public void UseUniformMat4(string name, Matrix4 value)
         {
-            glUniformMatrix4fv(GetUniformLocation(name), 1, true, value.ToArray());
+            fixed (float* v = &value.ToArray()[0])
+                glUniformMatrix4fv(GetUniformLocation(name), 1, true, v);
         }
 
         public bool Equals(Shader other)

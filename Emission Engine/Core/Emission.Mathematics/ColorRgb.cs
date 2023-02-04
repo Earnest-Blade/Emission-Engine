@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 namespace Emission.Mathematics
 {
     [Serializable]
-    [PageSerializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct ColorRgb : IEquatable<ColorRgb>
     {
@@ -161,9 +160,17 @@ namespace Emission.Mathematics
 
         public uint Value;
 
-        [DataMember] public byte R;
-        [DataMember] public byte G;
-        [DataMember] public byte B;
+        [DataMember] public byte R { get; set; }
+        [DataMember] public byte G { get; set; }
+        [DataMember] public byte B { get; set; }
+
+        public ColorRgb()
+        {
+            Value = 0;
+            R = 0;
+            G = 0;
+            B = 0;
+        }
 
         public ColorRgb(uint code)
         {

@@ -10,8 +10,9 @@ namespace Emission
         public static Game Game => _gameInstance;
         public static Window.Window Window => HasIntance() ? Game.Window : null;
         public static Renderer Renderer => HasIntance() ? Game.Renderer : null;
-        public static Debug Debugger => HasIntance() ? Game.Debugger : null;
+        public static Debug Debugger => HasIntance() ? Game.Debugger : null; 
         public static Data Data => HasIntance() ? Game.Data : null;
+        public static EngineSettings EngineSettings => HasIntance() ? Game.Settings : EngineSettings.GetDefault();
 
         public static PageManager PageManager => HasIntance() ? Game.PageManager : null;
 
@@ -34,9 +35,9 @@ namespace Emission
         private static Game _gameInstance;
         private static readonly object _padlock = new object();
 
-        internal GameInstance()
+        internal GameInstance(EngineSettings settings)
         {
-            _gameInstance = new Game();
+            _gameInstance = new Game(settings);
             _instance = this;
         }
 

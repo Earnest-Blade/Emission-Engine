@@ -1,19 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 using Emission.IO;
 using Emission.Graphics;
+using Emission.Natives.GL;
 using Emission.Window.GLFW;
-using static Emission.Graphics.GL.GL;
 using Emission.Mathematics;
-using System.Reflection;
+using static Emission.Natives.GL.Gl;
 
 namespace Emission.Window
 {
-    public sealed class Window : IDisposable, IEngineBehaviour
+    public sealed unsafe class Window : IDisposable, IEngineBehaviour
     {
         /// <summary>
         /// Pointer to Glfw Window object. Represent window. Public get and can be only set class constructor.
@@ -24,7 +22,7 @@ namespace Emission.Window
         /// Structure that contains all information to generate window.
         /// Information cannot be change, so it can be used to get starting value for the width or the title for example.
         /// </summary>
-        public WindowParameters Parameters { get; }
+        public WindowConfig Config { get; }
 
         /// <summary>
         /// Return, as float value, the relationship between the width and the height of the screen.
@@ -88,7 +86,7 @@ namespace Emission.Window
         /// <summary>
         /// Return or set window's title. Use private variable <see cref="_title"/> to save current title.
         /// When the title need to change, it define the private variable and then change title using
-        /// <see cref="Glfw.SetWindowTitle"/>.
+        /// <see cref="Glfw.SetWindowTitle(IntPtr, byte[])"/>.
         /// </summary>
         [MaybeNull]
         public string Title
@@ -150,16 +148,18 @@ namespace Emission.Window
         }
 
         /// <summary>
-        /// Gets the clear color of the window.
+        /// Get the color use to clear the window.
         /// </summary>
-        public ColorRgb ClearColor
-        {
-            get => Parameters.ClearColorRgb;
-        }
+        public ColorRgb ClearColor { get => _clearColor; set => _clearColor = value; }
+
+        /// <summary>
+        /// Get Window's Icon.
+        /// </summary>
+        public Icon WindowIcon => _windowIcon;
 
         /// <summary>
         /// Viewport of the window.
-        /// Countains WindowSize and Window Position
+        /// Contains WindowSize and Window Position
         /// </summary>
         public Viewport Viewport => new Viewport(0, 0, WindowSize.X, WindowSize.Y, 0.1f, 400f);
 
@@ -172,60 +172,57 @@ namespace Emission.Window
         private string _title;
         private Vector2 _lastWinSize;
         private Vector2 _lastWinPos;
+        private ColorRgb _clearColor;
+        private Icon _windowIcon;
 
-        public Window(WindowParameters parameters)
+        public Window(WindowConfig config)
         {
-            Parameters = parameters;
-            _title = parameters.Title;
-            _lastWinSize = (Parameters.Width, Parameters.Height);
+            Config = config;
+            _title = config.Title;
+            _lastWinSize = (Config.Width, Config.Height);
             _lastWinPos = Vector2.Zero;
+            _clearColor = ColorRgb.Black;
 
             if (!Glfw.Init())
             {
                 Glfw.GetError(out string error);
-                throw new EmissionException(Errors.EmissionGlfwException, error);
+                throw new EmissionException(EmissionErrors.EmissionGlfwException, error);
             }
 
             Glfw.WindowHint(WindowHint.ClientApi, ClientApi.OpenGL);
             Glfw.WindowHint(WindowHint.OpenglProfile, Profile.Core);
-            Glfw.WindowHint(WindowHint.ContextVersionMinor, Parameters.MinorVersion);
-            Glfw.WindowHint(WindowHint.ContextVersionMajor, Parameters.MajorVersion);
-            Glfw.WindowHint(WindowHint.Focused, Parameters.IsFocused);
-            Glfw.WindowHint(WindowHint.Floating, Parameters.IsFloating);
-            Glfw.WindowHint(WindowHint.Maximized, Parameters.IsMaximized);
-            Glfw.WindowHint(WindowHint.Decorated, Parameters.IsDecorated);
-            Glfw.WindowHint(WindowHint.Resizable, Parameters.IsResizable);
-            Glfw.WindowHint(WindowHint.Visible, Parameters.IsVisible);
-            Glfw.WindowHint(WindowHint.CenterCursor, Parameters.IsCursorCentered);
-            Glfw.WindowHint(WindowHint.FocusOnShow, Parameters.IsFocusedOnShow);
+            Glfw.WindowHint(WindowHint.ContextVersionMinor, Config.MinorVersion);
+            Glfw.WindowHint(WindowHint.ContextVersionMajor, Config.MajorVersion);
+            Glfw.WindowHint(WindowHint.Focused, Config.IsFocused);
+            Glfw.WindowHint(WindowHint.Floating, Config.IsFloating);
+            Glfw.WindowHint(WindowHint.Maximized, Config.IsMaximized);
+            Glfw.WindowHint(WindowHint.Decorated, Config.IsDecorated);
+            Glfw.WindowHint(WindowHint.Resizable, Config.IsResizable);
+            Glfw.WindowHint(WindowHint.Visible, Config.IsVisible);
+            Glfw.WindowHint(WindowHint.CenterCursor, Config.IsCursorCentered);
+            Glfw.WindowHint(WindowHint.FocusOnShow, Config.IsFocusedOnShow);
+            Glfw.WindowHint(WindowHint.DepthBits, Config.DepthBits);
+            Glfw.WindowHint(WindowHint.StencilBits, Config.StencilBits);
 
-            Handle = Glfw.CreateWindow(Parameters.Width, Parameters.Height, Parameters.Title, Monitor.None, IntPtr.Zero);
-            if (Handle == IntPtr.Zero) throw new EmissionException(Errors.EmissionGlfwException, "Failed to create GLFW Window!");
+            Glfw.WindowHint(WindowHint.OpenglDebugContext, GameInstance.EngineSettings.Debug ? GL_TRUE : GL_FALSE);
+
+            Handle = Glfw.CreateWindow(Config.Width, Config.Height, Config.Title, Monitor.None, IntPtr.Zero);
+            if (Handle == IntPtr.Zero) throw new EmissionException(EmissionErrors.EmissionGlfwException, "Failed to create GLFW Window!");
 
             AssignContext();
             Debug.Log("[INFO] New window has been created!");
-            
-            Debug.Log($"[INFO] Using OpenGL {glGetString(GL_VERSION)}");
-            Debug.Log($"[INFO] Using GLSL {glGetString(GL_SHADING_LANGUAGE_VERSION)}");
-            Debug.Log($"[INFO] Running with OpenGL Vendor {glGetString(GL_VENDOR)}");
-            Debug.Log($"[INFO] Running with OpenGL Renderer {glGetString(GL_RENDERER)}");
             Debug.Log($"[INFO] Running with GLFW {Glfw.Version}");
 
-            if (!string.IsNullOrEmpty(parameters.Icon))
-                SetIcon(parameters.Icon);
+            if (!string.IsNullOrEmpty(config.Icon))
+                SetIcon(config.Icon);
         }
 
+        /// <summary>
+        /// Initialize Window.
+        /// Enable OpenGl, initialize Event Delegates and Glfw inputs.
+        /// </summary>
         public void Initialize()
         {
-            glEnable(GL_BLEND);
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_TEXTURE_2D);
-            
-            glDepthFunc(GL_LESS);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
-            glViewport(0, 0, Parameters.Width, Parameters.Height);
-            
             Event.AddDelegate(Event.WindowClose, OnClose);
             Event.AddDelegate<Vector2>(Event.WindowResize, OnResize);
             Event.AddDelegate<Vector2>(Event.WindowMove, OnMove);
@@ -252,31 +249,46 @@ namespace Emission.Window
             Glfw.SetCursorPositionCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MouseMove, ((float)x, (float)y)));
         }
 
+        /// <summary>
+        /// Enable window.
+        /// </summary>
         public void Start()
         {
             Visible = true;
         }
 
+        /// <summary>
+        /// Update window.
+        /// </summary>
         public void Update()
         {
             Glfw.PollEvents();
         }
 
+        /// <summary>
+        /// Clear window color.
+        /// </summary>
         public void Render()
         {
-            glClearColor(Parameters.ClearColorRgb.R, Parameters.ClearColorRgb.G, Parameters.ClearColorRgb.B, 0);
+            glClearColor(_clearColor.R, _clearColor.G, _clearColor.B, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
+        /// <summary>
+        /// Swap Glfw buffers.
+        /// </summary>
         public void Swap()
         {
             Glfw.SwapBuffers(Handle);
         }
 
+        /// <summary>
+        /// Make current thread as Glfw Context. Load OpenGl Context.
+        /// </summary>
         public void AssignContext()
         {
             Glfw.MakeContextCurrent(Handle);
-            Import(Glfw.GetProcAddress);
+            GlLoader.Initialize(Glfw.GetProcAddress);
         }
 
         /// <summary>
@@ -285,112 +297,58 @@ namespace Emission.Window
         /// <param name="path">Path to the image</param>
         public void SetIcon(string path)
         {
-            Glfw.SetWindowIcon(Handle, 1, new []{new Icon(path)});
+            _windowIcon = new Icon(path);
+            Glfw.SetWindowIcon(Handle, 1, new []{_windowIcon});
         }
-
+        
+        /// <summary>
+        /// Dispose window.
+        /// </summary>
         public void Stop()
         {
             Dispose();
         }
         
+        /// <summary>
+        /// Destroy and terminate window.
+        /// </summary>
         public void Dispose()
         {
             Glfw.DestroyWindow(Handle);
             Glfw.Terminate();
         }
-        
-        public void OnClose()
+
+        private void OnClose()
         {
             GameController.Stop(0);
         }
-        
-        public void OnResize(Vector2 size)
+
+        private void OnResize(Vector2 size)
         {
             glViewport(0, 0, (int)size.X, (int)size.Y);
             _lastWinSize = size;
         }
 
-        public void OnMove(Vector2 pos)
+        private void OnMove(Vector2 pos)
         {
             _lastWinPos = pos;
         }
 
-        public void OnFocus(bool focused)
+        private void OnFocus(bool focused)
         {
             
         }
 
-        public void OnIconify(bool iconified)
+        private void OnIconify(bool iconified)
         {
             
         }
-        
-        public void OnMaximize(bool maximized)
+
+        private void OnMaximize(bool maximized)
         {
             
         }
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct WindowParameters
-    {
-        public int Width { get; set; } 
-        public int Height { get; set; } 
-        public string Title { get; set; } 
-        public string Icon { get; set; }
-
-        public bool IsFocused { get; set; } 
-        public bool IsFloating { get; set; } 
-        public bool IsMaximized { get; set; } 
-        public bool IsDecorated { get; set; } 
-        public bool IsResizable { get; set; } 
-        public bool IsVisible { get; set; } 
-        public bool IsCursorCentered { get; set; } 
-        public bool IsFocusedOnShow { get; set; } 
-
-        public string Version { get; set; } 
-        public int MinorVersion { get; set; } 
-        public int MajorVersion { get; set; } 
-
-        public int DepthBits { get; set; } 
-        public int StencilBits { get; set; } 
-
-        [JsonIgnore]
-        public ColorRgb ClearColorRgb;
-
-        public static WindowParameters Default(string name) => Default(name, 960 * 2, 540 * 2);
-        public static WindowParameters Default(string name, int width, int height)
-        {
-            return new WindowParameters()
-            {
-                Width = width,
-                Height = height,
-                Title = name,
-                Icon = null,
-                
-                IsFloating = true,
-                IsFocused = false,
-                IsMaximized = false,
-                IsDecorated = true,
-                IsResizable = true,
-                IsVisible = false,
-                IsCursorCentered = false,
-                IsFocusedOnShow = true,
-                
-                Version = "0.0.1",
-                MinorVersion = 3,
-                MajorVersion = 4,
-                
-                DepthBits = 24,
-                StencilBits = 8,
-                
-                ClearColorRgb = ColorRgb.Black
-            };
-        }
-
-        public static WindowParameters FromJson(string path)
-        {
-            return Json.Deserialize<WindowParameters>(path);
-        }
-    }
+    
 }

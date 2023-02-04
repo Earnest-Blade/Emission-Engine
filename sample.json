@@ -1,0 +1,34 @@
+{
+  "Width": 1920,
+  "Height": 1080,
+  "Title": "Window",
+  "Icon": null,
+  "IsFocused": false,
+  "IsFloating": true,
+  "IsMaximized": false,
+  "IsDecorated": true,
+  "IsResizable": true,
+  "IsVisible": false,
+  "IsCursorCentered": false,
+  "IsFocusedOnShow": true,
+  "Version": "0.0.1",
+  "MinorVersion": 3,
+  "MajorVersion": 4,
+  "DepthBits": 24,
+  "StencilBits": 8,
+  "RenderConfig": {
+    "Name": "OpenGL",
+    "Version": 0,
+    "IsBlend": true,
+    "IsClipDistance": false,
+    "IsCullFace": true,
+    "IsDepthClamp": false,
+    "IsDepthTest": true,
+    "IsDither": false,
+    "ClearColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0
+    }
+  }
+}

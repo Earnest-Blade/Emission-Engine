@@ -13,6 +13,15 @@ namespace Emission
         public static float GlfwTime() => (float)Glfw.Time;
 
         /// <summary>
+        /// Return the time at the beginning of the frame.
+        /// </summary>
+        public static float FrameTime
+        {
+            get;
+            private set;
+        }
+        
+        /// <summary>
         /// Return delta time use to define movements by time.
         /// </summary>
         public static float DeltaTime
@@ -68,6 +77,11 @@ namespace Emission
         internal static void SetFps(int fps)
         {
             Fps = fps;
+        }
+
+        internal static void SetFrameTime(float time)
+        {
+            FrameTime = time;
         }
     }
 }

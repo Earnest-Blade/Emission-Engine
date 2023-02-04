@@ -101,8 +101,8 @@ namespace Emission.Graphics.Shading
         {
             if (!ICamera.Exists()) return;
 
-            Shader.UseUniformMat4(Shader.UNIFORM_VIEW, ((PerspectiveCamera)ICamera.GetMain()).View);
-            Shader.UseUniformProjectionMat4(Shader.UNIFORM_PROJECTION, ((PerspectiveCamera)ICamera.GetMain()).Projection);
+            Shader.UseUniformMat4(Shader.UNIFORM_VIEW, ((PerspectiveCamera)ICamera.GetCurrent()).View);
+            Shader.UseUniformProjectionMat4(Shader.UNIFORM_PROJECTION, ((PerspectiveCamera)ICamera.GetCurrent()).Projection);
         }
 
         /// <summary>

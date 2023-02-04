@@ -1,0 +1,24 @@
+{
+    "name": "Main Scene",
+    "entities": [
+        {
+            "name": "Main Camera",
+            "components": [
+                {
+                    "type": "System.Int32",
+                    "data": {
+                        "Position": [50, 50, 50],
+                        "Rotation": [0, 0, 0],
+                        "Scale": [1, 1, 1]
+                    }
+                },
+                {
+                    "type": "Emission.Graphics.PerpectiveCamera",
+                    "data": {
+                        
+                    }
+                }
+            ]
+        }
+    ]
+}
