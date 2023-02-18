@@ -5,8 +5,6 @@ namespace Emission.Natives.AL
 {
     public static class ALContext
     {
-        private const string NativeLibName = AL.NativeLibName;
-
         /* typedef int ALenum; */
         public const int ALC_FALSE = 0x0000;
         public const int ALC_TRUE = 0x0001;
@@ -39,83 +37,83 @@ namespace Emission.Natives.AL
         public const int ALC_ALL_DEVICES_SPECIFIER = 0x1013;
 
         /* IntPtr refers to an ALCcontext*, device to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcCreateContext(IntPtr device, int[] attrList);
 
         /* context refers to an ALCcontext* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alcMakeContextCurrent(IntPtr context);
 
         /* context refers to an ALCcontext* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcDestroyContext(IntPtr context);
 
         /* IntPtr refers to an ALCcontext* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcGetCurrentContext();
 
         /* IntPtr refers to an ALCdevice*, context to an ALCcontext* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcGetContextsDevice(IntPtr context);
 
         /* IntPtr refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcOpenDevice([In()] [MarshalAs(UnmanagedType.LPStr)] string devicename);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alcCloseDevice(IntPtr device);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int alcGetError(IntPtr device);
 
         /* IntPtr refers to a function pointer, device to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcGetProcAddress(IntPtr device, [In()] [MarshalAs(UnmanagedType.LPStr)] string funcname);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int alcGetEnumValue(IntPtr device, [In()] [MarshalAs(UnmanagedType.LPStr)] string enumname);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcGetString(IntPtr device, int param);
 
         /* device refers to an ALCdevice*, size to an ALCsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcGetIntegerv(IntPtr device, int param, int size, int[] values);
 
         /* context refers to an ALCcontext* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcProcessContext(IntPtr context);
 
         /* context refers to an ALCcontext* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcSuspendContext(IntPtr context);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alcIsExtensionPresent(IntPtr device, [In()] [MarshalAs(UnmanagedType.LPStr)] string extname);
 
         /* IntPtr refers to an ALCdevice*, buffersize to an ALCsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alcCaptureOpenDevice([In()] [MarshalAs(UnmanagedType.LPStr)] string devicename, uint frequency, int format, int buffersize);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alcCaptureCloseDevice(IntPtr device);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcCaptureStart(IntPtr device);
 
         /* device refers to an ALCdevice* */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcCaptureStop(IntPtr device);
 
         /* device refers to an ALCdevice*, samples to an ALCsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alcCaptureSamples(IntPtr device, IntPtr buffer, int samples);
     }
 }

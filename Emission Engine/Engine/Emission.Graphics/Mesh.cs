@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Emission.Graphics.Shading;
+
 using Emission.Mathematics;
+using Emission.Graphics.Shading;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics
@@ -65,7 +66,6 @@ namespace Emission.Graphics
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
-
         }
 
         public void UpdateGeometry()

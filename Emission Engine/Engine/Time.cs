@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Emission.Window.GLFW;
+using Emission.Natives.GLFW;
 
 namespace Emission
 {
@@ -10,7 +10,7 @@ namespace Emission
         /// Return current time by using <see cref="Time"/>. return a double so it can be change as
         /// a float easily.
         /// </summary>
-        public static float GlfwTime() => (float)Glfw.Time;
+        public static float GlfwTime() => (float)Glfw.glfwGetTime();
 
         /// <summary>
         /// Return the time at the beginning of the frame.

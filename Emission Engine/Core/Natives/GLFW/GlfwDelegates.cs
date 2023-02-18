@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Emission.Window;
 
-namespace Emission.Window.GLFW
+namespace Emission.Natives.GLFW
 {
     /// <summary>
     ///     Function signature for receiving error callbacks.
@@ -9,7 +10,7 @@ namespace Emission.Window.GLFW
     /// <param name="code">The error code.</param>
     /// <param name="message">A pointer to the UTF-8 encoded (null-terminated) error message.</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void ErrorCallback(ErrorCode code, IntPtr message);
+    public delegate void ErrorCallback(int code, IntPtr message);
 
     /// <summary>
     ///     This is the function signature for window size callback functions.
@@ -115,7 +116,7 @@ namespace Emission.Window.GLFW
     /// <param name="joystick">The joystick that was connected or disconnected.</param>
     /// <param name="status">The connection status.</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void JoystickCallback(Joystick joystick, ConnectionStatus status);
+    public delegate void JoystickCallback(Joystick joystick, int status);
 
     /// <summary>
     ///     This is the function signature for monitor configuration callback functions.
@@ -123,7 +124,7 @@ namespace Emission.Window.GLFW
     /// <param name="monitor">The monitor that was connected or disconnected.</param>
     /// <param name="status">The connection status.</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void MonitorCallback(Monitor monitor, ConnectionStatus status);
+    public delegate void MonitorCallback(Monitor monitor, int status);
 
     /// <summary>
     ///     This is the function signature for window iconify/restore callback functions.
@@ -150,3 +151,4 @@ namespace Emission.Window.GLFW
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void WindowMaximizedCallback(IntPtr window, bool maximized);
 }
+

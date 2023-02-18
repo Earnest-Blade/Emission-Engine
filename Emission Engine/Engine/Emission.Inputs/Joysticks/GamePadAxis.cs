@@ -1,6 +1,6 @@
 #pragma warning disable 1591
 
-namespace Emission.Window.GLFW
+namespace Emission
 {
     /// <summary>
     ///     Represents a gamepad axis.

@@ -5,9 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 using Emission.IO;
 using Emission.Graphics;
 using Emission.Natives.GL;
-using Emission.Window.GLFW;
+using Emission.Natives.GLFW;
 using Emission.Mathematics;
 using static Emission.Natives.GL.Gl;
+using static Emission.Natives.GLFW.Glfw;
+using Icon = Emission.IO.Icon;
 
 namespace Emission.Window
 {
@@ -16,7 +18,7 @@ namespace Emission.Window
         /// <summary>
         /// Pointer to Glfw Window object. Represent window. Public get and can be only set class constructor.
         /// </summary>
-        public IntPtr Handle { get; }
+        public GlfwWindow* Handle { get; }
 
         /// <summary>
         /// Structure that contains all information to generate window.
@@ -39,7 +41,7 @@ namespace Emission.Window
         public Vector2 WindowPosition
         {
             get => _lastWinPos;
-            set => Glfw.SetWindowPosition(Handle, (int)value.X, (int)value.Y);
+            set => glfwSetWindowPos(Handle, (int)value.X, (int)value.Y);
         }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace Emission.Window
         public Vector2 WindowSize
         {
             get => _lastWinSize;
-            set => Glfw.SetWindowSize(Handle, (int)value.X, (int)value.Y);
+            set => glfwSetWindowSize(Handle, (int)value.X, (int)value.Y);
         }
 
         /// <summary>
@@ -60,11 +62,11 @@ namespace Emission.Window
         /// </summary>
         public bool Maximized
         {
-            get => Glfw.GetWindowAttribute(Handle, WindowAttribute.Maximized);
+            get => glfwGetWindowAttrib(Handle, GLFW_MAXIMIZED) == GLFW_TRUE;
             set
             {
-                if(value) Glfw.MaximizeWindow(Handle);
-                else Glfw.RestoreWindow(Handle);
+                if(value) glfwMaximizeWindow(Handle);
+                else glfwRestoreWindow(Handle);
             }
         }
 
@@ -75,11 +77,11 @@ namespace Emission.Window
         /// </summary>
         public bool Minimized
         {
-            get => Glfw.GetWindowAttribute(Handle, WindowAttribute.AutoIconify);
+            get => glfwGetWindowAttrib(Handle, GLFW_AUTO_ICONIFY) == GLFW_TRUE;
             set
             {
-                if(value) Glfw.IconifyWindow(Handle);
-                else Glfw.RestoreWindow(Handle);
+                if(value) glfwIconifyWindow(Handle);
+                else glfwRestoreWindow(Handle);
             }
         }
 
@@ -94,8 +96,8 @@ namespace Emission.Window
             get => _title;
             set
             {
-                _title = value;
-                Glfw.SetWindowTitle(Handle, value ?? String.Empty);
+                _title = value ?? String.Empty;
+                glfwSetWindowTitle(Handle, GlUtils.StrToBytePtr(_title));
             }
         }
         
@@ -105,11 +107,11 @@ namespace Emission.Window
         /// </summary>
         public bool Visible
         {
-            get => Glfw.GetWindowAttribute(Handle, WindowAttribute.Visible);
+            get => glfwGetWindowAttrib(Handle, GLFW_VISIBLE) == GLFW_TRUE;
             set
             {
-                if(value) Glfw.ShowWindow(Handle);
-                else Glfw.HideWindow(Handle);
+                if(value) glfwShowWindow(Handle);
+                else glfwHideWindow(Handle);
             }
         }
 
@@ -119,8 +121,8 @@ namespace Emission.Window
         /// </summary>
         public bool Focus
         {
-            get => Glfw.GetWindowAttribute(Handle, WindowAttribute.Focused);
-            set => Glfw.FocusWindow(Handle);
+            get => glfwGetWindowAttrib(Handle, GLFW_FOCUSED) == GLFW_TRUE;
+            set => glfwFocusWindow(Handle);
         }
 
         /// <summary>
@@ -129,8 +131,8 @@ namespace Emission.Window
         /// </summary>
         public bool ShouldClose
         {
-            get => Glfw.WindowShouldClose(Handle);
-            set => Glfw.SetWindowShouldClose(Handle, value);
+            get => glfwWindowShouldClose(Handle) == GL_TRUE;
+            set => glfwSetWindowShouldClose(Handle, value ? GLFW_TRUE : GLFW_FALSE);
         }
 
         /// <summary>
@@ -138,12 +140,12 @@ namespace Emission.Window
         /// </summary>
         public float Opacity
         {
-            get => Glfw.GetWindowOpacity(Handle);
+            get => glfwGetWindowOpacity(Handle);
             set
             {
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException(nameof(value));
-                Glfw.SetWindowOpacity(Handle, value);
+                glfwSetWindowOpacity(Handle, value);
             }
         }
 
@@ -155,7 +157,15 @@ namespace Emission.Window
         /// <summary>
         /// Get Window's Icon.
         /// </summary>
-        public Icon WindowIcon => _windowIcon;
+        public Icon WindowIcon
+        {
+            get => _windowIcon;
+            set
+            {
+                _windowIcon = value;
+                glfwSetWindowIcon(Handle, 1, value);
+            }
+        }
 
         /// <summary>
         /// Viewport of the window.
@@ -183,38 +193,48 @@ namespace Emission.Window
             _lastWinPos = Vector2.Zero;
             _clearColor = ColorRgb.Black;
 
-            if (!Glfw.Init())
+            // If cannot init glfw an error
+            if (glfwInit() == 0)
             {
-                Glfw.GetError(out string error);
+                byte* info;
+                glfwGetError(&info);
+                string error = GlUtils.PtrToStringUTF8(info);
+                
                 throw new EmissionException(EmissionErrors.EmissionGlfwException, error);
             }
 
-            Glfw.WindowHint(WindowHint.ClientApi, ClientApi.OpenGL);
-            Glfw.WindowHint(WindowHint.OpenglProfile, Profile.Core);
-            Glfw.WindowHint(WindowHint.ContextVersionMinor, Config.MinorVersion);
-            Glfw.WindowHint(WindowHint.ContextVersionMajor, Config.MajorVersion);
-            Glfw.WindowHint(WindowHint.Focused, Config.IsFocused);
-            Glfw.WindowHint(WindowHint.Floating, Config.IsFloating);
-            Glfw.WindowHint(WindowHint.Maximized, Config.IsMaximized);
-            Glfw.WindowHint(WindowHint.Decorated, Config.IsDecorated);
-            Glfw.WindowHint(WindowHint.Resizable, Config.IsResizable);
-            Glfw.WindowHint(WindowHint.Visible, Config.IsVisible);
-            Glfw.WindowHint(WindowHint.CenterCursor, Config.IsCursorCentered);
-            Glfw.WindowHint(WindowHint.FocusOnShow, Config.IsFocusedOnShow);
-            Glfw.WindowHint(WindowHint.DepthBits, Config.DepthBits);
-            Glfw.WindowHint(WindowHint.StencilBits, Config.StencilBits);
+            glfwSetErrorCallback(GlfwError.ErrorCallback);
+            
+            glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, Config.MajorVersion);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, Config.MinorVersion);
+            glfwWindowHint(GLFW_FOCUSED, Config.IsFocused ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_FLOATING, Config.IsFloating ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_MAXIMIZED, Config.IsMaximized ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_DECORATED, Config.IsDecorated ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_RESIZABLE, Config.IsResizable ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_VISIBLE, Config.IsVisible ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_CENTER_CURSOR, Config.IsCursorCentered ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_FOCUS_ON_SHOW, Config.IsFocusedOnShow ? GL_TRUE : GL_FALSE);
+            //glfwWindowHint(GL_DEPTH_BITS, Config.DepthBits);
+            //glfwWindowHint(GL_STENCIL_BITS, Config.StencilBits);
 
-            Glfw.WindowHint(WindowHint.OpenglDebugContext, GameInstance.EngineSettings.Debug ? GL_TRUE : GL_FALSE);
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GameInstance.EngineSettings.Debug ? GL_TRUE : GL_FALSE);
 
-            Handle = Glfw.CreateWindow(Config.Width, Config.Height, Config.Title, Monitor.None, IntPtr.Zero);
-            if (Handle == IntPtr.Zero) throw new EmissionException(EmissionErrors.EmissionGlfwException, "Failed to create GLFW Window!");
+            Handle = glfwCreateWindow(Config.Width, Config.Height, GlUtils.StrToBytePtr(Config.Title), null, null);
+            if (Handle == (void*)0) 
+                throw new EmissionException(EmissionErrors.EmissionGlfwException, "Failed to create GLFW Window!");
 
+            int glfwMajor, glfwMinor, glfwRevision;
+            glfwGetVersion(&glfwMajor, &glfwMinor, &glfwRevision);
+            
             AssignContext();
             Debug.Log("[INFO] New window has been created!");
-            Debug.Log($"[INFO] Running with GLFW {Glfw.Version}");
+            Debug.Log($"[INFO] Running with GLFW {glfwMajor}");
 
             if (!string.IsNullOrEmpty(config.Icon))
-                SetIcon(config.Icon);
+                WindowIcon = new Icon(config.Icon);
         }
 
         /// <summary>
@@ -230,23 +250,22 @@ namespace Emission.Window
             Event.AddDelegate<bool>(Event.WindowMaximize, OnMaximize);
             Event.AddDelegate<bool>(Event.WindowFocus, OnFocus);
             
-            Input ptr = GameInstance.Input;
-            Event.AddDelegate<(Keys, InputState)>(Event.Key, ptr.KeyCallback);
-            Event.AddDelegate<(MouseButton, InputState)>(Event.Button, ptr.MouseCallback);
-            Event.AddDelegate<double>(Event.MouseScroll, ptr.ScrollCallback);
-            Event.AddDelegate<Vector2>(Event.MouseMove, ptr.CursorCallback);
+            Event.AddDelegate<(Keys, InputState)>(Event.Key, GameInstance.Input.KeyCallback);
+            Event.AddDelegate<(MouseButton, InputState)>(Event.Button, GameInstance.Input.MouseCallback);
+            Event.AddDelegate<double>(Event.MouseScroll, GameInstance.Input.ScrollCallback);
+            Event.AddDelegate<Vector2>(Event.MouseMove, GameInstance.Input.CursorCallback);
             
-            Glfw.SetCloseCallback(Handle, _ => Event.Invoke(Event.WindowClose));
-            Glfw.SetWindowSizeCallback(Handle, (_, width, height) => Event.Invoke<Vector2>(Event.WindowResize, (width, height)));
-            Glfw.SetWindowPositionCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.WindowMove, ((float)x, (float)y)));
-            Glfw.SetWindowFocusCallback(Handle, (_, focused) => Event.Invoke(Event.WindowFocus, focused));
-            Glfw.SetWindowIconifyCallback(Handle, (_, minimized) => Event.Invoke(Event.WindowIconify, minimized));
-            Glfw.SetWindowMaximizeCallback(Handle, (_, maximized) => Event.Invoke(Event.WindowMaximize, maximized));
+            glfwSetWindowCloseCallback(Handle, _ => Event.Invoke(Event.WindowClose));
+            glfwSetWindowSizeCallback(Handle, (_, width, height) => Event.Invoke<Vector2>(Event.WindowResize, (width, height)));
+            glfwSetWindowPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.WindowMove, ((float)x, (float)y)));
+            glfwSetWindowFocusCallback(Handle, (_, focused) => Event.Invoke(Event.WindowFocus, focused));
+            glfwSetWindowIconifyCallback(Handle, (_, minimized) => Event.Invoke(Event.WindowIconify, minimized));
+            glfwSetWindowMaximizeCallback(Handle, (_, maximized) => Event.Invoke(Event.WindowMaximize, maximized));
 
-            Glfw.SetKeyCallback(Handle, (_, key, _, action, _) => Event.Invoke<(Keys, InputState)>(Event.Key, (key, action)));
-            Glfw.SetMouseButtonCallback(Handle, (_, button, action, _) => Event.Invoke<(MouseButton, InputState)>(Event.Button, (button, action)));
-            Glfw.SetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MouseScroll, y));
-            Glfw.SetCursorPositionCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MouseMove, ((float)x, (float)y)));
+            glfwSetKeyCallback(Handle, (_, key, _, action, _) => Event.Invoke<(Keys, InputState)>(Event.Key, (key, action)));
+            glfwSetMouseButtonCallback(Handle, (_, button, action, _) => Event.Invoke<(MouseButton, InputState)>(Event.Button, (button, action)));
+            glfwSetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MouseScroll, y));
+            glfwSetCursorPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MouseMove, ((float)x, (float)y)));
         }
 
         /// <summary>
@@ -262,7 +281,7 @@ namespace Emission.Window
         /// </summary>
         public void Update()
         {
-            Glfw.PollEvents();
+            glfwPollEvents();
         }
 
         /// <summary>
@@ -279,7 +298,7 @@ namespace Emission.Window
         /// </summary>
         public void Swap()
         {
-            Glfw.SwapBuffers(Handle);
+            glfwSwapBuffers(Handle);
         }
 
         /// <summary>
@@ -287,20 +306,10 @@ namespace Emission.Window
         /// </summary>
         public void AssignContext()
         {
-            Glfw.MakeContextCurrent(Handle);
-            GlLoader.Initialize(Glfw.GetProcAddress);
+            glfwMakeContextCurrent(Handle);
+            GlLoader.Initialize(glfwGetProcAddress);
         }
 
-        /// <summary>
-        /// Define Window's Icon using an image.
-        /// </summary>
-        /// <param name="path">Path to the image</param>
-        public void SetIcon(string path)
-        {
-            _windowIcon = new Icon(path);
-            Glfw.SetWindowIcon(Handle, 1, new []{_windowIcon});
-        }
-        
         /// <summary>
         /// Dispose window.
         /// </summary>
@@ -314,8 +323,8 @@ namespace Emission.Window
         /// </summary>
         public void Dispose()
         {
-            Glfw.DestroyWindow(Handle);
-            Glfw.Terminate();
+            glfwDestroyWindow(Handle);
+            glfwTerminate();
         }
 
         private void OnClose()

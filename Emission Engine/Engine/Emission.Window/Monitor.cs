@@ -2,12 +2,13 @@
 using System.Runtime.InteropServices;
 
 using Emission.Mathematics;
-using Emission.Window.GLFW;
+using Emission.Natives.GL;
+using static Emission.Natives.GLFW.Glfw;
 
 namespace Emission.Window
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Monitor : IEquatable<Monitor>
+    public unsafe struct Monitor : IEquatable<Monitor>
     {
         /// <summary>
         /// Represent a null monitor
@@ -17,7 +18,7 @@ namespace Emission.Window
         /// <summary>
         /// Get Current monitor.
         /// </summary>
-        public static Monitor PrimaryMonitor => Glfw.GetPrimaryMonitor();
+        public static Monitor PrimaryMonitor => Marshal.PtrToStructure<Monitor>(new IntPtr(glfwGetPrimaryMonitor()));
 
         /// <summary>
         /// Get an array of all recognize monitors.
@@ -26,12 +27,13 @@ namespace Emission.Window
         {
             get
             {
-                IntPtr ptr = Glfw.GetMonitors(out var count);
+                int count;
+                Monitor** ptr = glfwGetMonitors(&count);
                 Monitor[] monitors = new Monitor[count];
 
                 int offset = 0;
                 for (int i = 0; i < count; i++, offset += IntPtr.Size)
-                    monitors[i] = Marshal.PtrToStructure<Monitor>(ptr + offset);
+                    monitors[i] = Marshal.PtrToStructure<Monitor>(new IntPtr(ptr) + offset);
 
                 return monitors;
             }
@@ -40,7 +42,7 @@ namespace Emission.Window
         /// <summary>
         /// Return the name of the monitor.
         /// </summary>
-        public string Name => Glfw.GetMonitorName(this);
+        public string Name => GlUtils.PtrToStringUTF8(glfwGetMonitorName((Monitor*)_handle));
 
         /// <summary>
         /// Get a <see cref="Rectangle"/> that represent the position and the size with the monitor.
@@ -49,7 +51,8 @@ namespace Emission.Window
         {
             get
             {
-                Glfw.GetMonitorWorkArea(_handle, out var x, out var y, out var width, out var height);
+                int x, y, width, height;
+                glfwGetMonitorWorkarea((Monitor*)_handle, &x, &y, &width, &height);
                 return new Rectangle(x, y, width, height);
             }
         }
@@ -62,7 +65,8 @@ namespace Emission.Window
         {
             get
             {
-                Glfw.GetMonitorContentScale(_handle, out var x, out var y);
+                float x, y;
+                glfwGetMonitorContentScale((Monitor*)_handle, &x, &y);
                 return new Vector2(x, y);
             }
         }
@@ -73,8 +77,8 @@ namespace Emission.Window
         /// </summary>
         public IntPtr UserPointer
         {
-            get => Glfw.GetMonitorUserPointer(_handle);
-            set => Glfw.SetMonitorUserPointer(_handle, value);
+            get => new (glfwGetMonitorUserPointer((Monitor*)_handle));
+            set => glfwSetMonitorUserPointer((Monitor*)_handle, value.ToPointer());
         }
 
         private readonly IntPtr _handle;

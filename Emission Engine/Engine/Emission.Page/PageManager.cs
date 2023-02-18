@@ -1,12 +1,13 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 
 namespace Emission.Page
 {
     public class PageManager : IDisposable
     {
-        public List<Page> ActivePages;
-        public List<Page> RegisterdPages;
+        public readonly List<Page> ActivePages;
+        public readonly List<Page> RegisterdPages;
 
         public PageManager()
         {
@@ -14,7 +15,12 @@ namespace Emission.Page
             RegisterdPages = new List<Page>();
         }
 
-        public Page FindPage(string? name)
+        /// <summary>
+        /// Return a page using his name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Page FindPage([NotNull] string name)
         {
             if (name == null) return null;
             if (name.Length == 0) return null;
@@ -22,12 +28,20 @@ namespace Emission.Page
             return ActivePages.Find(x => x.Name == name);
         }
 
+        /// <summary>
+        /// Activate a page. 
+        /// </summary>
+        /// <param name="page"></param>
         public void EnablePage(Page page)
         {
             ActivePages.Add(page);
             page.Enable();
         }
 
+        /// <summary>
+        /// Desactivate a page.
+        /// </summary>
+        /// <param name="page"></param>
         public void DisablePage(Page page)
         {
             ActivePages.Remove(page);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 
 using Assimp;
-using Assimp.Unmanaged;
+
 using Emission.Graphics.Shading;
 using Emission.IO;
 using Emission.Mathematics;
@@ -23,17 +23,28 @@ namespace Emission.Graphics
         private List<Mesh> _meshes;
         private string _assetDirectory;
 
-        private ModelBuilder(Scene scene, string assetDirectory)
+        public ModelBuilder()
         {
             _meshes = new List<Mesh>();
+            _assetDirectory = null;
+        }
+
+        public void LoadAssimpScene(Scene scene, string assetDirectory)
+        {
             _assetDirectory = assetDirectory;
-            
             ProcessNode(scene.RootNode, scene);
+        }
+
+        public void AddMesh(Mesh mesh)
+        {
+            _meshes.Add(mesh);
         }
 
         private Model CreateModel()
         {
-            if (_meshes == null) return null;
+            if (_meshes == null || _meshes.Count == 0) 
+                return CreateEmpty();
+            
             return new Model(Transform.Zero, _meshes);
         }
         
@@ -71,8 +82,10 @@ namespace Emission.Graphics
                     );
                 }
                 else
+                {
                     Debug.Warning($"[WARNING] Vertex {i} don't have texture coords!");
-                
+                }
+
                 vertices.Add(vertex);
             }
 
@@ -121,8 +134,9 @@ namespace Emission.Graphics
         {
             _context.Dispose();
         }
-        
-        public static Model FromFile([CanBeNull] string path, [CanBeNull] string asset) => FromFile(path, asset, PostProcessSteps.None);
+
+        public static Model FromFile([CanBeNull] string path) => FromFile(path, GameDirectory.GetDirectoryFromFilePath(path));
+        public static Model FromFile([CanBeNull] string path, [CanBeNull] string asset) => FromFile(path, asset, DEFAULT_POST_PROCESS_STEPS);
         public static Model FromFile([CanBeNull] string path, [CanBeNull] string asset, PostProcessSteps steps)
         {
             if (path == null) return null;
@@ -132,14 +146,14 @@ namespace Emission.Graphics
             return FromStream(reader.BaseStream, asset, steps);
         }
 
-        public static Model FromMemory(MemoryStream stream, [CanBeNull] string asset) => FromMemory(stream, asset, PostProcessSteps.None);
+        public static Model FromMemory(MemoryStream stream, [CanBeNull] string asset) => FromMemory(stream, asset, DEFAULT_POST_PROCESS_STEPS);
         public static Model FromMemory(MemoryStream stream,  [CanBeNull] string asset, PostProcessSteps steps)
         {
             if (stream.Length == 0) return null;
             return FromStream(stream, asset, steps);
         }
 
-        public static Model FromStream(Stream stream, [CanBeNull] string asset) => FromStream(stream, asset, PostProcessSteps.None);
+        public static Model FromStream(Stream stream, [CanBeNull] string asset) => FromStream(stream, asset, DEFAULT_POST_PROCESS_STEPS);
         public static Model FromStream(Stream stream, [CanBeNull] string asset, PostProcessSteps steps)
         {
             if (_context == null)
@@ -160,8 +174,10 @@ namespace Emission.Graphics
                 stream.Dispose();
                 throw new EmissionException(EmissionErrors.EmissionAssimpException, "Cannot load Assimp Model!");
             }
-
-            ModelBuilder builder = new ModelBuilder(scene, asset);
+            stream.Close();
+            
+            ModelBuilder builder = new ModelBuilder();
+            builder.LoadAssimpScene(scene, asset);
             return builder.CreateModel();
         }
 

@@ -23,17 +23,16 @@ namespace Emission.Graphics
         {
             glBindBuffer(GL_ARRAY_BUFFER, Id);
             _isBind = true;
-        }
+        }   
 
         public void PushData(int size, IntPtr data, uint usage) => PushData(size, data.ToPointer(), usage);
-        private void PushData(int size, void* data, uint usage)
+        public void PushData(int size, void* data, uint usage)
         {
             if (!_isBind)
                 throw new EmissionException(EmissionErrors.EmissionOpenGlException, $"Vertex Buffer {Id} is not bind but you're trying to push data on it!");
-            
+
             glBindBuffer(GL_ARRAY_BUFFER, Id);
-            glBufferData(GL_ARRAY_BUFFER, new IntPtr(size), data, (int)usage);
-            //glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBufferData(GL_ARRAY_BUFFER, new IntPtr(size), data, (int)usage); 
         }
 
         public void Delete()

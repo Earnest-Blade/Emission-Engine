@@ -3,7 +3,7 @@ using static Emission.Natives.GL.Gl;
 
 namespace Emission.Natives.GL
 {
-    public unsafe class GlError
+    internal static unsafe class GlError
     {
         public static void* ErrorCallback(uint source, uint type, uint id, uint severity, int length, char* message, void* userParam)
         {
@@ -76,15 +76,15 @@ namespace Emission.Natives.GL
             switch (severity)
             {
                 case GL_DEBUG_SEVERITY_NOTIFICATION:
-                    Debug.Log($"[GL][{id}] {_type} raised from {_source} \nGL MSG CALLBACK : {GlUtils.PtrToStringUTF8(message)}");
+                    Debug.Log($"[GL][{id}] {_type} raised from {_source} \n[GL]GL MSG CALLBACK : {GlUtils.PtrToStringUTF8(message)}");
                     break;
                 
                 case GL_DEBUG_SEVERITY_MEDIUM: case GL_DEBUG_SEVERITY_LOW:
-                    Debug.Warning($"[WARNING][GL][{id}] {_type} raised from {_source} \nGL WARN CALLBACK : {GlUtils.PtrToStringUTF8(message)}");
+                    Debug.Warning($"[WARNING][GL][{id}] {_type} raised from {_source} \n[GL]GL WARN CALLBACK : {GlUtils.PtrToStringUTF8(message)}");
                     break;
                 
                 case GL_DEBUG_SEVERITY_HIGH:
-                    Debug.Error($"[ERROR][GL][{id}] {_type} raised from {_source} \nGL ERROR CALLBACK : {GlUtils.PtrToStringUTF8(message)}");
+                    Debug.Error($"[ERROR][GL][{id}] {_type} raised from {_source} \n[GL]GL ERROR CALLBACK : {GlUtils.PtrToStringUTF8(message)}");
                     break;
             }
             

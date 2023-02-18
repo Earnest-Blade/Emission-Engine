@@ -4,8 +4,6 @@ namespace Emission.Natives.AL
 {
     public static class ALFX
     {
-        private const string NativeLibName = AL.NativeLibName;
-
         /* typedef int ALenum; */
         public const int AL_METERS_PER_UNIT = 0x20004;
 
@@ -165,132 +163,132 @@ namespace Emission.Natives.AL
         /* TODO: EFX Default Value Constants! */
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenEffects(int n, uint[] effects);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenEffects(int n, out uint effects);
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteEffects(int n, uint[] effects);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteEffects(int n, ref uint effects);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsEffect(uint effect);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alEffecti(uint effect, int param, int iValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alEffectiv(uint effect, int param, int[] iValues );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alEffectf(uint effect, int param, float flValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alEffectfv(uint effect, int param, float[] flValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetEffecti(uint effect, int param, out int piValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetEffectiv(uint effect, int param, int[] piValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetEffectf(uint effect, int param, out float pflValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetEffectfv(uint effect, int param, float[] pflValues);
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenFilters(int n, uint[] filters);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenFilters(int n, out uint filters);
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteFilters(int n, uint[] filters);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteFilters(int n, ref uint filters);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsFilter(uint filter);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alFilteri(uint filter, int param, int iValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alFilteriv(uint filter, int param, int[] iValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alFilterf(uint filter, int param, float flValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alFilterfv(uint filter, int param, float[] flValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetFilteri(uint filter, int param, out int piValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetFilteriv(uint filter, int param, int[] piValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetFilterf(uint filter, int param, out float pflValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetFilterfv(uint filter, int param, float[] pflValues);
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenAuxiliaryEffectSlots(int n, uint[] effectslots);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenAuxiliaryEffectSlots(int n, out uint effectslots);
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteAuxiliaryEffectSlots(int n, uint[] effectslots);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteAuxiliaryEffectSlots(int n, ref uint effectslots);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsAuxiliaryEffectSlot(uint effectslot);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alAuxiliaryEffectSloti(uint effectslot, int param, int iValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alAuxiliaryEffectSlotiv(uint effectslot, int param, int[] iValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alAuxiliaryEffectSlotf(uint effectslot, int param, float flValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alAuxiliaryEffectSlotfv(uint effectslot, int param, float[] flValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetAuxiliaryEffectSloti(uint effectslot, int param, out int piValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetAuxiliaryEffectSlotiv(uint effectslot, int param, int[] piValues);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetAuxiliaryEffectSlotf(uint effectslot, int param, out float pflValue);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetAuxiliaryEffectSlotfv(uint effectslot, int param, float[] pflValues);
     }
 }

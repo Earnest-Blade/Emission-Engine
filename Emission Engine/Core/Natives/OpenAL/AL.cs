@@ -5,8 +5,6 @@ namespace Emission.Natives.AL
 {
     public static class AL
     {
-        internal const string NativeLibName = "soft_oal.dll";
-
         /* typedef int ALenum; */
         public const int AL_NONE = 0x0000;
         public const int AL_FALSE = 0x0000;
@@ -110,150 +108,150 @@ namespace Emission.Natives.AL
 
         public const int AL_GAIN_LIMIT_SOFT = 0x200E;
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDopplerFactor(float value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDistanceModel(int distanceModel);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alEnable(int capability);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDisable(int capability);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsEnabled(int capability);
 
-        [DllImport(NativeLibName, EntryPoint = "alGetString", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, EntryPoint = "alGetString", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr INTERNAL_alGetString(int param);
         public static string alGetString(int param)
         {
             return Marshal.PtrToStringAnsi(INTERNAL_alGetString(param));
         }
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBooleanv(int param, bool[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetIntegerv(int param, int[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetFloatv(int param, float[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetDoublev(int param, double[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alGetBoolean(int param);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int alGetInteger(int param);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern float alGetFloat(int param);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern double alGetDouble(int param);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int alGetError();
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsExtensionPresent([In()][MarshalAs(UnmanagedType.LPStr)] string extname);
 
         /* IntPtr refers to a function pointer */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr alGetProcAddress([In()][MarshalAs(UnmanagedType.LPStr)] string fname);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int alGetEnumValue([In()][MarshalAs(UnmanagedType.LPStr)] string ename);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alListenerf(int param, float value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alListener3f(int param, float value1, float value2, float value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alListenerfv(int param, float[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alListeneri(int param, int value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alListener3i(int param, int value1, int value2, int value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alListeneriv(int param, int[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetListenerf(int param, out float value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetListener3f(int param, out float value1, out float value2, out float value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetListenerfv(int param, float[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetListeneri(int param, out int value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetListener3i(int param, out int value1, out int value2, out int value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetListeneriv(int param, int[] values);
 
         /* n refers to a ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenSources(int n, uint[] sources);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenSources(int n, out uint sources);
 
         /* n refers to a ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteSources(int n, uint[] sources);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteSources(int n, ref uint sources);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsSource(uint source);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcef(uint source, int param, float value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSource3f(uint source, int param, float value1, float value2, float value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcefv(uint source, int param, float[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcei(uint source, int param, int value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSource3i(uint source, int param, int value1, int value2, int value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceiv(
             uint source,
             int param,
             int[] values
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetSourcef(
             uint source,
             int param,
             out float value
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetSource3f(
             uint source,
             int param,
@@ -262,21 +260,21 @@ namespace Emission.Natives.AL
             out float value3
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetSourcefv(
             uint source,
             int param,
             float[] values
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetSourcei(
             uint source,
             int param,
             out int value
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetSource3i(
             uint source,
             int param,
@@ -285,7 +283,7 @@ namespace Emission.Natives.AL
             out int value3
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetSourceiv(
             uint source,
             int param,
@@ -293,47 +291,47 @@ namespace Emission.Natives.AL
         );
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcePlayv(
             int n,
             uint[] sources
         );
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceStopv(
             int n,
             uint[] sources
         );
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceRewindv(
             int n,
             uint[] sources
         );
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcePausev(
             int n,
             uint[] sources
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcePlay(uint source);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceStop(uint source);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceRewind(uint source);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourcePause(uint source);
 
         /* nb refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceQueueBuffers(
             uint source,
             int nb,
@@ -341,7 +339,7 @@ namespace Emission.Natives.AL
         );
 
         /* nb refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceQueueBuffers(
             uint source,
             int nb,
@@ -349,7 +347,7 @@ namespace Emission.Natives.AL
         );
 
         /* nb refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceUnqueueBuffers(
             uint source,
             int nb,
@@ -357,7 +355,7 @@ namespace Emission.Natives.AL
         );
 
         /* nb refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSourceUnqueueBuffers(
             uint source,
             int nb,
@@ -365,26 +363,26 @@ namespace Emission.Natives.AL
         );
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenBuffers(int n, uint[] buffers);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGenBuffers(int n, out uint buffers);
 
         /* n refers to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteBuffers(int n, uint[] buffers);
 
         /* n refers to an ALsizei. Overload provided to avoid uint[] alloc. */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alDeleteBuffers(int n, ref uint buffers);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool alIsBuffer(uint buffer);
 
         /* data refers to a void*, size and freq to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferData(
             uint buffer,
             int format,
@@ -394,7 +392,7 @@ namespace Emission.Natives.AL
         );
 
         /* size and freq refer to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferData(
             uint buffer,
             int format,
@@ -404,7 +402,7 @@ namespace Emission.Natives.AL
         );
 
         /* size and freq refer to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferData(
             uint buffer,
             int format,
@@ -414,7 +412,7 @@ namespace Emission.Natives.AL
         );
 
         /* size and freq refer to an ALsizei */
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferData(
             uint buffer,
             int format,
@@ -423,14 +421,14 @@ namespace Emission.Natives.AL
             int freq
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferf(
             uint buffer,
             int param,
             float value
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBuffer3f(
             uint buffer,
             int param,
@@ -439,21 +437,21 @@ namespace Emission.Natives.AL
             float value3
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferfv(
             uint buffer,
             int param,
             float[] values
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferi(
             uint buffer,
             int param,
             int value
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBuffer3i(
             uint buffer,
             int param,
@@ -462,39 +460,39 @@ namespace Emission.Natives.AL
             int value3
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alBufferiv(
             uint buffer,
             int param,
             int[] values
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBufferf(
             uint buffer,
             int param,
             out float value
         );
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBuffer3f(uint buffer, int param, out float value1, out float value2, out float value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBufferfv(uint buffer, int param, float[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBufferi(uint buffer, int param, out int value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBuffer3i(uint buffer, int param, out int value1, out int value2, out int value3);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBufferiv(uint buffer, int param, int[] values);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alSpeedOfSound(float value);
 
-        [DllImport(NativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativePaths.OPENAL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void alGetBufferSamplesSOFT(uint buffer, int offset, int samples, int channels, int type, IntPtr data);
 
     }

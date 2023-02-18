@@ -5,7 +5,7 @@ using Emission.IO;
 namespace Emission.Window
 {
     /// <summary>
-    ///     Wrapper around a handle for a window cursor object.
+    /// Wrapper around a handle for a window cursor object.
     /// </summary>
     /// <seealso cref="Cursor" />
     [StructLayout(LayoutKind.Sequential)]

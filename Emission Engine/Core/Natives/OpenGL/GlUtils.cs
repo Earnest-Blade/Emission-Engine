@@ -9,6 +9,9 @@ namespace Emission.Natives.GL
         public static string PtrToStringUTF8(byte* ptr) => PtrToStringUTF8(new IntPtr(ptr));
         public static string PtrToStringUTF8(IntPtr ptr)
         {
+            if (ptr == IntPtr.Zero)
+                return "";
+            
             int length = 0;
             while (Marshal.ReadByte(ptr, length) != 0)
                 length++;

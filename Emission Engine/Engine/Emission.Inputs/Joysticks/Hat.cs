@@ -1,6 +1,6 @@
 using System;
 
-namespace Emission.Window.GLFW
+namespace Emission
 {
     /// <summary>
     ///     Describes joystick hat states.

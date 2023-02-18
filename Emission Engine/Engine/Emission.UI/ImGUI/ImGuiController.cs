@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Emission.Graphics;
 using ImGuiNET;
 
@@ -63,11 +64,6 @@ namespace Emission.UI
             _vertexBufferSize = 10000;
             _indexBufferSize = 2000;
 
-            int prevVao;
-            glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &prevVao);
-            int prevArrayBuffer;
-            glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &prevArrayBuffer);
-
             _vertexArray = new VertexArrayBuffer();
             _vertexArray.Bind();
             LabelObject(GL_VERTEX_ARRAY, _vertexArray, "ImGui");
@@ -106,7 +102,7 @@ namespace Emission.UI
                                     void main()
                                     {
                                         //texture(in_fontTexture, texCoord)
-                                        outputColor = color;
+                                        outputColor = vec4(1, 1, 1, 1);
                                     }";
 
             _shader = new Shader(new ShaderLoader.ShaderStruct(VertexSource, FragmentSource), "ImGUIShader");
@@ -120,8 +116,8 @@ namespace Emission.UI
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
 
-            glBindVertexArray((uint)prevVao);
-            glBindBuffer(GL_ARRAY_BUFFER, (uint)prevArrayBuffer);
+            glBindVertexArray(0);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         public void RecreateFontDeviceTexture()
@@ -139,10 +135,11 @@ namespace Emission.UI
 
             uint tid;
             glGenTextures(1, &tid);
+            _fontTexture = tid;
+
             glBindTexture(GL_TEXTURE_2D, _fontTexture);
             glTexStorage2D(GL_TEXTURE_2D, mips, GL_RGBA8, width, height);
             LabelObject(GL_TEXTURE, tid, "ImGui Text Atlas");
-            _fontTexture = tid;
 
             glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, pixels.ToPointer());
 
@@ -316,10 +313,9 @@ namespace Emission.UI
                 glGetIntegeri_v(GL_SCISSOR_BOX, 0, iptr);
             }
 
-            // Bind the element buffer (thru the VAO) so that we can resize it.
-            glBindVertexArray(_vertexArray.Id);
-            // Bind the vertex buffer so that we can resize it.
-            glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer.Id);
+            glBindVertexArray(_vertexArray);
+            glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+            
             for (int i = 0; i < draw_data.CmdListsCount; i++)
             {
                 ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
@@ -328,7 +324,6 @@ namespace Emission.UI
                 if (vertexSize > _vertexBufferSize)
                 {
                     int newSize = (int)Math.Max(_vertexBufferSize * 1.5f, vertexSize);
-                    
                     glBufferData(GL_ARRAY_BUFFER, new IntPtr(newSize), IntPtr.Zero.ToPointer(), GL_DYNAMIC_DRAW);
                     _vertexBufferSize = newSize;
 
@@ -355,31 +350,38 @@ namespace Emission.UI
             _shader.UseUniformProjectionMat4("projection_matrix", mvp);
             _shader.UseUniform1f("in_fontTexture", 0);
 
-            glBindVertexArray(_vertexArray.Id);
+            //glBindVertexArray(_vertexArray);
 
             draw_data.ScaleClipRects(io.DisplayFramebufferScale);
 
             glEnable(GL_BLEND);
             glEnable(GL_SCISSOR_TEST);
             glBlendEquation(GL_FUNC_ADD);
-            glBlendFunc(GL_BLEND_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDisable(GL_CULL_FACE);
             glDisable(GL_DEPTH_TEST);
 
+            int bufferSize;
+            glGetIntegerv(GL_BUFFER_SIZE, &bufferSize);
+            Debug.Log(bufferSize);
+            
             // Render command lists
             for (int n = 0; n < draw_data.CmdListsCount; n++)
             {
-                ImDrawListPtr cmd_list = draw_data.CmdListsRange[n];
+                ImDrawListPtr cmdList  = draw_data.CmdListsRange[n];
 
-                int size = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
-                glBufferSubData(GL_ARRAY_BUFFER, (int*)0, &size, cmd_list.VtxBuffer.Data.ToPointer());
+                int offset = 0;
+                int vtxBufferSize = cmdList.VtxBuffer.Size * Marshal.SizeOf<ImDrawVert>();
+                Debug.Log(vtxBufferSize);
+                glBufferSubData(GL_ARRAY_BUFFER, &offset, &vtxBufferSize, cmdList.VtxBuffer.Data.ToPointer());
 
-                int bufferSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
-                glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (int*)0, &bufferSize, cmd_list.IdxBuffer.Data.ToPointer());
-
-                for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
+                int idxBufferSize = cmdList.IdxBuffer.Size * sizeof(ushort);
+                Debug.Log(idxBufferSize);
+                glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, &offset, &idxBufferSize, cmdList.IdxBuffer.Data.ToPointer());
+                
+                for (int cmd_i = 0; cmd_i < cmdList.CmdBuffer.Size; cmd_i++)
                 {
-                    ImDrawCmdPtr pcmd = cmd_list.CmdBuffer[cmd_i];
+                    ImDrawCmdPtr pcmd = cmdList.CmdBuffer[cmd_i];
                     if (pcmd.UserCallback != IntPtr.Zero) throw new NotImplementedException();
 
                     glActiveTexture((int)TextureUnit.Texture0);

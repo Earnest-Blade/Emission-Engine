@@ -27,13 +27,14 @@ namespace Emission.Graphics
         /// </summary>
         public static bool HasInstance() => GameInstance.Renderer != null;
 
-        
         public RenderConfig.RenderConfig RenderConfig;
 
         private List<VertexArrayBuffer> _loadedVao;
         private List<VertexBufferObject> _loadedVbo;
         private List<ElementBufferObject> _loadedEbo;
         private List<uint> _loadedTid;
+
+        private uint _currentDrawUsage;
 
         public Renderer(RenderConfig.RenderConfig config)
         {
@@ -43,8 +44,13 @@ namespace Emission.Graphics
             _loadedVbo = new List<VertexBufferObject>();
             _loadedEbo = new List<ElementBufferObject>();
             _loadedTid = new List<uint>();
+
+            _currentDrawUsage = GL_STATIC_DRAW;
         }
 
+        /// <summary>
+        /// Initialize renderer's functionalities and opengl.
+        /// </summary>
         public void Initialize()
         {
             glEnable(GL_BLEND);
@@ -97,7 +103,7 @@ namespace Emission.Graphics
         {
             VertexBufferObject vbo = new VertexBufferObject();
             vbo.Bind();
-            vbo.PushData(size, data, GL_STATIC_DRAW);
+            vbo.PushData(size, data, _currentDrawUsage);
 
             _loadedVbo.Add(vbo);
             return vbo;
@@ -119,7 +125,7 @@ namespace Emission.Graphics
             vbo.Bind();
 
             fixed (float* v = &data[0])
-                vbo.PushData(sizeof(float) * data.Length, new IntPtr(v), GL_STATIC_DRAW);
+                vbo.PushData(sizeof(float) * data.Length, new IntPtr(v), _currentDrawUsage);
             
             _loadedVbo.Add(vbo);
             return vbo;
@@ -137,7 +143,7 @@ namespace Emission.Graphics
             buffer.Bind();
 
             GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            buffer.PushData(Marshal.SizeOf(default(T)) * data.Length, handle.AddrOfPinnedObject(), GL_STATIC_DRAW);
+            buffer.PushData(Marshal.SizeOf(default(T)) * data.Length, handle.AddrOfPinnedObject(), _currentDrawUsage);
             handle.Free();
             
             _loadedVbo.Add(buffer);
@@ -156,7 +162,7 @@ namespace Emission.Graphics
             ebo.Bind();
             
             fixed(uint* v = &data[0])
-                ebo.PushData(sizeof(uint) * data.Length, v, GL_STATIC_DRAW);
+                ebo.PushData(sizeof(uint) * data.Length, v, _currentDrawUsage);
             
             _loadedEbo.Add(ebo);
             return ebo;
@@ -437,6 +443,27 @@ namespace Emission.Graphics
         /// <param name="vbo">Vertex Buffer ID</param>
         /// <param name="ebo">Element Buffer ID</param>
         public static void Clear(VertexArrayBuffer vao, VertexBufferObject vbo, ElementBufferObject ebo) => GameInstance.Renderer.ClearId(vao, vbo, ebo);
+
+        /// <summary>
+        /// Specifies the expected usage pattern of the renderer.
+        /// The symbolic constant must be GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ, or GL_DYNAMIC_COPY
+        /// </summary>
+        public static void SetDrawUsage(uint usage)
+        {
+            // TODO: Change the way that it check if it's a valid value.
+            if (usage != GL_STREAM_DRAW && usage != GL_STREAM_COPY && usage != GL_STREAM_READ &&
+                usage != GL_STATIC_DRAW && usage != GL_STATIC_READ && usage != GL_STATIC_COPY &&
+                usage != GL_DYNAMIC_DRAW && usage != GL_DYNAMIC_READ && usage != GL_DYNAMIC_COPY)
+                throw new EmissionException(EmissionErrors.EmissionOpenGlException,
+                    $"{usage} is not an available draw usage !");
+            
+            GameInstance.Renderer._currentDrawUsage = usage;
+        }
+
+        /// <summary>
+        /// Return the expected usage pattern of the renderer.
+        /// </summary>
+        public static uint GetDrawUsage() => GameInstance.Renderer._currentDrawUsage;
 
         #endregion
     }

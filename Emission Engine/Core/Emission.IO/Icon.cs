@@ -48,7 +48,5 @@ namespace Emission.IO
                 Pixels = new IntPtr(ptr);
             }
         }
-
-        // TODO: Implement manual load of bmp
     }
 }

@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Emission.Natives.GL;
+using System.Text;
 
-using Emission.Window.GLFW;
+using Emission.Natives.GLFW;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.Natives.GL
 {
-    internal class GlLoader
+    internal unsafe class GlLoader
     {
         public static ushort Version { get; private set; }
         public static bool IsInitialize => Version != 0;
 
-        public static void Initialize(GetProcAddressHandler loader)
+        public static void Initialize(Glfw.PFNGLFWGETPROCADDRESSPROC loader)
         {
             Debug.Log("[GL] Starting loading OpenGL Bindings.");
             
-            if (Glfw.CurrentContext == IntPtr.Zero)
+            if (Glfw.glfwGetCurrentContext() == NULL)
                 throw new EmissionException(EmissionErrors.EmissionOpenGlException, "No valid OpenGL context has been set");
 
             Type delegateType = typeof(MulticastDelegate);
@@ -31,19 +31,28 @@ namespace Emission.Natives.GL
                 if (fi.FieldType.BaseType != delegateType) continue;
                 linkableDelegates++;
 
-                IntPtr ptr = loader.Invoke(fi.Name);
-                if (ptr != IntPtr.Zero)
+                byte[] fiName = Encoding.ASCII.GetBytes(fi.Name);
+
+                fixed (byte* fiNamePtr = fiName)
                 {
-                    typeof(Gl).GetField(fi.Name)!.SetValue(null, Marshal.GetDelegateForFunctionPointer(ptr, fi.FieldType));
-                    linkedDelegates++;
-                }
-                else
-                {
-                    Debug.Warning("[WARNING][GL] Could not link '" + fi.Name + "'");
+                    IntPtr ptr = loader.Invoke(fiNamePtr);
+
+                    if (ptr != IntPtr.Zero)
+                    {
+                        typeof(Gl).GetField(fi.Name)!.SetValue(null, Marshal.GetDelegateForFunctionPointer(ptr, fi.FieldType));
+                        linkedDelegates++;
+                    }
+                    else
+                    {
+                        Debug.Warning("[WARNING][GL] Could not link '" + fi.Name + "'");
+                    }
                 }
             } 
             
             FindVersion();
+            
+            if (!IsInitialize)
+                throw new EmissionException(EmissionErrors.EmissionOpenGlException, "Cannot load OpenGL!");
 
             Debug.Log("[GL] Linked " + linkedDelegates + " out of " + linkableDelegates + " delegates");
             Debug.Log("[GL] Detected version '" + Version + "'");
@@ -114,9 +123,4 @@ namespace Emission.Natives.GL
                 throw new EmissionException(EmissionErrors.EmissionGlfwException, "Could not bind OpenGL");
         }
     }
-}
-
-namespace Emission.Natives.GL
-{
-    public delegate IntPtr GetProcAddressHandler(string funcName);
 }

@@ -62,7 +62,6 @@
       <Folder Include="..\Data">
         <Link>Data</Link>
       </Folder>
-      <Folder Include="Core\Natives" />
       <Folder Include="Engine\Emission.Audio" />
     </ItemGroup>
 

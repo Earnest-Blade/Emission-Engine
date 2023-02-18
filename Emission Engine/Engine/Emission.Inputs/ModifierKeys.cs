@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Emission.Window.GLFW
+namespace Emission
 {
     /// <summary>
     ///     Describes bitwise combination of modifier keys.

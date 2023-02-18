@@ -1,4 +1,4 @@
-﻿namespace Emission.Window.GLFW
+﻿namespace Emission
 {
     /// <summary>
     ///     Strongly-typed values describing possible joysticks.

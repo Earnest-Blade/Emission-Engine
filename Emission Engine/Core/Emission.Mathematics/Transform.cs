@@ -1,6 +1,4 @@
-﻿using Emission.Annotations;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 
 namespace Emission.Mathematics
 {
@@ -12,7 +10,7 @@ namespace Emission.Mathematics
         public Vector3 Position;
         public Vector3 Scale;
 
-        [JsonIgnore]
+        
         public Quaternion Rotation;
 
         public Vector3 EulerAngle
@@ -20,21 +18,13 @@ namespace Emission.Mathematics
             get => Rotation.ToEulerAngles().ToDegrees();
             set => Rotation = Quaternion.FromEulerAngles(value);
         }
-
-        [JsonIgnore]
-        public Vector3 Forward;
-        [JsonIgnore]
-        public Vector3 Backward;
-
-        [JsonIgnore]
-        public Vector3 Right;
-        [JsonIgnore]
-        public Vector3 Left;
-
-        [JsonIgnore]
-        public Vector3 Up;
-        [JsonIgnore]
-        public Vector3 Down;
+        
+        public Vector3 Forward = Vector3.UnitZ;
+        public Vector3 Backward = -Vector3.UnitZ;
+        public Vector3 Right = Vector3.UnitX;
+        public Vector3 Left = -Vector3.UnitX;
+        public Vector3 Up = Vector3.UnitY;
+        public Vector3 Down = -Vector3.UnitY;
 
         public Transform() : this(Vector3.Zero, Vector3.Zero, Vector3.One) {}
         public Transform(Vector3 position) : this(position, Vector3.Zero, Vector3.One) {}
@@ -47,15 +37,6 @@ namespace Emission.Mathematics
             Position = position;
             Scale = scale;
             Rotation = Quaternion.Identity;
-            
-            Forward = Vector3.UnitZ;
-            Backward = -Forward;
-            
-            Up = Vector3.UnitY;
-            Down = -Up;
-            
-            Right = Vector3.UnitX;
-            Left = -Right;
         }
 
         public Matrix4 ToMatrix()
