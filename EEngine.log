@@ -1,23 +1,26 @@
-samedi 4 février 2023 16:33:11
+mercredi 1 mars 2023 21:20:47
 Win32NT - 10.0.19044.0
 Emission Engine - Development Ver.
 
 [IO] Reading file '.window'
 [INFO] A new game window instance have been created!
+[GLFW] Starting loading GLFW Bindings.
+[GLFW] Linked 116 out of 116 delegates
+[GLFW] Detected version '3.3.8 Win32 WGL EGL OSMesa VisualC DLL'
 [GL] Starting loading OpenGL Bindings.
-[WARNING][GL] Could not link 'glGetnTexImage'
-[WARNING][GL] Could not link 'glGetnUniformdv'
-[WARNING][GL] Could not link 'glMultiDrawArraysIndirectCount'
-[WARNING][GL] Could not link 'glMultiDrawElementsIndirectCount'
-[GL] Linked 708 out of 712 delegates
+[GL] Linked 712 out of 712 delegates
 [GL] Detected version '460'
 [INFO] New window has been created!
-[INFO] Running with GLFW 3.3.8
+[INFO] Running with GLFW 3
 [INFO] Enable OpenGL Debug Callback
 [INFO] Using OpenGL 460
-[INFO] Using GLSL 4.30 - Build 31.0.101.2112
-[INFO] Running with OpenGL Vendor Intel
-[INFO] Running with OpenGL Renderer Intel(R) UHD Graphics 630
+[INFO] Using GLSL 4.30 NVIDIA via Cg compiler
+[INFO] Running with OpenGL Vendor NVIDIA Corporation
+[INFO] Running with OpenGL Renderer NVIDIA GeForce GTX 1050 Ti with Max-Q Design/PCIe/SSE2
 [INFO] Successfully compile shader 'shader1'
+[GL][131185] OTHER raised from API 
+[GL] GL MSG CALLBACK : Buffer detailed info: Buffer object 1 (bound to GL_ARRAY_BUFFER_ARB, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+[GL][131185] OTHER raised from API 
+[GL] GL MSG CALLBACK : Buffer detailed info: Buffer object 2 (bound to GL_ELEMENT_ARRAY_BUFFER_ARB, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
 [INFO] Successfully initialize mesh1!
-[INFO] Application stopped with exit code: 0!
+[INFO] Application stopped with exit code 0

@@ -32,7 +32,7 @@ namespace Emission.Graphics
                 throw new EmissionException(EmissionErrors.EmissionOpenGlException, $"Vertex Buffer {Id} is not bind but you're trying to push data on it!");
 
             glBindBuffer(GL_ARRAY_BUFFER, Id);
-            glBufferData(GL_ARRAY_BUFFER, new IntPtr(size), data, (int)usage); 
+            glBufferData(GL_ARRAY_BUFFER, new IntPtr(size), data, (int)usage);
         }
 
         public void Delete()

@@ -10,98 +10,80 @@ namespace Emission
     public static class Event
     {
         /* Engine Life Cycle Events */
-        public const string Initialize = "Initialize";
-        public const string Start = "Start"; 
-        public const string Update = "Update"; 
-        public const string Render = "Render"; 
-        public const string Stop = "Stop";
+        public const string INITIALIZE = "Initialize";
+        public const string START = "Start"; 
+        public const string UPDATE = "Update"; 
+        public const string RENDER = "Render"; 
+        public const string STOP = "Stop";
         
         /* Window Events */
-        public const string WindowResize = "WindowResize";
-        public const string WindowMove = "WindowMove";
-        public const string WindowClose = "WindowClose"; 
-        public const string WindowIconify = "WindowIconify"; 
-        public const string WindowMaximize = "WindowMaximize";
-        public const string WindowFocus = "WindowFocus";
+        public const string WINDOW_RESIZE = "WindowResize";
+        public const string WINDOW_MOVE = "WindowMove";
+        public const string WINDOW_CLOSE = "WindowClose"; 
+        public const string WINDOW_ICONIFY = "WindowIconify"; 
+        public const string WINDOW_MAXIMIZE = "WindowMaximize";
+        public const string WINDOW_FOCUS = "WindowFocus";
         
         /* Keyboard and Mouse Events */
-        public const string Key = "Key";
-        public const string Button = "Button";
-        public const string MouseScroll = "MouseScroll"; 
-        public const string MouseMove = "MouseMove";
+        public const string KEY = "Key";
+        public const string BUTTON = "Button";
+        public const string MOUSE_SCROLL = "MouseScroll"; 
+        public const string MOUSE_MOVE = "MouseMove";
 
         public static void AddDelegate(string type, EmissionHandler handler)
         {
-            if (HasEventDispatcher() && EventExists(type))
-            {
-                GameInstance.EventDispatcher.Add(type, handler);
-                return;
-            }
-
-            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            if (!HasEventDispatcher() || !EventExists(type))
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            
+            GameInstance.EventDispatcher.Add(type, handler);
         }
         
         public static void AddDelegate<T>(string type, EmissionHandler<T> handler)
         {
-            if (HasEventDispatcher() && EventExists(type))
-            {
-                GameInstance.EventDispatcher.Add(type, handler);
-                return;
-            }
+            if (!HasEventDispatcher() || !EventExists(type))
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
             
-            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            GameInstance.EventDispatcher.Add(type, handler);
         }
         
         public static void RemoveDelegate(string type, EmissionHandler handler)
         {
-            if (HasEventDispatcher() && EventExists(type))
-            {
-                GameInstance.EventDispatcher.Remove(type, handler);
-                return;
-            }
+            if (!HasEventDispatcher() || !EventExists(type))
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
             
-            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            GameInstance.EventDispatcher.Remove(type, handler);
         }
         
         public static void RemoveDelegate<T>(string type, EmissionHandler<T> handler)
         {
-            if (HasEventDispatcher() && EventExists(type))
-            {
-                GameInstance.EventDispatcher.Remove(type, handler);
-                return;
-            }
+            if (!HasEventDispatcher() || !EventExists(type))
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
             
-            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            GameInstance.EventDispatcher.Remove(type, handler);
         }
 
         public static void Invoke(string type)
         {
-            if (HasEventDispatcher() && EventExists(type))
-            {
-                try
-                {
-                    GameInstance.EventDispatcher.Invoke(type);
-                }
-                catch (Exception e) { throw new EmissionException(EmissionErrors.EmissionEventException, e); }
-                return;
-            }
+            if (!HasEventDispatcher() || !EventExists(type))
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
             
-            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            try
+            {
+                GameInstance.EventDispatcher.Invoke(type);
+            }
+            catch (Exception e) { throw new EmissionException(EmissionErrors.EmissionEventException, e); }
         }
         
         public static void Invoke<T>(string type, T args)
         {
-            if (HasEventDispatcher() && EventExists(type))
-            {
-                try
-                {
-                    GameInstance.EventDispatcher.Invoke<T>(type, args);
-                }
-                catch (Exception e) { throw new EmissionException(EmissionErrors.EmissionEventException, e); }
-                return;
-            }
+            if (!HasEventDispatcher() || !EventExists(type))
+                throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
             
-            throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find Event type '{type}'!");
+            try
+            {
+                GameInstance.EventDispatcher.Invoke<T>(type, args);
+            }
+            catch (Exception e) { throw new EmissionException(EmissionErrors.EmissionEventException, e); }
         }
         
         public static bool HasEventDispatcher()
@@ -111,6 +93,9 @@ namespace Emission
 
         public static bool EventExists(string name)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
             if (HasEventDispatcher())
                 return GameInstance.EventDispatcher.GetEvent("On" + name) != null;
             
@@ -131,98 +116,6 @@ namespace Emission
             EventDispatcher.Instance = null;
         }
 
-        public class EventDispatcher : IDisposable
-        {
-            public static EventDispatcher Instance;
-            
-            public event EmissionHandler OnInitialize;
-            public event EmissionHandler OnStart;
-            public event EmissionHandler OnUpdate;
-            public event EmissionHandler OnRender;
-            public event EmissionHandler<int> OnStop;
-
-            public event EmissionHandler OnWindowClose;
-            public event EmissionHandler<Vector2> OnWindowResize;
-            public event EmissionHandler<Vector2> OnWindowMove;
-            public event EmissionHandler<bool> OnWindowIconify;
-            public event EmissionHandler<bool> OnWindowMaximize;
-            public event EmissionHandler<bool> OnWindowFocus;
-
-            public event EmissionHandler<(Keys keys, InputState action)> OnKey;
-            public event EmissionHandler<(MouseButton buttons, InputState action)> OnButton;
-            
-            public event EmissionHandler<Vector2> OnMouseMove;
-            public event EmissionHandler<double> OnMouseScroll;
-
-            //private string _current;
-
-            public EventDispatcher() { }
-
-            public void Add([NotNull]string name, EmissionHandler handler)
-            {
-                GetEvent("On" + name)!.AddEventHandler(this, handler);
-            }
-
-            public void Add<T>([NotNull]string name, EmissionHandler<T> handler)
-            {
-                GetEvent("On" + name)!.AddEventHandler(this, handler);
-            }
-
-            public void Remove([NotNull]string name, EmissionHandler handler)
-            {
-                GetEvent("On" + name)!.RemoveEventHandler(this, handler);
-            }
-
-            public void Remove<T>([NotNull]string name, EmissionHandler<T> handler)
-            {
-                GetEvent("On" + name)!.RemoveEventHandler(this, handler);
-            }
-            
-            public void Invoke([NotNull]string name)
-            {
-                var eventDel = (MulticastDelegate)GetType().GetField("On" + name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Instance);
-                if (eventDel == null) throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find delegate {name}");
-                
-                foreach (Delegate handle in eventDel.GetInvocationList())
-                {
-                    handle.Method.Invoke(handle.Target, Array.Empty<object>());
-                }
-            }
-
-            public void Invoke<T>([NotNull]string name, T args)
-            {
-                var eventDel = (MulticastDelegate)GetType().GetField("On" + name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Instance);
-                if (eventDel == null) throw new EmissionException(EmissionErrors.EmissionEventException, $"Cannot find delegate {name}");
-                
-                foreach (Delegate handle in eventDel.GetInvocationList())
-                {
-                    handle.Method.Invoke(handle.Target, new object[] { args });
-                }
-            }
-
-            public EventInfo GetEvent([NotNull]string name)
-            {
-                return GetType().GetEvent(name);
-            }
-
-            public void Dispose()
-            {
-                OnInitialize = null;
-                OnStart = null;
-                OnUpdate = null;
-                OnRender = null;
-                OnStop = null;
-                OnWindowClose = null;
-                OnWindowResize = null;
-                OnWindowMove = null;
-                OnWindowIconify = null;
-                OnWindowMaximize = null;
-                OnWindowFocus = null;
-                OnKey = null;
-                OnButton = null;
-                OnMouseMove = null;
-                OnMouseScroll = null; 
-            }
-        }
+        
     }
 }

@@ -1,6 +1,4 @@
-﻿using Emission.Annotations;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -50,7 +48,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector3 Column0
         {
@@ -63,7 +60,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector3 Column1
         {
@@ -76,7 +72,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector3 Column2
         {
@@ -92,7 +87,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M11
         {
             get => Row0.X;
@@ -102,7 +96,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M12
         {
             get => Row0.Y;
@@ -112,7 +105,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M13
         {
             get => Row0.Z;
@@ -122,7 +114,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M21
         {
             get => Row1.X;
@@ -132,7 +123,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M22
         {
             get => Row1.Y;
@@ -142,7 +132,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M23
         {
             get => Row1.Z;
@@ -152,7 +141,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M31
         {
             get => Row2.X;
@@ -162,7 +150,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M32
         {
             get => Row2.Y;
@@ -172,7 +159,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M33
         {
             get => Row2.Z;
@@ -313,11 +299,6 @@ namespace Emission.Mathematics
         /// <returns>The rotation matrix</returns>
         public static Matrix3 FromRotationX(float radians)
         {
-            /*
-                 |  1  0       0      |
-             M = |  0  cos(A) -sin(A) |
-                 |  0  sin(A)  cos(A) |	
-            */
             Matrix3 m = Identity;
             m.M22 = m.M33 = (float) Math.Cos(radians);
             m.M32 = (float) Math.Sin(radians);
@@ -332,11 +313,6 @@ namespace Emission.Mathematics
         /// <returns>The rotation matrix</returns>
         public static Matrix3 FromRotationY(float radians)
         {
-            /*
-                 |  cos(A)  0   sin(A) |
-             M = |  0       1   0      |
-                 | -sin(A)  0   cos(A) |
-            */
             Matrix3 m = Identity;
             m.M11 = m.M33 = (float) Math.Cos(radians);
             m.M13 = (float) Math.Sin(radians);
@@ -351,11 +327,6 @@ namespace Emission.Mathematics
         /// <returns>The rotation matrix</returns>
         public static Matrix3 FromRotationZ(float radians)
         {
-            /*
-                 |  cos(A)  -sin(A)   0 |
-             M = |  sin(A)   cos(A)   0 |
-                 |  0        0        1 |
-             */
             Matrix3 m = Identity;
             m.M11 = m.M22 = (float) Math.Cos(radians);
             m.M21 = (float) Math.Sin(radians);
@@ -375,8 +346,8 @@ namespace Emission.Mathematics
             float y = axis.Y;
             float z = axis.Z;
 
-            float sin = (float) System.Math.Sin((double) radians);
-            float cos = (float) System.Math.Cos((double) radians);
+            float sin = (float) Math.Sin(radians);
+            float cos = (float) Math.Cos(radians);
 
             float xx = x * x;
             float yy = y * y;

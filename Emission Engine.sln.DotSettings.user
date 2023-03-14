@@ -5,9 +5,7 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CProjets_005CCode_005CC_0023_005CEmission_0020Engine_005Cbin_005COpenGL_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CProjets_005CCode_005CC_0023_005CEmission_0020Engine_005CEmission_0020Engine_005Clibs_005CGLFW_002ENET_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CProjets_005CCode_005CC_0023_005CEmission_0020Engine_005CEmission_0020Engine_005Clibs_005COpenGL4Net_002Edll/@EntryIndexedValue">True</s:Boolean>
-	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
-  &lt;Assembly Path="C:\Users\Luca Marpeau\.nuget\packages\opentk.graphics\4.7.5\lib\netcoreapp3.1\OpenTK.Graphics.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer /&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Emission_0020Engine_002FEmissionErrors/@EntryIndexedValue">True</s:Boolean>
 	
 	

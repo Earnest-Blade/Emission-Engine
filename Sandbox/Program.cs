@@ -1,4 +1,6 @@
 ﻿using Emission;
+using Emission.IO;
+using Emission.Natives.STB;
 using Emission.Page;
 using Emission.Window;
 
@@ -14,10 +16,6 @@ namespace Sandbox
             GameController.CreateDebugger("Emission Console");
             GameController.CreateWindow(WindowConfig.FromJson(".window"));
             GameController.Initiate();
-
-            // Enable startup scene
-            //Page pg = new MainPage();
-            //PageManager.Enable(pg);
 
             PageManager.Enable(new BasicPlane());
             

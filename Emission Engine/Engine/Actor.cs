@@ -8,6 +8,8 @@ namespace Emission
     [Serializable]
     public abstract class Actor : IDisposable, IEquatable<Actor>
     {
+        public static Actor Empty => new EmptyActor();
+        
         public List<Actor> Childs;
 
         public Transform Transform;
@@ -67,12 +69,12 @@ namespace Emission
 
         public bool Equals(Actor other)
         {
-            return other.Transform == Transform && other.Childs == Childs && other.IsActive == IsActive;
+            return other != null && other.Transform == Transform && other.Childs == Childs && other.IsActive == IsActive;
         }
     }
     
     public class EmptyActor : Actor
     {
-        public EmptyActor(){}
+        public EmptyActor() : base() {}
     }
 }

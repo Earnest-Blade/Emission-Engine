@@ -11,8 +11,6 @@ namespace Emission.IO
         public static string ASSET_FILE => Path.Combine(GameDirectory.GetCurrentDirectory(), "Assets/");
         public static string DATA_FILE => Path.Combine(GameDirectory.GetCurrentDirectory(), "Data/");
 
-        public static string CURRENT_DIRECTORY => GameDirectory.GetCurrentDirectory();
-
         internal const int DEFAULT_BUFFER_SIZE = 4096;
 
         public static string ReadLine(string path, int line)

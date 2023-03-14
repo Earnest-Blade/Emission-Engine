@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Emission.Graphics.RenderConfig;
 using Emission.IO;
 using Emission.Mathematics;

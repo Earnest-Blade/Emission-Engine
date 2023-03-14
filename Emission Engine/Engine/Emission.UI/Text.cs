@@ -3,7 +3,6 @@
 using Emission.IO;
 using Emission.Graphics;
 using Emission.Mathematics;
-using Emission.Graphics.Shading;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.UI

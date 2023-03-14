@@ -813,7 +813,6 @@
           "AssimpNet": "5.0.0-beta1",
           "FreeTypeSharp": "1.1.3",
           "ImGui.NET": "1.88.0",
-          "Newtonsoft.Json": "13.0.1",
           "StbImageSharp": "2.27.13"
         },
         "runtime": {

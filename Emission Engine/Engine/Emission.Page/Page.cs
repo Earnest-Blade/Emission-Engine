@@ -8,9 +8,9 @@ namespace Emission.Page
     [Serializable]
     public class Page : IEngineBehaviour, IEquatable<Page>
     {
-        public string Name;
-        public string Path;
-        public Actor Root;
+        public readonly string Name;
+        public readonly string Path;
+        public readonly Actor Root;
 
         public IEngineBehaviour Behaviour => this;
         public string Uuid => _uuid.ToString();
@@ -20,15 +20,19 @@ namespace Emission.Page
         protected ICamera Camera;
         protected Window.Window Window => GameInstance.Window;
 
-        private Guid _uuid;
+        private readonly Guid _uuid;
 
         public Page() 
         {
             _uuid = Guid.NewGuid();
         }
 
+        public Page(string name) : this(name, Actor.Empty){}
         public Page(string name, Actor root)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+            
             Name = name;
             Root = root;
             Camera = null;
@@ -40,8 +44,6 @@ namespace Emission.Page
 
         ~Page()
         {
-            Name= null;
-            Root = null;
             Camera = null;
 
             Behaviour.IsActive = false;
@@ -101,7 +103,7 @@ namespace Emission.Page
 
         public bool Equals(Page other)
         {
-            return other == null ? false : _uuid.ToString() == other._uuid.ToString();
+            return other != null && _uuid.ToString() == other._uuid.ToString();
         }
 
         public override int GetHashCode()

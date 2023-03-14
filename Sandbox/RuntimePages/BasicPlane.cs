@@ -1,10 +1,11 @@
-﻿
+﻿using System;
 using Emission;
 using Emission.UI;
 using Emission.Page;
 using Emission.Graphics;
-using Emission.Graphics.Shading;
-using Emission.Window;
+using Emission.Graphics.GeometricPrimitives;
+using Emission.Mathematics;
+using ImGuiNET;
 
 namespace Sandbox.RuntimePages
 {
@@ -12,48 +13,42 @@ namespace Sandbox.RuntimePages
     {
         private Shader _shader;
         private Model _model;
-        
-        private const string _vertexShaderSource = "#version 330 core\n"
-                                                   + "layout (location = 0) in vec3 aPos;\n"
-                                                   + "void main()\n"
-                                                   + "{\n"
-                                                   + "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                                   + "}\0";
 
-        private const string _fragmentShaderSource = "#version 330 core\n"
-                                                     + "out vec4 FragColor;\n"
-                                                     + "void main()\n"
-                                                     + "{\n"
-                                                     + "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                                     + "}\n\0";
-
-        //private ImGuiController _guiController;
+        private ImGuiController _controller;
         
-        public BasicPlane() : base("Triangle Scene", new EmptyActor())
+        public BasicPlane() : base("Plane Scene")
         {
             Camera = new PerspectiveCamera(Window, 90f, 0.1f, 400f);
             Camera.Translate((0, 0, -20));
             
-            _shader = new Shader(new ShaderLoader.ShaderStruct(_vertexShaderSource, _fragmentShaderSource));
+            _shader = Shader.FromPath("Assets/Shaders/cube.shader");
+            
+            //_controller = new ImGuiController();
+            
+            //_model = ModelBuilder.FromFile("Assets/Models/duck.dae");
 
-            _model = ModelPrimitive.PrimitiveFrontPlane(0.5f, 0.5f);
-
-            /* _guiController = new ImGuiController();
- 
-             _model = ModelBuilder.FromFile("Assets/Models/duck.dae", "Assets/Textures/");
-             _model.Transform.Position.Z = 200;*/
+            _model = GeometricPrimitive.PrimitiveCube((100, 100, 100));
+            _model.Transform.Position = (0, 00, 200);
         }
 
         public override void Update()
         {
             base.Update();
 
+            //_controller.Update();
+            
+            _model.Transform.EulerAngle += Vector3.UnitY * Time.DeltaTime * 10;
+            
             if(Input.IsKeyDown(Keys.Escape)) GameController.Stop(0);
         }
 
         public override void Render()
         {
             base.Render();
+            
+            //ImGui.ShowDemoWindow();
+            
+            //_controller.Render();
             
             _model.Draw(_shader);
         }

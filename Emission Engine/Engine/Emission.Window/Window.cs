@@ -217,9 +217,9 @@ namespace Emission.Window
             glfwWindowHint(GLFW_VISIBLE, Config.IsVisible ? GL_TRUE : GL_FALSE);
             glfwWindowHint(GLFW_CENTER_CURSOR, Config.IsCursorCentered ? GL_TRUE : GL_FALSE);
             glfwWindowHint(GLFW_FOCUS_ON_SHOW, Config.IsFocusedOnShow ? GL_TRUE : GL_FALSE);
-            //glfwWindowHint(GL_DEPTH_BITS, Config.DepthBits);
-            //glfwWindowHint(GL_STENCIL_BITS, Config.StencilBits);
-
+            glfwWindowHint(GLFW_DEPTH_BITS, Config.DepthBits);
+            glfwWindowHint(GLFW_STENCIL_BITS, Config.StencilBits);
+            
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GameInstance.EngineSettings.Debug ? GL_TRUE : GL_FALSE);
 
             Handle = glfwCreateWindow(Config.Width, Config.Height, GlUtils.StrToBytePtr(Config.Title), null, null);
@@ -243,29 +243,29 @@ namespace Emission.Window
         /// </summary>
         public void Initialize()
         {
-            Event.AddDelegate(Event.WindowClose, OnClose);
-            Event.AddDelegate<Vector2>(Event.WindowResize, OnResize);
-            Event.AddDelegate<Vector2>(Event.WindowMove, OnMove);
-            Event.AddDelegate<bool>(Event.WindowIconify, OnIconify);
-            Event.AddDelegate<bool>(Event.WindowMaximize, OnMaximize);
-            Event.AddDelegate<bool>(Event.WindowFocus, OnFocus);
+            Event.AddDelegate(Event.WINDOW_CLOSE, OnClose);
+            Event.AddDelegate<Vector2>(Event.WINDOW_RESIZE, OnResize);
+            Event.AddDelegate<Vector2>(Event.WINDOW_MOVE, OnMove);
+            Event.AddDelegate<bool>(Event.WINDOW_ICONIFY, OnIconify);
+            Event.AddDelegate<bool>(Event.WINDOW_MAXIMIZE, OnMaximize);
+            Event.AddDelegate<bool>(Event.WINDOW_FOCUS, OnFocus);
             
-            Event.AddDelegate<(Keys, InputState)>(Event.Key, GameInstance.Input.KeyCallback);
-            Event.AddDelegate<(MouseButton, InputState)>(Event.Button, GameInstance.Input.MouseCallback);
-            Event.AddDelegate<double>(Event.MouseScroll, GameInstance.Input.ScrollCallback);
-            Event.AddDelegate<Vector2>(Event.MouseMove, GameInstance.Input.CursorCallback);
+            Event.AddDelegate<(Keys, InputState)>(Event.KEY, GameInstance.Input.KeyCallback);
+            Event.AddDelegate<(MouseButton, InputState)>(Event.BUTTON, GameInstance.Input.MouseCallback);
+            Event.AddDelegate<double>(Event.MOUSE_SCROLL, GameInstance.Input.ScrollCallback);
+            Event.AddDelegate<Vector2>(Event.MOUSE_MOVE, GameInstance.Input.CursorCallback);
             
-            glfwSetWindowCloseCallback(Handle, _ => Event.Invoke(Event.WindowClose));
-            glfwSetWindowSizeCallback(Handle, (_, width, height) => Event.Invoke<Vector2>(Event.WindowResize, (width, height)));
-            glfwSetWindowPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.WindowMove, ((float)x, (float)y)));
-            glfwSetWindowFocusCallback(Handle, (_, focused) => Event.Invoke(Event.WindowFocus, focused));
-            glfwSetWindowIconifyCallback(Handle, (_, minimized) => Event.Invoke(Event.WindowIconify, minimized));
-            glfwSetWindowMaximizeCallback(Handle, (_, maximized) => Event.Invoke(Event.WindowMaximize, maximized));
+            glfwSetWindowCloseCallback(Handle, _ => Event.Invoke(Event.WINDOW_CLOSE));
+            glfwSetWindowSizeCallback(Handle, (_, width, height) => Event.Invoke<Vector2>(Event.WINDOW_RESIZE, (width, height)));
+            glfwSetWindowPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.WINDOW_MOVE, ((float)x, (float)y)));
+            glfwSetWindowFocusCallback(Handle, (_, focused) => Event.Invoke(Event.WINDOW_FOCUS, focused));
+            glfwSetWindowIconifyCallback(Handle, (_, minimized) => Event.Invoke(Event.WINDOW_ICONIFY, minimized));
+            glfwSetWindowMaximizeCallback(Handle, (_, maximized) => Event.Invoke(Event.WINDOW_MAXIMIZE, maximized));
 
-            glfwSetKeyCallback(Handle, (_, key, _, action, _) => Event.Invoke<(Keys, InputState)>(Event.Key, (key, action)));
-            glfwSetMouseButtonCallback(Handle, (_, button, action, _) => Event.Invoke<(MouseButton, InputState)>(Event.Button, (button, action)));
-            glfwSetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MouseScroll, y));
-            glfwSetCursorPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MouseMove, ((float)x, (float)y)));
+            glfwSetKeyCallback(Handle, (_, key, _, action, _) => Event.Invoke<(Keys, InputState)>(Event.KEY, (key, action)));
+            glfwSetMouseButtonCallback(Handle, (_, button, action, _) => Event.Invoke<(MouseButton, InputState)>(Event.BUTTON, (button, action)));
+            glfwSetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MOUSE_SCROLL, y));
+            glfwSetCursorPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MOUSE_MOVE, ((float)x, (float)y)));
         }
 
         /// <summary>

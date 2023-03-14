@@ -71,11 +71,12 @@ namespace Emission.IO
 
         public void Dispose()
         {
+            Width = 0;
+            Height = 0;
+            
             _bytes = null;
             _path = null;
             _colorComponent = (int)ColorComponents.Default;
-            Width = 0;
-            Height = 0;
         }
     }
 }

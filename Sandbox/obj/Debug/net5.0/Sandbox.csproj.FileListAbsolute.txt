@@ -24,3 +24,14 @@ D:\Projets\Code\C#\Emission Engine\Bin\Debug\net5.0\Sandbox.runtimeconfig.json
 D:\Projets\Code\C#\Emission Engine\Bin\Debug\net5.0\Sandbox.runtimeconfig.dev.json
 D:\Projets\Code\C#\Emission Engine\Bin\Debug\net5.0\Sandbox.dll
 D:\Projets\Code\C#\Emission Engine\Bin\Debug\net5.0\Sandbox.pdb
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.csproj.AssemblyReference.cache
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.AssemblyInfoInputs.cache
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.AssemblyInfo.cs
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.csproj.CoreCompileInputs.cache
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.csproj.CopyComplete
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.dll
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\refint\Sandbox.dll
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.pdb
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\Sandbox.genruntimeconfig.cache
+D:\Projets\Code\Github\EmissionEngine\Sandbox\obj\Debug\net5.0\ref\Sandbox.dll

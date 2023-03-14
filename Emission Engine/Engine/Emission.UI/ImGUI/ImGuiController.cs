@@ -6,7 +6,6 @@ using Emission.Graphics;
 using ImGuiNET;
 
 using Emission.Mathematics;
-using Emission.Graphics.Shading;
 using Emission.Natives.GL;
 using static Emission.Natives.GL.Gl;
 
@@ -105,7 +104,7 @@ namespace Emission.UI
                                         outputColor = vec4(1, 1, 1, 1);
                                     }";
 
-            _shader = new Shader(new ShaderLoader.ShaderStruct(VertexSource, FragmentSource), "ImGUIShader");
+            _shader = new Shader(new ShaderStruct(VertexSource, FragmentSource), "ImGUIShader");
 
             int stride = Unsafe.SizeOf<ImDrawVert>();
             glVertexAttribPointer(0, 2, GL_FLOAT, false, stride, (void*)0);
@@ -273,9 +272,9 @@ namespace Emission.UI
             io.MouseWheelH = offset.X;
         }
 
-        private void RenderImDrawData(ImDrawDataPtr draw_data)
+        private void RenderImDrawData(ImDrawDataPtr drawData)
         {
-            if (draw_data.CmdListsCount == 0) return;
+            if (drawData.CmdListsCount == 0) return;
 
             // Get intial state.
             //int prevVAO = glGetInteger(GL_VERTEX_ARRAY_BINDING);
@@ -316,9 +315,9 @@ namespace Emission.UI
             glBindVertexArray(_vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
             
-            for (int i = 0; i < draw_data.CmdListsCount; i++)
+            for (int i = 0; i < drawData.CmdListsCount; i++)
             {
-                ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
+                ImDrawListPtr cmd_list = drawData.CmdListsRange[i];
 
                 int vertexSize = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
                 if (vertexSize > _vertexBufferSize)
@@ -350,9 +349,9 @@ namespace Emission.UI
             _shader.UseUniformProjectionMat4("projection_matrix", mvp);
             _shader.UseUniform1f("in_fontTexture", 0);
 
-            //glBindVertexArray(_vertexArray);
+            glBindVertexArray(_vertexArray);
 
-            draw_data.ScaleClipRects(io.DisplayFramebufferScale);
+            drawData.ScaleClipRects(io.DisplayFramebufferScale);
 
             glEnable(GL_BLEND);
             glEnable(GL_SCISSOR_TEST);
@@ -366,22 +365,20 @@ namespace Emission.UI
             Debug.Log(bufferSize);
             
             // Render command lists
-            for (int n = 0; n < draw_data.CmdListsCount; n++)
+            for (int n = 0; n < drawData.CmdListsCount; n++)
             {
-                ImDrawListPtr cmdList  = draw_data.CmdListsRange[n];
+                ImDrawListPtr cmdList = drawData.CmdListsRange[n];
 
                 int offset = 0;
                 int vtxBufferSize = cmdList.VtxBuffer.Size * Marshal.SizeOf<ImDrawVert>();
-                Debug.Log(vtxBufferSize);
                 glBufferSubData(GL_ARRAY_BUFFER, &offset, &vtxBufferSize, cmdList.VtxBuffer.Data.ToPointer());
 
                 int idxBufferSize = cmdList.IdxBuffer.Size * sizeof(ushort);
-                Debug.Log(idxBufferSize);
                 glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, &offset, &idxBufferSize, cmdList.IdxBuffer.Data.ToPointer());
                 
-                for (int cmd_i = 0; cmd_i < cmdList.CmdBuffer.Size; cmd_i++)
+                for (int cmdI = 0; cmdI < cmdList.CmdBuffer.Size; cmdI++)
                 {
-                    ImDrawCmdPtr pcmd = cmdList.CmdBuffer[cmd_i];
+                    ImDrawCmdPtr pcmd = cmdList.CmdBuffer[cmdI];
                     if (pcmd.UserCallback != IntPtr.Zero) throw new NotImplementedException();
 
                     glActiveTexture((int)TextureUnit.Texture0);

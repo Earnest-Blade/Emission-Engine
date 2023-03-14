@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.IO.Enumeration;
 using System.Text;
 using JetBrains.Annotations;
 
@@ -9,6 +10,12 @@ namespace Emission.IO
 {
     public static class GameDirectory
     {
+        /// <summary>
+        /// Define current working directory.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static void SetCurrentDirectory([CanBeNull] string path)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
@@ -35,11 +42,48 @@ namespace Emission.IO
             return end >= 0 ? path.Slice(0, end) : ReadOnlySpan<char>.Empty;
         }
         
+        /// <summary>
+        /// Return current working directory.
+        /// </summary>
         public static string GetCurrentDirectory() => Environment.CurrentDirectory;
 
-        public static IEnumerable<string> EnumerateFiles(string path)
+        public static IEnumerable<string> EnumerateFiles(string path) => EnumeratePaths(path, "*", SearchTarget.Files,
+            new EnumerationOptions { MatchType = MatchType.Win32, AttributesToSkip = 0, IgnoreInaccessible = false });
+
+        internal static IEnumerable<string> EnumeratePaths(string path, string searchPattern, SearchTarget searchTarget,
+            EnumerationOptions options)
         {
-            return Directory.EnumerateFiles(path);
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (searchPattern == null)
+                throw new ArgumentNullException(nameof(searchPattern));
+
+            switch (searchTarget)
+            {
+                case SearchTarget.Files:
+                    return new FileSystemEnumerable<string>(path,
+                        (ref FileSystemEntry entry) => entry.ToSpecifiedFullPath(), options)
+                    {
+                        ShouldIncludePredicate = (ref FileSystemEntry entry) =>
+                            !entry.IsDirectory && MatchesPattern(searchPattern, entry.FileName, options)
+                    };
+                case SearchTarget.Directories:
+                    return new FileSystemEnumerable<string>(path,
+                        (ref FileSystemEntry entry) => entry.ToSpecifiedFullPath(), options)
+                    {
+                        ShouldIncludePredicate = (ref FileSystemEntry entry) =>
+                            entry.IsDirectory && MatchesPattern(searchPattern, entry.FileName, options)
+                    };
+                case SearchTarget.Both:
+                    return new FileSystemEnumerable<string>(path,
+                        (ref FileSystemEntry entry) => entry.ToSpecifiedFullPath(), options)
+                    {
+                        ShouldIncludePredicate = (ref FileSystemEntry entry) =>
+                            MatchesPattern(searchPattern, entry.FileName, options)
+                    };
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(searchTarget));
+            }
         }
 
         /// <summary>
@@ -60,6 +104,18 @@ namespace Emission.IO
             while (end > rootLength && IsDirectorySeparator(path[end - 1])) end--;
             
             return end;
+        }
+        
+        private static bool MatchesPattern(string expression, ReadOnlySpan<char> name, EnumerationOptions options)
+        {
+            bool ignoreCase = (options.MatchCasing == MatchCasing.PlatformDefault) || options.MatchCasing == MatchCasing.CaseInsensitive;
+
+            return options.MatchType switch
+            {
+                MatchType.Simple => FileSystemName.MatchesSimpleExpression(expression.AsSpan(), name, ignoreCase),
+                MatchType.Win32 => FileSystemName.MatchesWin32Expression(expression.AsSpan(), name, ignoreCase),
+                _ => throw new ArgumentOutOfRangeException(nameof(options)),
+            };
         }
 
         /// <summary>
@@ -116,6 +172,13 @@ namespace Emission.IO
             }
 
             return builder.ToString();
+        }
+        
+        internal enum SearchTarget : byte
+        {
+            Files = 0x1,
+            Directories = 0x2,
+            Both = 0x3
         }
     }
 }

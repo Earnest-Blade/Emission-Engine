@@ -51,7 +51,7 @@ namespace Emission.Graphics
             Viewport = viewport;
             _transform = Transform.Zero;
 
-            Event.AddDelegate<Vector2>(Event.WindowResize, Resize);
+            Event.AddDelegate<Vector2>(Event.WINDOW_RESIZE, Resize);
 
             ICamera.SetCurrentCamera(this);
             UpdateProjection();
@@ -96,7 +96,7 @@ namespace Emission.Graphics
 
         public void Dispose()
         {
-            Event.RemoveDelegate<Vector2>(Event.WindowResize, Resize);
+            Event.RemoveDelegate<Vector2>(Event.WINDOW_RESIZE, Resize);
         }
 
         private void UpdateProjection()

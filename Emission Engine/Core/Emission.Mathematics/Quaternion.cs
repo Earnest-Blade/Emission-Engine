@@ -1,6 +1,4 @@
-﻿using Emission.Annotations;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace Emission.Mathematics
@@ -18,25 +16,24 @@ namespace Emission.Mathematics
         public float Z;
         public float W;
 
-        [JsonIgnore] public readonly float Xx => X * X;
-        [JsonIgnore] public readonly float Yy => Y * Y;
-        [JsonIgnore] public readonly float Zz => Z * Z;
-        [JsonIgnore] public readonly float Ww => W * W;
+        public readonly float Xx => X * X;
+        public readonly float Yy => Y * Y;
+        public readonly float Zz => Z * Z;
+        public readonly float Ww => W * W;
 
-        [JsonIgnore] public readonly float Xy => X * Y;
-        [JsonIgnore] public readonly float Xz => X * Z;
-        [JsonIgnore] public readonly float Zw => Z * W;
-        [JsonIgnore] public readonly float Zx => Z * X;
-        [JsonIgnore] public readonly float Yw => Y * W;
-        [JsonIgnore] public readonly float Yz => Y * Z;
-        [JsonIgnore] public readonly float Xw => X * W;
+        public readonly float Xy => X * Y;
+        public readonly float Xz => X * Z;
+        public readonly float Zw => Z * W;
+        public readonly float Zx => Z * X;
+        public readonly float Yw => Y * W;
+        public readonly float Yz => Y * Z;
+        public readonly float Xw => X * W;
 
-        [JsonIgnore] public Vector3 Xyz => new Vector3(X, Y, Z);
+        public Vector3 Xyz => new Vector3(X, Y, Z);
 
-        [JsonIgnore] public readonly float Length => MathF.Sqrt(X * X + Y * Y + Z * Z + W * W);
-        [JsonIgnore] public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
+        public readonly float Length => MathF.Sqrt(X * X + Y * Y + Z * Z + W * W);
+        public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
 
-        [JsonIgnore]
         public readonly float Angle
         {
             get
@@ -47,7 +44,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         public readonly Vector3 Axis
         {
             get

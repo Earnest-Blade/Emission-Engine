@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using Emission.Mathematics;
-using Emission.Graphics.Shading;
+using Emission.Graphics;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics
@@ -42,7 +42,21 @@ namespace Emission.Graphics
             
             Initialize();
             Debug.Log($"[INFO] Successfully initialize mesh{_vao.Id}!");
-        } 
+        }
+
+        public Mesh(Vertex[] vertices, uint[] indices, Texture[] textures)
+        {
+            Vertices = new List<Vertex>(vertices);
+            Indices = new List<uint>(indices);
+            Textures = new List<Texture>(textures);
+
+            _vao = null;
+            _vbo = null;
+            _ebo = null;
+            
+            Initialize();
+            Debug.Log($"[INFO] Successfully initialize mesh{_vao.Id}!");
+        }
 
         private void Initialize()
         {
@@ -70,7 +84,13 @@ namespace Emission.Graphics
 
         public void UpdateGeometry()
         {
-            Initialize();
+            glBindVertexArray(_vao);
+            
+            Renderer.WriteBuffer(_vbo, Vertices.ToArray());
+            Renderer.WriteIndices(_ebo, Indices.ToArray());
+
+            glBindVertexArray(0);
+            
             Debug.Log($"[INFO] Successfully updated mesh{_vao.Id}!");
         }
         

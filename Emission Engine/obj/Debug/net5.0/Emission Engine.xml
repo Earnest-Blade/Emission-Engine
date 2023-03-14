@@ -4,6 +4,19 @@
         <name>Emission Engine</name>
     </assembly>
     <members>
+        <member name="M:Emission.IO.GameDirectory.SetCurrentDirectory(System.String)">
+            <summary>
+            Define current working directory.
+            </summary>
+            <param name="path"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:Emission.IO.GameDirectory.GetCurrentDirectory">
+            <summary>
+            Return current working directory.
+            </summary>
+        </member>
         <member name="M:Emission.IO.GameDirectory.GetDirectoryNameOffset(System.ReadOnlySpan{System.Char})">
             <summary>
             Returns the directory portion of a file path. The returned value is empty
@@ -579,57 +592,6 @@
             <param name="window">The window that was maximized or restored.</param>
             <param name="maximized"><c>true</c> if the window was maximized, or <c>false</c> if it was restored.</param>
         </member>
-        <member name="T:Emission.EmissionErrors">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionAssimpException">
-            <summary>
-              Looks up a localized string similar to Emission ASSIMP Error.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionEventException">
-            <summary>
-              Looks up a localized string similar to Emission Event Error.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionGlfwException">
-            <summary>
-              Looks up a localized string similar to Emission GLFW Error.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionIOException">
-            <summary>
-              Looks up a localized string similar to Emission I/O Error.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionOpenGlException">
-            <summary>
-              Looks up a localized string similar to Emission OpenGL Error.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionPageException">
-            <summary>
-              Looks up a localized string similar to Emission Page Error.
-            </summary>
-        </member>
-        <member name="P:Emission.EmissionErrors.EmissionTextureException">
-            <summary>
-              Looks up a localized string similar to Emission Texture Error.
-            </summary>
-        </member>
         <member name="F:Emission.Graphics.Renderer.SHADER_TEXTURE_COORDS_LOCATION">
             <summary>
             Constant integer that represent texture coords location in shader layout.
@@ -741,18 +703,26 @@
         </member>
         <member name="M:Emission.Graphics.Renderer.WriteBuffer(Emission.Graphics.VertexBufferObject,System.Single[])">
             <summary>
-            Overwrite data to an array buffer using his ID.
+            Overwrite data to an array buffer using VertexBufferObject.
             Use this to write vertices, texture coords or normals data.
             </summary>
             <param name="buffer">Buffer's ID</param>
             <param name="data">Data to write to the buffer.</param>
         </member>
-        <member name="M:Emission.Graphics.Renderer.WriteIndices(Emission.Graphics.ElementBufferObject,System.Int32[])">
+        <member name="M:Emission.Graphics.Renderer.WriteBuffer``1(Emission.Graphics.VertexBufferObject,``0[])">
+            <summary>
+            Overwrite data to an array buffer using VertexBufferObject.
+            </summary>
+            <param name="buffer"></param>
+            <param name="data"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Emission.Graphics.Renderer.WriteIndices(Emission.Graphics.ElementBufferObject,System.UInt32[])">
             <summary>
             Overwrite data to an element array buffer using his ID.
             Use this to write indices.
             </summary>
-            <param name="buffer">Buffer's ID</param>
+            <param name="ebo"></param>
             <param name="data">Indices data to write to the buffer.</param>
         </member>
         <member name="M:Emission.Graphics.Renderer.BindVertexArray">
@@ -892,99 +862,99 @@
             Return the expected usage pattern of the renderer.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.Initialize(Emission.Graphics.Shading.ShaderLoader.ShaderStruct)">
+        <member name="M:Emission.Graphics.Shader.Initialize(Emission.Graphics.ShaderStruct)">
             <summary>
-            Initialize a shader from a <seealso cref="T:Emission.Graphics.Shading.ShaderLoader.ShaderStruct"/>.
+            Initialize a shader from a <seealso cref="!:ShaderLoader.ShaderStruct"/>.
             Create program ID, load vertex shader, fragment shader and geometry shader.
             </summary>
             <param name="shader"></param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.Start">
+        <member name="M:Emission.Graphics.Shader.Start">
             <summary>
             Enable shader to be use.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.Stop">
+        <member name="M:Emission.Graphics.Shader.Stop">
             <summary>
             Disable shader to be use.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.Dispose">
+        <member name="M:Emission.Graphics.Shader.Dispose">
             <summary>
             Destroy Shader.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.GetAttributeLocation(System.String)">
+        <member name="M:Emission.Graphics.Shader.GetAttributeLocation(System.String)">
             <summary>
             Return attribute location use a name.
             </summary>
             <param name="name">Attribute's name</param>
             <returns>Attribute's location</returns>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.GetUniformLocation(System.String)">
+        <member name="M:Emission.Graphics.Shader.GetUniformLocation(System.String)">
             <summary>
             Return uniform location use a name.
             </summary>
             <param name="name">Uniform's name</param>
             <returns>Uniform's location</returns>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniform1f(System.String,System.Single)">
+        <member name="M:Emission.Graphics.Shader.UseUniform1f(System.String,System.Single)">
             <summary>
             Define a float value to a uniform.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniform1(System.String,System.Int32)">
+        <member name="M:Emission.Graphics.Shader.UseUniform1(System.String,System.Int32)">
             <summary>
             Define an int value to a uniform.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniformVec2(System.String,Emission.Mathematics.Vector2)">
+        <member name="M:Emission.Graphics.Shader.UseUniformVec2(System.String,Emission.Mathematics.Vector2)">
             <summary>
             Define a vector 2D value to a uniform.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniformVec3(System.String,Emission.Mathematics.Vector3)">
+        <member name="M:Emission.Graphics.Shader.UseUniformVec3(System.String,Emission.Mathematics.Vector3)">
             <summary>
             Define a vector 3D value to a uniform.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniformVec4(System.String,Emission.Mathematics.Vector4)">
+        <member name="M:Emission.Graphics.Shader.UseUniformVec4(System.String,Emission.Mathematics.Vector4)">
             <summary>
             Define a vector 3D value to a uniform.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniformProjectionMat4(System.String,Emission.Mathematics.Matrix4)">
+        <member name="M:Emission.Graphics.Shader.UseUniformProjectionMat4(System.String,Emission.Mathematics.Matrix4)">
             <summary>
             Define a matrix 4 value to a uniform use to define a projection.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Shader.UseUniformMat4(System.String,Emission.Mathematics.Matrix4)">
+        <member name="M:Emission.Graphics.Shader.UseUniformMat4(System.String,Emission.Mathematics.Matrix4)">
             <summary>
             Define a matrix 4 value to a uniform use to define a transposition.
             </summary>
             <param name="name">Name of uniform</param>
             <param name="value">New value of uniform</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.ShaderLoader.LoadShader(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Emission.Graphics.ShaderLoader.LoadShader(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Create a <see cref="T:Emission.Graphics.Shading.ShaderLoader.ShaderStruct"/> from an array of line.
+            Create a <see cref="T:Emission.Graphics.ShaderStruct"/> from an array of line.
             </summary>
             <param name="data">Data to parse.</param>
             <returns>Shader parsed content.</returns>
         </member>
-        <member name="M:Emission.Graphics.Shading.ShaderLoader.CompileShader(System.UInt32,System.String@)">
+        <member name="M:Emission.Graphics.ShaderLoader.CompileShader(System.UInt32,System.String@)">
             <summary>
             Compile Shader using OpenGL.
             </summary>
@@ -993,39 +963,39 @@
             <returns></returns>
             <exception cref="T:Emission.EmissionException"></exception>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.Bind">
+        <member name="M:Emission.Graphics.Texture.Bind">
             <summary>
             Load texture data into OpenGl.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.Use">
+        <member name="M:Emission.Graphics.Texture.Use">
             <summary>
             Make texture active for rendering.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.Close">
+        <member name="M:Emission.Graphics.Texture.Close">
             <summary>
             Make texture inactive for rendering.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.Dispose">
+        <member name="M:Emission.Graphics.Texture.Dispose">
             <summary>
             Delete texture from OpenGl.
             </summary>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.TextureWrapping(System.Int32)">
+        <member name="M:Emission.Graphics.Texture.TextureWrapping(System.Int32)">
             <summary>
             Define texture's wrap mode.
             </summary>
             <param name="wrap">OpenGl wrap mode.</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.TextureBorderColor(Emission.Mathematics.Vector4)">
+        <member name="M:Emission.Graphics.Texture.TextureBorderColor(Emission.Mathematics.Vector4)">
             <summary>
             Define texture's border color.
             </summary>
             <param name="color">Color</param>
         </member>
-        <member name="M:Emission.Graphics.Shading.Texture.TextureFilter(System.Int32,System.Int32)">
+        <member name="M:Emission.Graphics.Texture.TextureFilter(System.Int32,System.Int32)">
             <summary>
             Define texture's filter.
             </summary>
@@ -2065,6 +2035,13 @@
             This is called by Update(float).
             </summary>
         </member>
+        <member name="M:Emission.MemoryHelper.ReadStream(System.IO.Stream,System.Int32)">
+            <summary>
+            Reads a stream until the end is reached into a byte array.
+            </summary>
+            <param name="stream">Stream to read</param>
+            <param name="size">Initial buffer size</param>
+        </member>
         <member name="T:Emission.Window.Cursor">
             <summary>
             Wrapper around a handle for a window cursor object.
@@ -2244,6 +2221,57 @@
         <member name="M:Emission.Window.Window.Dispose">
             <summary>
             Destroy and terminate window.
+            </summary>
+        </member>
+        <member name="T:Emission.EmissionErrors">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionAssimpException">
+            <summary>
+              Looks up a localized string similar to Emission ASSIMP Error.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionEventException">
+            <summary>
+              Looks up a localized string similar to Emission Event Error.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionGlfwException">
+            <summary>
+              Looks up a localized string similar to Emission GLFW Error.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionIOException">
+            <summary>
+              Looks up a localized string similar to Emission I/O Error.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionOpenGlException">
+            <summary>
+              Looks up a localized string similar to Emission OpenGL Error.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionPageException">
+            <summary>
+              Looks up a localized string similar to Emission Page Error.
+            </summary>
+        </member>
+        <member name="P:Emission.EmissionErrors.EmissionTextureException">
+            <summary>
+              Looks up a localized string similar to Emission Texture Error.
             </summary>
         </member>
         <member name="M:Emission.Time.GlfwTime">

@@ -8,18 +8,18 @@ namespace Emission
     public class GameInstance : IDisposable
     {
         public static Game Game => _gameInstance;
-        public static Window.Window Window => HasIntance() ? Game.Window : null;
-        public static Renderer Renderer => HasIntance() ? Game.Renderer : null;
-        public static Debug Debugger => HasIntance() ? Game.Debugger : null; 
-        public static Data Data => HasIntance() ? Game.Data : null;
-        public static EngineSettings EngineSettings => HasIntance() ? Game.Settings : EngineSettings.GetDefault();
+        public static Window.Window Window => HasInstance() ? Game.Window : null;
+        public static Renderer Renderer => HasInstance() ? Game.Renderer : null;
+        public static Debug Debugger => HasInstance() ? Game.Debugger : null; 
+        public static Data Data => HasInstance() ? Game.Data : null;
+        public static EngineSettings EngineSettings => HasInstance() ? Game.Settings : EngineSettings.GetDefault();
 
-        public static PageManager PageManager => HasIntance() ? Game.PageManager : null;
+        public static PageManager PageManager => HasInstance() ? Game.PageManager : null;
 
         public static Input Input => Input.Instance;
 
-        public static Event.EventDispatcher EventDispatcher => Event.EventDispatcher.Instance;
-        public static EngineBehaviour.EngineBehaviourDispatcher EngineBehaviourDispatcher => EngineBehaviour.EngineBehaviourDispatcher.Instance;
+        internal static EventDispatcher EventDispatcher => EventDispatcher.Instance;
+        internal static EngineBehaviourDispatcher EngineBehaviourDispatcher => EngineBehaviourDispatcher.Instance;
 
         public static GameInstance Instance
         {
@@ -43,6 +43,6 @@ namespace Emission
 
         public void Dispose() { }
 
-        public static bool HasIntance() => _instance != null;
+        public static bool HasInstance() => _instance != null;
     }
 }

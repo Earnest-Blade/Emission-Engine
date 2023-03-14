@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
+
 using Emission.Natives.GL;
 using static Emission.Natives.GL.Gl;
 
-namespace Emission.Graphics.Shading
+namespace Emission.Graphics
 {
-    public unsafe class ShaderLoader
+    public static unsafe class ShaderLoader
     {
         public const string COMMENT = "//";
 
@@ -26,7 +25,7 @@ namespace Emission.Graphics.Shading
         public const string FRAGMENT_SHADER_KEY = "fragment:";
         public const string TCS_SHADER_KEY = "tcs:";
         public const string TES_SHADER_KEY = "tes:";
-
+        
         /// <summary>
         /// Create a <see cref="ShaderStruct"/> from an array of line.
         /// </summary>
@@ -100,91 +99,6 @@ namespace Emission.Graphics.Shading
             return info;
         }
 
-        public struct ShaderStruct
-        {
-            public string VertexData;
-            public string GeomertyData;
-            public string FragmentData;
-
-            public string TCSData;
-            public string TESData;
-
-            public bool HasVertexShader = false;
-            public bool HasFragmentShader = false;
-            public bool HasGeometryShade = false;
-            public bool HasTesselationShader = false;
-
-            public ShaderStruct()
-            {
-                VertexData = null;
-                GeomertyData = null;
-                FragmentData = null;
-                TCSData = null;
-                TESData = null;
-            }
-
-            public ShaderStruct(string vertexData, string fragmentData)
-            {
-                VertexData = vertexData;
-                GeomertyData = null;
-                FragmentData = fragmentData;
-                TCSData = null;
-                TESData = null;
-                HasVertexShader = true;
-                HasFragmentShader = true;
-            }
-
-            public ShaderStruct(string vertexData, string geomertyData, string fragmentData)
-            {
-                VertexData = vertexData;
-                GeomertyData = geomertyData;
-                FragmentData = fragmentData;
-                TCSData = null;
-                TESData = null;
-                HasVertexShader = true;
-                HasFragmentShader = true;
-                HasGeometryShade = true;
-            }
-
-            public void Write(int type, string line)
-            {
-                switch (type)
-                {
-                    case NONE:
-                        return;
-
-                    case DEFINE_SHADER:
-                        VertexData += line + '\n';
-                        GeomertyData += line + '\n';
-                        FragmentData += line + '\n';
-                        return;
-
-                    case VERTEX_SHADER:
-                        HasVertexShader = true;
-                        VertexData += line + '\n';
-                        return;
-
-                    case GEOMETRY_SHADER:
-                        HasGeometryShade = true;
-                        GeomertyData += line + '\n';
-                        return;
-
-                    case FRAGMENT_SHADER:
-                        HasFragmentShader = true;
-                        FragmentData += line + '\n';
-                        return;
-
-                    case TESSELATION_CONTROL_SHADER:
-                        HasTesselationShader = true;
-                        TCSData = line + '\n';
-                        return;
-
-                    case TESSELATION_EVAL_SHADER:
-                        HasTesselationShader = true;
-                        TESData = line + '\n';
-                        return;
-                }
-            }
-        }
+        
     }
 }

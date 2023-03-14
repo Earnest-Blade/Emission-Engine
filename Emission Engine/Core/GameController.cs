@@ -1,7 +1,10 @@
-﻿using Emission.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Emission.IO;
 using Emission.Window;
 using Emission.Graphics;
 using Emission.Graphics.RenderConfig;
+
 using JetBrains.Annotations;
 
 namespace Emission
@@ -10,27 +13,28 @@ namespace Emission
     {
         public static void Initiate()
         {
-            if (!GameInstance.HasIntance()) return;
-            Event.Invoke(Event.Initialize);            
+            if (!GameInstance.HasInstance()) return;
+            Event.Invoke(Event.INITIALIZE);            
         }
         
         public static void Start()
         {
-            if (!GameInstance.HasIntance()) return;
-            Event.Invoke(Event.Start);
+            if (!GameInstance.HasInstance()) return;
+            Event.Invoke(Event.START);
         }
 
+        [DoesNotReturn]
         public static void Stop(int status)
         {
-            if (!GameInstance.HasIntance()) return;
-            Event.Invoke(Event.Stop, status);
+            if (!GameInstance.HasInstance()) return;
+            Event.Invoke(Event.STOP, status);
         }
 
         public static Game Create() => Create(EngineSettings.GetDefault());
         public static Game Create(EngineSettings settings)
         {
             Debug.Log("[INFO] A new game instance have been created!");
-            GameInstance instance = !GameInstance.HasIntance() ? new GameInstance(settings) : GameInstance.Instance;
+            GameInstance instance = !GameInstance.HasInstance() ? new GameInstance(settings) : GameInstance.Instance;
             return instance.Current;
         }
 
@@ -38,7 +42,7 @@ namespace Emission
         public static void CreateWindow(string title, int width, int height) => CreateWindow(WindowConfig.Default(title, width, height));
         public static void CreateWindow(WindowConfig config)
         {
-            if (!GameInstance.HasIntance()) return;
+            if (!GameInstance.HasInstance()) return;
             using (var instance = GameInstance.Instance)
             {
                 Debug.Log("[INFO] A new game window instance have been created!");
@@ -56,7 +60,7 @@ namespace Emission
         public static void CreateDebugger(Debug debugger)
         {
             if (debugger == null) return;
-            if (!GameInstance.HasIntance()) return;
+            if (!GameInstance.HasInstance()) return;
             using (var instance = GameInstance.Instance)
             {
                 Debug.Log("[INFO] A new application debugger instance have been created!");
@@ -66,7 +70,7 @@ namespace Emission
 
         public static void CreateRenderer(RenderConfig config)
         {
-            if (!GameInstance.HasIntance()) return;
+            if (!GameInstance.HasInstance()) return;
             using (var instance = GameInstance.Instance)
             {
                 Debug.Log("[INFO] A new game renderer instance have been created!");
@@ -76,7 +80,7 @@ namespace Emission
 
         public static void CreateIo()
         {
-            if (!GameInstance.HasIntance()) return;
+            if (!GameInstance.HasInstance()) return;
             using (var instance = GameInstance.Instance)
             {
                 Debug.Log("[INFO] A new application I/O instance have been created!");
@@ -84,6 +88,6 @@ namespace Emission
             }
         }
 
-        public static bool IsGameRunning() => !GameInstance.HasIntance() && GameInstance.Game.IsRunning;
+        public static bool IsGameRunning() => !GameInstance.HasInstance() && GameInstance.Game.IsRunning;
     }
 }

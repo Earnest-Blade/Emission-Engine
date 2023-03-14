@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-using Emission.Annotations;
-using Newtonsoft.Json;
-
 namespace Emission.Mathematics
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -22,20 +19,15 @@ namespace Emission.Mathematics
         public float Z;
         public float W;
 
-        [JsonIgnore]
         public readonly float Length => MathF.Sqrt(X * X + Y * Y + Z * Z + W * W);
-
-        [JsonIgnore]
         public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
 
-        [JsonIgnore]
         public Vector3 Xyz
         {
             get => new Vector3(X, Y, Z);
             set => this = new Vector4(value, 0);
         }
 
-        [JsonIgnore]
         public Vector2 Xy
         {
             get => new(X, Y);

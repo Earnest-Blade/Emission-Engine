@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections;
 using Emission.IO;
 using Emission.Mathematics;
 using Emission.Natives.GL;
 using static Emission.Natives.GL.Gl;
 
-namespace Emission.Graphics.Shading
+namespace Emission.Graphics
 {
-    public unsafe class Shader : IEquatable<Shader>, IDisposable
+    public unsafe partial class Shader : IEquatable<Shader>, IDisposable
     {
         public const string UNIFORM_TRANSFORM = "uTransform";
         public const string UNIFORM_VIEW = "uView";
@@ -25,14 +26,10 @@ namespace Emission.Graphics.Shading
 
         private uint _tcs;
         private uint _tes;
-
-        // constructor
-        public Shader(string path) : this(ShaderLoader.LoadShader(GameFile.ReadLines(path)), null) {}
-        public Shader(string path, string name) : this(ShaderLoader.LoadShader(GameFile.ReadLines(path)), name) {}
         
         // constructor
-        public Shader(ShaderLoader.ShaderStruct shaderStruct) : this(shaderStruct, null) {}
-        public Shader(ShaderLoader.ShaderStruct shaderStruct, string name)
+        internal Shader(ShaderStruct shaderStruct) : this(shaderStruct, null) {}
+        internal Shader(ShaderStruct shaderStruct, string name)
         {
             _name = name;
             
@@ -44,7 +41,7 @@ namespace Emission.Graphics.Shading
         /// Create program ID, load vertex shader, fragment shader and geometry shader.
         /// </summary>
         /// <param name="shader"></param>
-        public void Initialize(ShaderLoader.ShaderStruct shader)
+        public void Initialize(ShaderStruct shader)
         {
             // Catch when trying to re-init the shader. 
             if(_program != 0)

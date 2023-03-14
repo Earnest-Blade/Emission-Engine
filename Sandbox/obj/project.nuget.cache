@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+tFpnfuQBScI54j1wCkZ6+S2c0UUyBaR+7td5cDmDnMdol5tNR7H/a/0xbKugG9/DJKWiGh9gGGVh/IVOqQKDg==",
+  "dgSpecHash": "W3sjG9PfEvpgq2cXWwblEGhAu4ChGEZPTcxC+F86Djp7En9iQj/IsY8cd4uTIF8e/Hqq7VLSJslMPbMlVXTZcA==",
   "success": true,
-  "projectFilePath": "D:\\Projets\\Code\\C#\\Emission Engine\\Sandbox\\Sandbox.csproj",
+  "projectFilePath": "D:\\Projets\\Code\\Github\\EmissionEngine\\Sandbox\\Sandbox.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\assimpnet\\5.0.0-beta1\\assimpnet.5.0.0-beta1.nupkg.sha512",
     "C:\\Users\\Luca Marpeau\\.nuget\\packages\\freetypesharp\\1.1.3\\freetypesharp.1.1.3.nupkg.sha512",

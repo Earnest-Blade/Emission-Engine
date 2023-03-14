@@ -1,6 +1,4 @@
-﻿using Emission.Annotations;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace Emission.Mathematics
@@ -17,10 +15,7 @@ namespace Emission.Mathematics
         public float X;
         public float Y;
 
-        [JsonIgnore]
         public float Length => MathF.Sqrt(X * X + Y * Y);
-
-        [JsonIgnore]
         public float LengthSquared => X * X + Y * Y;
 
         public float this[int x]
@@ -41,7 +36,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         public Vector2 Yx
         {
             get => new Vector2(Y, X);

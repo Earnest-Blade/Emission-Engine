@@ -33,11 +33,11 @@ namespace Emission
             EngineBehaviour.CreateDispatcher();
             Event.CreateEventDispatcher();
 
-            Event.AddDelegate(Event.Initialize, Initialize);
-            Event.AddDelegate(Event.Start, Start);
-            Event.AddDelegate(Event.Update, Update);
-            Event.AddDelegate(Event.Render, Render);
-            Event.AddDelegate<int>(Event.Stop, Exit);
+            Event.AddDelegate(Event.INITIALIZE, Initialize);
+            Event.AddDelegate(Event.START, Start);
+            Event.AddDelegate(Event.UPDATE, Update);
+            Event.AddDelegate(Event.RENDER, Render);
+            Event.AddDelegate<int>(Event.STOP, Exit);
             
             Debug.Log("[INFO] Creating game event handlers");
             Debug.Log($"[INFO] Running with Emission Engine '{Settings.VersionAsStr}' ({Settings.Version})");
@@ -56,13 +56,13 @@ namespace Emission
             
             Window.Initialize();
             Renderer.Initialize();
-            EngineBehaviour.Call(Event.Initialize);
+            EngineBehaviour.Call(Event.INITIALIZE);
         }
         
         private void Start()
         {
             Window.Start();
-            EngineBehaviour.Call(Event.Start);
+            EngineBehaviour.Call(Event.START);
 
             if (!IsRunning) 
                 Loop();
@@ -92,33 +92,33 @@ namespace Emission
                 GameInstance.Input.Update();
                 
                 Window.Update();
-                Event.Invoke(Event.Update);
+                Event.Invoke(Event.UPDATE);
                 
                 Window.Render();
-                Event.Invoke(Event.Render);
+                Event.Invoke(Event.RENDER);
 
                 Window.Swap();
             }
 
             // Close program.
             IsRunning = false;
-            Event.Invoke(Event.Stop, 0);
+            Event.Invoke(Event.STOP, 0);
         }
 
         private void Update()
         {
-            EngineBehaviour.Call(Event.Update);
+            EngineBehaviour.Call(Event.UPDATE);
         }
 
         private void Render()
         {
-            EngineBehaviour.Call(Event.Render);
+            EngineBehaviour.Call(Event.RENDER);
         }
         
         private void Exit(int status)
         {
             // Call Stop Event
-            EngineBehaviour.Call(Event.Stop);
+            EngineBehaviour.Call(Event.STOP);
             Window.Stop();
 
             ModelBuilder.ReleaseContext();
@@ -128,7 +128,7 @@ namespace Emission
             EngineBehaviour.RemoveDispatcher();
             
             // Dipose Debugger
-            Debug.Log($"[INFO] Application stopped with exit code: {status}!");
+            Debug.Log($"[INFO] Application stopped with exit code {status}");
             Debugger.Dispose();
             
             // Exit Application

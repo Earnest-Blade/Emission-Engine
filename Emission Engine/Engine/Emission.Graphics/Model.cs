@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assimp;
-using Emission.Graphics.Shading;
+using Emission.Graphics;
 using Material = Assimp.Material;
 using Emission.Mathematics;
 using Emission.IO;

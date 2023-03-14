@@ -63,11 +63,13 @@ namespace Emission.Graphics
             Vector2 size = GameInstance.Window.WindowSize;
             glViewport(0, 0, (int)size.X, (int)size.Y);
 
+            // Enable OpenGL debug output
             if (GameInstance.EngineSettings.Debug)
             {
                 glEnable(GL_DEBUG_OUTPUT);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-                glDebugMessageCallback(GlError.ErrorCallback, (void*)0);
+                glDebugMessageCallback(GlMessage.MessageCallback, NULL);
+                
                 Debug.Log("[INFO] Enable OpenGL Debug Callback");
             }
             
@@ -284,7 +286,7 @@ namespace Emission.Graphics
         }
 
         /// <summary>
-        /// Overwrite data to an array buffer using his ID.
+        /// Overwrite data to an array buffer using VertexBufferObject.
         /// Use this to write vertices, texture coords or normals data.
         /// </summary>
         /// <param name="buffer">Buffer's ID</param>
@@ -294,20 +296,35 @@ namespace Emission.Graphics
             buffer.Bind();
             
             fixed (float* v = &data[0])
-                buffer.PushData(sizeof(float) * data.Length, new IntPtr(v), GL_DYNAMIC_DRAW);
+                buffer.PushData(sizeof(float) * data.Length, new IntPtr(v), GetDrawUsage());
         }
-        
+
+        /// <summary>
+        /// Overwrite data to an array buffer using VertexBufferObject.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="data"></param>
+        /// <typeparam name="T"></typeparam>
+        public static void WriteBuffer<T>(VertexBufferObject buffer, T[] data)
+        {
+            buffer.Bind();
+            
+            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            buffer.PushData(Marshal.SizeOf(default(T)) * data.Length, handle.AddrOfPinnedObject(), GetDrawUsage());
+            handle.Free();
+        }
+
         /// <summary>
         /// Overwrite data to an element array buffer using his ID.
         /// Use this to write indices.
         /// </summary>
-        /// <param name="buffer">Buffer's ID</param>
+        /// <param name="ebo"></param>
         /// <param name="data">Indices data to write to the buffer.</param>
-        public static void WriteIndices(ElementBufferObject ebo, int[] data)
+        public static void WriteIndices(ElementBufferObject ebo, uint[] data)
         {
             ebo.Bind();
             
-            fixed(int* v = &data[0])
+            fixed(uint* v = &data[0])
                 ebo.PushData(sizeof(int) * data.Length, v, GL_DYNAMIC_DRAW);
         }
         

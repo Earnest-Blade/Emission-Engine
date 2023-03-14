@@ -1,6 +1,4 @@
-﻿using Emission.Annotations;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -56,7 +54,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column0
         {
@@ -70,7 +67,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column1
         {
@@ -84,7 +80,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column2
         {
@@ -98,7 +93,6 @@ namespace Emission.Mathematics
             }
         }
 
-        [JsonIgnore]
         [IgnoreDataMember]
         public Vector4 Column3
         {
@@ -115,7 +109,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M11
         {
             get => Row0.X;
@@ -125,7 +118,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M12
         {
             get => Row0.Y;
@@ -135,7 +127,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M13
         {
             get => Row0.Z;
@@ -145,7 +136,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 1, column 4 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M14
         {
             get => Row0.W;
@@ -155,7 +145,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M21
         {
             get => Row1.X;
@@ -165,7 +154,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M22
         {
             get => Row1.Y;
@@ -175,7 +163,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M23
         {
             get => Row1.Z;
@@ -185,7 +172,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 2, column 4 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M24
         {
             get => Row1.W;
@@ -195,7 +181,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M31
         {
             get => Row2.X;
@@ -205,7 +190,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M32
         {
             get => Row2.Y;
@@ -215,7 +199,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M33
         {
             get => Row2.Z;
@@ -225,7 +208,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 3, column 4 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M34
         {
             get => Row2.W;
@@ -235,7 +217,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 1 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M41
         {
             get => Row3.X;
@@ -245,7 +226,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 2 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M42
         {
             get => Row3.Y;
@@ -255,7 +235,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 3 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M43
         {
             get => Row3.Z;
@@ -265,7 +244,6 @@ namespace Emission.Mathematics
         /// <summary>
         /// Gets or sets the value at row 4, column 4 of this instance.
         /// </summary>
-        [JsonIgnore]
         public float M44
         {
             get => Row3.W;

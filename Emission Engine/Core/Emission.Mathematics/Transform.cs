@@ -10,13 +10,12 @@ namespace Emission.Mathematics
         public Vector3 Position;
         public Vector3 Scale;
 
-        
         public Quaternion Rotation;
 
         public Vector3 EulerAngle
         {
             get => Rotation.ToEulerAngles().ToDegrees();
-            set => Rotation = Quaternion.FromEulerAngles(value);
+            set => Rotation = Quaternion.FromEulerAngles(value.ToRadians());
         }
         
         public Vector3 Forward = Vector3.UnitZ;

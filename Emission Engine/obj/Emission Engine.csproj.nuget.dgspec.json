@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\Emission Engine.csproj": {}
+    "D:\\Projets\\Code\\Github\\EmissionEngine\\Emission Engine\\Emission Engine.csproj": {}
   },
   "projects": {
-    "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\Emission Engine.csproj": {
+    "D:\\Projets\\Code\\Github\\EmissionEngine\\Emission Engine\\Emission Engine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\Emission Engine.csproj",
+        "projectUniqueName": "D:\\Projets\\Code\\Github\\EmissionEngine\\Emission Engine\\Emission Engine.csproj",
         "projectName": "Emission Engine",
-        "projectPath": "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\Emission Engine.csproj",
+        "projectPath": "D:\\Projets\\Code\\Github\\EmissionEngine\\Emission Engine\\Emission Engine.csproj",
         "packagesPath": "C:\\Users\\Luca Marpeau\\.nuget\\packages\\",
-        "outputPath": "D:\\Projets\\Code\\C#\\Emission Engine\\Emission Engine\\obj\\",
+        "outputPath": "D:\\Projets\\Code\\Github\\EmissionEngine\\Emission Engine\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Users\\Luca Marpeau\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\Luca Marpeau\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Luca Marpeau\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -57,10 +59,6 @@
             "ImGui.NET": {
               "target": "Package",
               "version": "[1.88.0, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.1, )"
             },
             "StbImageSharp": {
               "target": "Package",

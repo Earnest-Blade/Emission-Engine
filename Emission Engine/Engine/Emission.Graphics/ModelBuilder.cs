@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 using Assimp;
 
-using Emission.Graphics.Shading;
+using Emission.Graphics;
 using Emission.IO;
 using Emission.Mathematics;
 using Material = Assimp.Material;
@@ -20,7 +20,7 @@ namespace Emission.Graphics
 
         private static AssimpContext _context;
         
-        private List<Mesh> _meshes;
+        private readonly List<Mesh> _meshes;
         private string _assetDirectory;
 
         public ModelBuilder()
@@ -32,6 +32,7 @@ namespace Emission.Graphics
         public void LoadAssimpScene(Scene scene, string assetDirectory)
         {
             _assetDirectory = assetDirectory;
+            
             ProcessNode(scene.RootNode, scene);
         }
 
@@ -174,8 +175,9 @@ namespace Emission.Graphics
                 stream.Dispose();
                 throw new EmissionException(EmissionErrors.EmissionAssimpException, "Cannot load Assimp Model!");
             }
-            stream.Close();
             
+            stream.Close();
+
             ModelBuilder builder = new ModelBuilder();
             builder.LoadAssimpScene(scene, asset);
             return builder.CreateModel();
@@ -185,7 +187,7 @@ namespace Emission.Graphics
         {
             return new Model(Transform.Zero, new Mesh());
         }
-
+        
         public static Model FromMesh(Mesh mesh)
         {
             return new Model(Transform.Zero, mesh);
