@@ -1,0 +1,25 @@
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission.Tests.exe
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission.Tests.deps.json
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission.Tests.runtimeconfig.json
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission.Tests.runtimeconfig.dev.json
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission.Tests.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission.Tests.pdb
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\AssimpNet.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\StbImageSharp.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\runtimes\linux-x64\native\libassimp.so
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\runtimes\osx-x64\native\libassimp.dylib
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\runtimes\win-x64\native\assimp.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\runtimes\win-x86\native\assimp.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission Engine.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\bin\net5.0\Emission Engine.pdb
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.csproj.AssemblyReference.cache
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.AssemblyInfoInputs.cache
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.AssemblyInfo.cs
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.csproj.CoreCompileInputs.cache
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.csproj.CopyComplete
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\refint\Emission.Tests.dll
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.pdb
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\Emission.Tests.genruntimeconfig.cache
+D:\Projets\Code\Emission\tests\Emission.Tests\obj\Debug\net5.0\ref\Emission.Tests.dll

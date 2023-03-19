@@ -1,0 +1,14 @@
+D:\Projets\Code\Emission\bin\Emission Engine.deps.json
+D:\Projets\Code\Emission\bin\Emission Engine.dll
+D:\Projets\Code\Emission\bin\Emission Engine.pdb
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.csproj.AssemblyReference.cache
+D:\Projets\Code\Emission\obj\Debug\Emission_Engine.source.Strings.resources
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.csproj.GenerateResource.cache
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.AssemblyInfoInputs.cache
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.AssemblyInfo.cs
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.csproj.CoreCompileInputs.cache
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.dll
+D:\Projets\Code\Emission\obj\Debug\refint\Emission Engine.dll
+D:\Projets\Code\Emission\obj\Debug\Emission Engine.pdb
+D:\Projets\Code\Emission\obj\Debug\ref\Emission Engine.dll

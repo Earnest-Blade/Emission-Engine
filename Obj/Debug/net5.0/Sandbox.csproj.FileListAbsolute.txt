@@ -1,5 +1,0 @@
-D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Sandbox.csproj.AssemblyReference.cache
-D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Sandbox.GeneratedMSBuildEditorConfig.editorconfig
-D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Sandbox.AssemblyInfoInputs.cache
-D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Sandbox.AssemblyInfo.cs
-D:\Projets\Code\C#\Emission Engine\Obj\Debug\net5.0\Sandbox.csproj.CoreCompileInputs.cache
