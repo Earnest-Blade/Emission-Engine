@@ -1,0 +1,6 @@
+D:\Projets\Code\Emission\source\Assets\x64\Release\Assets.vcxproj.AssemblyReference.cache
+D:\Projets\Code\Emission\source\Assets\x64\Release\Ijwhost.dll
+D:\Projets\Code\Emission\source\Assets\x64\Release\Emission Assets.dll
+D:\Projets\Code\Emission\source\Assets\x64\Release\Emission Assets.deps.json
+D:\Projets\Code\Emission\source\Assets\x64\Release\Assets.genruntimeconfig.cache
+D:\Projets\Code\Emission\source\Assets\x64\Release\Emission Assets.runtimeconfig.json

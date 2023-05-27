@@ -1,0 +1,5 @@
+D:\Projets\Code\Emission\source\Core\obj\Debug\net6.0\Emission Core.csproj.AssemblyReference.cache
+D:\Projets\Code\Emission\source\Core\obj\Debug\net6.0\Emission Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Emission\source\Core\obj\Debug\net6.0\Emission Core.AssemblyInfoInputs.cache
+D:\Projets\Code\Emission\source\Core\obj\Debug\net6.0\Emission Core.AssemblyInfo.cs
+D:\Projets\Code\Emission\source\Core\obj\Debug\net6.0\Emission Core.csproj.CoreCompileInputs.cache

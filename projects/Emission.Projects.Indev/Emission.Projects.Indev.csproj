@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Project Properties -->
+    <PropertyGroup>
+        <Authors>Earnest Blade</Authors>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <!-- Compiler Properties -->
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <OutputPath>bin</OutputPath>
+        <OutputType>Exe</OutputType>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <!-- Import Group -->
+    <ItemGroup>
+      <ProjectReference Include="..\..\source\Engine\Emission.Engine.csproj" />
+    </ItemGroup>
+
+</Project>

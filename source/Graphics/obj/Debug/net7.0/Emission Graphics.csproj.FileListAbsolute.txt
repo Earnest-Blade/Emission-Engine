@@ -1,0 +1,52 @@
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Ijwhost.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Graphics.deps.json
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Graphics.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Graphics.pdb
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Assets.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Core.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\GLFW.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Win32.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Assets.pdb
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Core.pdb
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Core.dll.config
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\GLFW.pdb
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\Win32.pdb
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.csproj.AssemblyReference.cache
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.AssemblyInfoInputs.cache
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.AssemblyInfo.cs
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.csproj.CoreCompileInputs.cache
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.csproj.CopyComplete
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.dll
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\refint\Emission Graphics.dll
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.pdb
+D:\Projets\Code\Emission\source\Graphics\obj\Debug\net7.0\ref\Emission Graphics.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\OpenGL.dll
+D:\Projets\Code\Emission\source\Graphics\bin\Debug\net7.0\OpenGL.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Ijwhost.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Graphics.deps.json
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Graphics.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Graphics.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Assets.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Core.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission.Nuklear.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\GLFW.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\OpenGL.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Win32.dll
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Assets.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission.Nuklear.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Core.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Emission Core.dll.config
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\GLFW.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\OpenGL.pdb
+E:\Code\Emission\source\Graphics\bin\Debug\net7.0\Win32.pdb
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.csproj.AssemblyReference.cache
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.AssemblyInfoInputs.cache
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.AssemblyInfo.cs
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.csproj.CoreCompileInputs.cache
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.csproj.CopyComplete
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.dll
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\refint\Emission Graphics.dll
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\Emission Graphics.pdb
+E:\Code\Emission\source\Graphics\obj\Debug\net7.0\ref\Emission Graphics.dll

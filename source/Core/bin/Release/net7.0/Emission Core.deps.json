@@ -1,0 +1,46 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "Emission Core/1.0.0": {
+        "dependencies": {
+          "Win32": "1.0.0"
+        },
+        "runtime": {
+          "Emission Core.dll": {}
+        }
+      },
+      "Emission Assets/1.0.0": {
+        "runtime": {
+          "Emission Assets.dll": {}
+        }
+      },
+      "Win32/1.0.0": {
+        "runtime": {
+          "Win32.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Emission Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Emission Assets/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Win32/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

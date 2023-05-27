@@ -1,0 +1,82 @@
+﻿  nuklear.cpp
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(7224,14): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(7311,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(209,25): warning C4477: 'fprintf' : la chaîne de format '%s' nécessite un argument de type 'char *', mais l'argument variadique 1 est de type 'wchar_t *'
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(209,25): message : utilisez '%ls' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(209,25): message : utilisez '%lls' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(209,25): message : utilisez '%Ls' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(209,25): message : utilisez '%ws' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(217,25): warning C4477: 'fprintf' : la chaîne de format '%s' nécessite un argument de type 'char *', mais l'argument variadique 1 est de type 'wchar_t *'
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(217,25): message : utilisez '%ls' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(217,25): message : utilisez '%lls' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(217,25): message : utilisez '%Ls' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(217,25): message : utilisez '%ws' dans la chaîne de format
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(258,87): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(259,86): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(260,94): warning C4267: 'argument' : conversion de 'size_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(263,67): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(317,44): warning C4244: 'argument' : conversion de 'uint64_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(331,47): warning C4244: 'argument' : conversion de 'uint64_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(371,23): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(372,23): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(431,53): warning C4244: 'argument' : conversion de 'uint64_t' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(433,51): warning C4244: 'argument' : conversion de 'uint64_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(434,52): warning C4244: 'argument' : conversion de 'uint64_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(437,58): warning C4244: 'argument' : conversion de 'uint64_t' en 'unsigned int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(442,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(441,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(440,71): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(439,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear_glfw.h(506,9): warning C4101: 'i' : variable locale non référencée
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear.cpp(17696,86): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\cppsharp.h(121,1): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\cppsharp.h(105,43): message : voir la référence à l'instanciation de la fonction modèle 'System::String ^clix::detail::StringMarshaler<clix::detail::NetFromCxx>::marshalCxxString<clix::E_UTF8,SourceType>(const clix::detail::StringTypeSelector<clix::E_UTF8>::Type &)' en cours de compilation
+          with
+          [
+              SourceType=const char *
+          ]
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\cppsharp.h(214,1): message : voir la référence à l'instanciation de la fonction modèle 'System::String ^clix::detail::StringMarshaler<clix::detail::NetFromCxx>::marshal<clix::E_UTF8,SourceType>(const SourceType &)' en cours de compilation
+          with
+          [
+              SourceType=const char *
+          ]
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\nuklear.cpp(15899,77): message : voir la référence à l'instanciation de la fonction modèle 'System::String ^clix::marshalString<clix::E_UTF8,const char*>(SourceType)' en cours de compilation
+          with
+          [
+              SourceType=const char *
+          ]
+  .NETCoreApp,Version=v7.0.AssemblyAttributes.cpp
+  Génération de code en cours...
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19403): warning C4793: 'nk_labelf_colored' : fonction compilée en tant que code natif :
+  	varargs non pris en charge sous /clr
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19405): warning C4793: 'nk_labelf_colored' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19407): warning C4793: 'nk_labelf_colored' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19412): warning C4793: 'nk_labelf_colored_wrap' : fonction compilée en tant que code natif :
+  	varargs non pris en charge sous /clr
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19414): warning C4793: 'nk_labelf_colored_wrap' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19416): warning C4793: 'nk_labelf_colored_wrap' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19420): warning C4793: 'nk_labelf' : fonction compilée en tant que code natif :
+  	varargs non pris en charge sous /clr
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19422): warning C4793: 'nk_labelf' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19424): warning C4793: 'nk_labelf' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19428): warning C4793: 'nk_labelf_wrap' : fonction compilée en tant que code natif :
+  	varargs non pris en charge sous /clr
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19430): warning C4793: 'nk_labelf_wrap' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(19432): warning C4793: 'nk_labelf_wrap' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(25406): warning C4793: 'nk_tooltipf' : fonction compilée en tant que code natif :
+  	varargs non pris en charge sous /clr
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(25408): warning C4793: 'nk_tooltipf' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+D:\Projets\Code\Emission\source\Natives\Emission.Nuklear\natives\nuklear.h(25410): warning C4793: 'nk_tooltipf' : fonction compilée en tant que code natif :
+  	un intrinsèque non pris en charge a été trouvé dans le code managé
+  nuklear.obj : module MSIL détecté ; liens incrémentiels désactivés pour MSIL ; édition de liens complète en cours
+nuklear.obj : warning LNK4248: jeton typeref non resolu (01000021) pour 'nuklear.NkUserFontGlyph'?; l'image risque de ne pas s'executer
+  Emission.Nuklear.vcxproj -> D:\Projets\Code\Emission\x64\Release\Emission.Nuklear.dll

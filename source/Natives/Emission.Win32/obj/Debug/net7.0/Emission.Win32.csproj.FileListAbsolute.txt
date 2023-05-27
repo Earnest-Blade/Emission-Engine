@@ -1,0 +1,12 @@
+E:\Code\Emission\source\Natives\Emission.Win32\bin\Debug\net7.0\Emission.Win32.deps.json
+E:\Code\Emission\source\Natives\Emission.Win32\bin\Debug\net7.0\Emission.Win32.dll
+E:\Code\Emission\source\Natives\Emission.Win32\bin\Debug\net7.0\Emission.Win32.pdb
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.csproj.AssemblyReference.cache
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.AssemblyInfoInputs.cache
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.AssemblyInfo.cs
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.csproj.CoreCompileInputs.cache
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.dll
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\refint\Emission.Win32.dll
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\Emission.Win32.pdb
+E:\Code\Emission\source\Natives\Emission.Win32\obj\Debug\net7.0\ref\Emission.Win32.dll

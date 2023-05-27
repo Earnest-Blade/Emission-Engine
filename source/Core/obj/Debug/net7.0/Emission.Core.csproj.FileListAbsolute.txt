@@ -1,0 +1,19 @@
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Ijwhost.dll
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission.Core.dll.config
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission.Core.deps.json
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission.Core.dll
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission.Core.pdb
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission Assets.dll
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission.Win32.dll
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission Assets.pdb
+E:\Code\Emission\source\Core\bin\Debug\net7.0\Emission.Win32.pdb
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.csproj.AssemblyReference.cache
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.AssemblyInfoInputs.cache
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.AssemblyInfo.cs
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.csproj.CoreCompileInputs.cache
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.csproj.CopyComplete
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.dll
+E:\Code\Emission\source\Core\obj\Debug\net7.0\refint\Emission.Core.dll
+E:\Code\Emission\source\Core\obj\Debug\net7.0\Emission.Core.pdb
+E:\Code\Emission\source\Core\obj\Debug\net7.0\ref\Emission.Core.dll

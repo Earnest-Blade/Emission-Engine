@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Emission_Engine</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Emission.Core.csproj" />
+    <ProjectReference Include="..\Graphics\Emission.Graphics.csproj" />
+    <ProjectReference Include="..\Natives\Emission.Nuklear\Emission.Nuklear.vcxproj" />
+  </ItemGroup>
+
+</Project>

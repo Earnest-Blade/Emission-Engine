@@ -1,0 +1,19 @@
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Ijwhost.dll
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Emission Core.dll.config
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Emission Core.deps.json
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Emission Core.dll
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Emission Core.pdb
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Emission Assets.dll
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Win32.dll
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Emission Assets.pdb
+D:\Projets\Code\Emission\source\Core\bin\Release\net7.0\Win32.pdb
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.csproj.AssemblyReference.cache
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.AssemblyInfoInputs.cache
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.AssemblyInfo.cs
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.csproj.CoreCompileInputs.cache
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.csproj.CopyComplete
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.dll
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\refint\Emission Core.dll
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\Emission Core.pdb
+D:\Projets\Code\Emission\source\Core\obj\Release\net7.0\ref\Emission Core.dll

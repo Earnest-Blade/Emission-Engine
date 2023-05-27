@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>Emission_Graphics</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Assets\Assets.vcxproj" />
+    <ProjectReference Include="..\Core\Emission.Core.csproj" />
+    <ProjectReference Include="..\Natives\Emission.GLFW\Emission.GLFW.csproj" />
+    <ProjectReference Include="..\Natives\Emission.Nuklear\Emission.Nuklear.vcxproj" />
+    <ProjectReference Include="..\Natives\Emission.OpenGL\Emission.GL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
+  </ItemGroup>
+
+</Project>

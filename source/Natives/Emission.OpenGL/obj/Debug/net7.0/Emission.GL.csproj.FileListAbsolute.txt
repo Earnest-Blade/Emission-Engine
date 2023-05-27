@@ -1,0 +1,21 @@
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Ijwhost.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.GL.deps.json
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.GL.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.GL.pdb
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Core.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Win32.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission Assets.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Core.pdb
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Core.dll.config
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Win32.pdb
+E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission Assets.pdb
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.csproj.AssemblyReference.cache
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.AssemblyInfoInputs.cache
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.AssemblyInfo.cs
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.csproj.CoreCompileInputs.cache
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.csproj.CopyComplete
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\refint\Emission.GL.dll
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.pdb
+E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\ref\Emission.GL.dll

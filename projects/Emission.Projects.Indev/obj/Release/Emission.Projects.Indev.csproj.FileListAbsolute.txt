@@ -1,0 +1,39 @@
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Ijwhost.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Projects.Indev.exe
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Projects.Indev.deps.json
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Projects.Indev.runtimeconfig.json
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Projects.Indev.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Projects.Indev.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\AssimpNet.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\linux-x64\native\libassimp.so
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\osx-x64\native\libassimp.dylib
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\win-x64\native\assimp.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\win-x86\native\assimp.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Assets.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Core.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Engine.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Graphics.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\GLFW.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Win32.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Assets.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Engine.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Core.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Core.dll.config
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Graphics.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\GLFW.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Win32.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.csproj.AssemblyReference.cache
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.AssemblyInfoInputs.cache
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.AssemblyInfo.cs
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.csproj.CoreCompileInputs.cache
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.csproj.CopyComplete
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\refint\Emission.Projects.Indev.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\Emission.Projects.Indev.genruntimeconfig.cache
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\obj\Release\ref\Emission.Projects.Indev.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\OpenGL.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\OpenGL.pdb
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Nuklear.dll
+D:\Projets\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Nuklear.pdb

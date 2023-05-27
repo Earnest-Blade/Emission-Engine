@@ -1,0 +1,21 @@
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Ijwhost.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.GLFW.deps.json
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.GLFW.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.GLFW.pdb
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.Core.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.Win32.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission Assets.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.Core.pdb
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.Core.dll.config
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission.Win32.pdb
+E:\Code\Emission\source\Natives\Emission.GLFW\bin\Debug\net7.0\Emission Assets.pdb
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.csproj.AssemblyReference.cache
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.AssemblyInfoInputs.cache
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.AssemblyInfo.cs
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.csproj.CoreCompileInputs.cache
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.csproj.CopyComplete
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\refint\Emission.GLFW.dll
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\Emission.GLFW.pdb
+E:\Code\Emission\source\Natives\Emission.GLFW\obj\Debug\net7.0\ref\Emission.GLFW.dll

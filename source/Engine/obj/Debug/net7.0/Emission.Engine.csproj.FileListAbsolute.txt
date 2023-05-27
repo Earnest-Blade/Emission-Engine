@@ -1,0 +1,29 @@
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Ijwhost.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Engine.deps.json
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Engine.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Engine.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Core.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.GL.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.GLFW.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Graphics.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Nuklear.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Win32.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission Assets.dll
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Nuklear.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Core.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Core.dll.config
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Graphics.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.GL.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.GLFW.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission.Win32.pdb
+E:\Code\Emission\source\Engine\bin\Debug\net7.0\Emission Assets.pdb
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.csproj.AssemblyReference.cache
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.AssemblyInfoInputs.cache
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.AssemblyInfo.cs
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.csproj.CoreCompileInputs.cache
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.csproj.CopyComplete
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.dll
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\refint\Emission.Engine.dll
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\Emission.Engine.pdb
+E:\Code\Emission\source\Engine\obj\Debug\net7.0\ref\Emission.Engine.dll
