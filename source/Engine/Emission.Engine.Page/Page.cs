@@ -16,7 +16,7 @@ namespace Emission.Engine.Page
         public int ActorCount => _actors.Count;
         
         protected Camera? Camera;
-        protected Window.Window? Window => ((Game)Application.Instance!).Window;
+        protected Window.Window? Window => Application.GetInstanceAs<Game>().Window;
 
         private readonly Guid _uuid;
         private readonly List<Actor> _actors;
@@ -31,10 +31,10 @@ namespace Emission.Engine.Page
             Camera = null;
 
             _uuid = Guid.NewGuid();
-            _actors = new List<Actor>(new []{ Actor.Empty });
+            _actors = new List<Actor>() { Actor.Empty } ;
 
             Behaviour.BindBehaviour();
-            ((Game)Application.Instance!).PageManager.Register(this);
+            Application.GetInstanceAs<Game>().PageManager.Register(this);
         }
 
         public void Enable()

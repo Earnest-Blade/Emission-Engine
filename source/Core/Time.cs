@@ -23,7 +23,7 @@ namespace Emission.Core
         /// <summary>
         /// Return current <see cref="Window"/>'s fps.
         /// </summary>
-        public static int Fps
+        public static uint Fps
         {
             get;
             internal set;

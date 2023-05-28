@@ -29,7 +29,7 @@ namespace Emission.Core
             return (T)_instance;
         }
 
-        public static void Create(IApplication? application, ApplicationContext context)
+        public static void Create(IApplication application, ApplicationContext context)
         {
             if(HasInstance())
                 Debug.LogWarning("[WARNING] A new Application Instance has been created!");
@@ -54,6 +54,7 @@ namespace Emission.Core
 
         public static void Start()
         {
+            Debug.Log(HasInstance());
             if (HasInstance())
             {
                 _instance?.Initialize();
@@ -72,5 +73,6 @@ namespace Emission.Core
 
         public static bool HasInstance() => Instance != null;
         public static bool IsRunning() => HasInstance() && _instance!.IsRunning;
+        public static T GetInstanceAs<T>() => ((T)Application.Instance!);
     }
 }

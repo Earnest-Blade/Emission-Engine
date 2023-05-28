@@ -2,17 +2,17 @@
 {
     public partial class EmissionException
     {
-        public const uint ERR_UNDEFINED = 0x00000000;
-        public const uint ERR_OPEN_GL = 0x00000001;
-        public const uint ERR_GLFW = 0x00000002;
-        public const uint ERR_ASSIMP = 0x00000003;
-        public const uint ERR_IO = 0x00000004;
-        public const uint ERR_IMAGE = 0x00000005;
-        public const uint ERR_EVENT = 0x00000006;
-        public const uint ERR_SHADER = 0x00000007;
-        public const uint ERR_TEXTURE = 0x00000008;
-        public const uint ERR_GL_BUFFER = 0x00000009;
-        public const uint ERR_PAGE = 0x0000000A;
+        public const UInt16 ERR_UNDEFINED = 0x000;
+        public const UInt16 ERR_OPEN_GL = 0x001;
+        public const UInt16 ERR_GLFW = 0x002;
+        public const UInt16 ERR_ASSIMP = 0x004;
+        public const UInt16 ERR_IO = 0x008;
+        public const UInt16 ERR_IMAGE = 0x010;
+        public const UInt16 ERR_EVENT = 0x020;
+        public const UInt16 ERR_SHADER = 0x040;
+        public const UInt16 ERR_TEXTURE = 0x080;
+        public const UInt16 ERR_GL_BUFFER = 0x100;
+        public const UInt16 ERR_PAGE = 0x200;
 
         private static bool IsValidType(uint type) => type >= ERR_OPEN_GL && type <= ERR_PAGE;
 

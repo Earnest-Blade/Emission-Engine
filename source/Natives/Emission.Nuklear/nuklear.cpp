@@ -17707,16 +17707,6 @@ void nuklear::nuklear::NkEndFontAtlas() {
     NuklearInternal::nk_glfw_font_stash_end();
 }
 
-nuklear::NkImage^ nuklear::nuklear::NkCreateBlindlessTexture(int width, int height) {
-    int tex_index = 0;
-    char* pixels = (char*)malloc(width * height * 4);
-    memset(pixels, 128, sizeof(pixels));
-    tex_index = NuklearInternal::nk_glfw_create_texture(pixels, width, height);
-    free(pixels);
-
-    return gcnew NkImage(&nk_image_id(tex_index));
-}
-
 void nuklear::nuklear::NkNewFrame() {
     NuklearInternal::nk_glfw_new_frame();
 }
@@ -17727,14 +17717,4 @@ void nuklear::nuklear::NkRender(bool useAntiAliasing) {
 
 void nuklear::nuklear::NkShutdown() {
     NuklearInternal::nk_glfw_shutdown();
-}
-
-void nuklear::nuklear::DrawBindlessTexture(NkContext^ ctx, NkImage^ image, float x, float y, float w, float h)
-{
-    if (nk_begin(ctx->NativePtr, "Texture", *nk_rect(x, y, w, h)->NativePtr, NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE)) {
-        struct nk_command_buffer* canvas = nk_window_get_canvas(ctx->NativePtr);
-        struct nk_rect total_space = nk_window_get_content_region(ctx->NativePtr);
-        nk_draw_image(canvas, total_space, image->NativePtr, nk_white);
-    }
-    nk_end(ctx->NativePtr);
 }

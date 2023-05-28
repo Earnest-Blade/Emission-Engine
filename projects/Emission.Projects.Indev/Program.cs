@@ -14,7 +14,7 @@ namespace Emission.Projects.Indev
             Debug.Log(EDirectory.GetCurrentDirectory());
         }
         
-        public void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
             
@@ -26,7 +26,7 @@ namespace Emission.Projects.Indev
             PageManager.Enable(new IndevPage());
         }
 
-        public void Exit(int status)
+        public override void Exit(int status)
         {
             Nuklear.Destroy();
             

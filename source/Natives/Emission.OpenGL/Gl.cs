@@ -836,7 +836,7 @@ namespace Emission.Natives.GL
         public delegate bool PFNGLISBUFFERPROC(uint buffer);
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void PFNGLBUFFERDATAPROC(uint target, IntPtr size, void* data, int usage);
+        public delegate void PFNGLBUFFERDATAPROC(uint target, Int32 size, void* data, int usage);
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void PFNGLBUFFERSUBDATAPROC(uint target, int* offset, int* size, void* data);

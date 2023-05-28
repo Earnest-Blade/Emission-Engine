@@ -23,6 +23,6 @@
         /// Define current frame per second value.
         /// </summary>
         /// <param name="value">New Fps value</param>
-        protected static void SetFps(int value) => Time.Fps = value;
+        protected static void SetFps(uint value) => Time.Fps = value;
     }
 }

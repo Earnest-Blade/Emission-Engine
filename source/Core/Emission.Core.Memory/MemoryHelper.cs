@@ -5,6 +5,7 @@ namespace Emission.Core.Memory
 {
     public static unsafe class MemoryHelper
     {
+
         /// <summary>
         /// Reads a stream until the end is reached into a byte array.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Emission.Core.Memory;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics
@@ -32,7 +33,7 @@ namespace Emission.Graphics
                 throw new EmissionException(EmissionException.ERR_GL_BUFFER, $"Vertex Buffer {Id} is not bind but you're trying to push data on it!");
 
             glBindBuffer(GL_ARRAY_BUFFER, Id);
-            glBufferData(GL_ARRAY_BUFFER, new IntPtr(size), data, (int)usage);
+            glBufferData(GL_ARRAY_BUFFER, size, data, (int)usage);
         }
 
         public void Delete()

@@ -1,10 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Emission.Core.Memory
 {
-    public unsafe class CRuntime
+    public abstract unsafe class CRuntime
     {
-		private const string numbers = "0123456789";
+		private const string NUMBERS = "0123456789";
 		
 		private static int _allocations;
 		 
@@ -180,7 +181,7 @@ namespace Emission.Core.Memory
 			// First step - determine length
 			var length = 0;
 			sbyte* ptr = start;
-			while (numbers.IndexOf((char)*ptr) != -1)
+			while (NUMBERS.IndexOf((char)*ptr) != -1)
 			{
 				++ptr;
 				++length;
@@ -192,7 +193,7 @@ namespace Emission.Core.Memory
 			ptr = start;
 			while (length > 0)
 			{
-				long num = numbers.IndexOf((char)*ptr);
+				long num = NUMBERS.IndexOf((char)*ptr);
 				long pow = (long)Math.Pow(10, length - 1);
 				result += num * pow;
 
@@ -206,6 +207,13 @@ namespace Emission.Core.Memory
 			}
 
 			return result;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static TDest* ReinterpretCast<TDest, TSource>(TSource source) 
+			where TDest : unmanaged where TSource : unmanaged
+		{
+			return (TDest*)(void*)&source;
 		}
     }
 }

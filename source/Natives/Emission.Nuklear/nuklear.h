@@ -7943,12 +7943,9 @@ namespace nuklear
         static void NkBeginFontAtlas();
         static void NkFontAtlasAddFromFile(System::String^ path, int height);
         static void NkEndFontAtlas();
-        static NkImage^ NkCreateBlindlessTexture(int width, int height);
         static void NkNewFrame();
         static void NkRender(bool useAntiAliasing);
         static void NkShutdown();
-
-        static void DrawBindlessTexture(NkContext^ ctx, NkImage^ image, float x, float y, float w, float h);
     };
 }
 #endif

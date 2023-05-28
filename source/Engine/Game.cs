@@ -106,6 +106,7 @@ namespace Emission.Engine
 
             float previous = (float)Glfw.glfwGetTime();
             float steps = 0.0f;
+            uint frames = 0;
             
             while (!Window.ShouldClose)
             {
@@ -121,9 +122,12 @@ namespace Emission.Engine
                     Window.Update();
                     Event.Invoke(Event.UPDATE);
                     
+                    IApplication.SetFps(frames);
+                    
                     steps -= 1.0f / Context.Framerate;
+                    frames = 0;
                 }
-                
+
                 Window.Render();
                 Event.Invoke(Event.RENDER);
                 
@@ -132,6 +136,7 @@ namespace Emission.Engine
                 Window.Swap();
                 
                 steps += (float)Glfw.glfwGetTime() - start;
+                frames++;
             }
 
             IsRunning = false;
