@@ -8,7 +8,7 @@ namespace Emission.Engine
         {
             if (!HasEngineBehaviourDispatcher()) return;
             
-            foreach (var behaviour in ((Game)Application.Instance!).BehaviourDispatcher!.Stack.Reverse())
+            foreach (var behaviour in Application.GetInstanceAs<Game>().BehaviourDispatcher!.Stack.Reverse())
             {
                 if(behaviour.IsActive) behaviour.GetType().GetMethod(func)?.Invoke(behaviour, null);
             }
@@ -17,7 +17,7 @@ namespace Emission.Engine
         public static void AddBehaviour(IEngineBehaviour behaviour)
         {
             if (!HasEngineBehaviourDispatcher()) return;
-            ((Game)Application.Instance!).BehaviourDispatcher!.Attach(behaviour);
+            Application.GetInstanceAs<Game>().BehaviourDispatcher!.Attach(behaviour);
         }
 
         public static bool HasEngineBehaviourDispatcher()
@@ -27,18 +27,18 @@ namespace Emission.Engine
         
         public static void CreateDispatcher()
         {
-            ((Game)Application.Instance!).BehaviourDispatcher = new EngineBehaviourDispatcher();
+            Application.GetInstanceAs<Game>().BehaviourDispatcher = new EngineBehaviourDispatcher();
         }
 
         public static void RemoveDispatcher()
         {
             if(!HasEngineBehaviourDispatcher()) return;
-            ((Game)Application.Instance!).BehaviourDispatcher!.Clear();
-            ((Game)Application.Instance!).BehaviourDispatcher = null;
+            Application.GetInstanceAs<Game>().BehaviourDispatcher!.Clear();
+            Application.GetInstanceAs<Game>().BehaviourDispatcher = null;
         }
     }
 
-    internal class EngineBehaviourDispatcher
+    internal class EngineBehaviourDispatcher : IDispatcher<IEngineBehaviour>
     {
         public Stack<IEngineBehaviour> Stack => _behaviours;
 
@@ -54,14 +54,14 @@ namespace Emission.Engine
             _behaviours.Push(behaviour);
         }
 
-        public bool ContainBehaviour(IEngineBehaviour behaviour)
-        {
-            return _behaviours.Contains(behaviour);
-        }
-
         public void Clear()
         {
             _behaviours.Clear();
+        }
+
+        public bool Contains(IEngineBehaviour item)
+        {
+            return _behaviours.Contains(item);
         }
     }
 }

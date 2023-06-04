@@ -141,7 +141,7 @@ namespace Emission.Core.Memory
 				data[i] = value;
 		}
 
-		public static double ldexp(double number, int exponent)
+		public static double Ldexp(double number, int exponent)
 		{
 			return number * Math.Pow(2, exponent);
 		}
@@ -210,8 +210,7 @@ namespace Emission.Core.Memory
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static TDest* ReinterpretCast<TDest, TSource>(TSource source) 
-			where TDest : unmanaged where TSource : unmanaged
+		public static TDest* ReinterpretCast<TDest, TSource>(TSource source) where TDest : unmanaged where TSource : unmanaged
 		{
 			return (TDest*)(void*)&source;
 		}

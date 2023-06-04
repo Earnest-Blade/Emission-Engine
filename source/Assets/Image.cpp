@@ -24,6 +24,7 @@ array<unsigned char>^ Image::LoadImageFromPath(String^ path, int* width, int* he
 	unsigned char* ptr = stbi_load(str_to_char_ptr(path), width, height, comp, (int)colorFormat);
 	if (ptr == NULL) {
 		stbi_image_free(ptr);
+		fprintf(stderr, "[ERROR][Emission.Assets] Cannot load image from '%s'!", str_to_char_ptr(path));
 		return nullptr;
 	}
 
@@ -80,4 +81,14 @@ array<unsigned char>^ Image::LoadImageFromMemory(array<System::Byte>^ stream, in
 	stbi_image_free(ptr);
 
 	return buffer;
+}
+
+Icon::Icon(String^ path)
+{
+	int width, height;
+	stbi_set_flip_vertically_on_load(1);
+	
+	Pixels = stbi_load(str_to_char_ptr(path), &width, &height, (int*)0, STBI_default);
+	Width = width;
+	Height = height;
 }

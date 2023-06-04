@@ -186,6 +186,38 @@ namespace Emission.Graphics
         public static uint BindTexture2D(byte[] data, int width, int height) => _instance.Texture2D(data, width, height);
 
         /// <summary>
+        /// Load a CubeMap texture buffer using an array of image's bytes.
+        /// </summary>
+        /// <param name="data">Image's data as bytes</param>
+        /// <param name="width">Image's width</param>
+        /// <param name="height">Image's height</param>
+        /// <returns></returns>
+        public static uint BindTextureCubeMap(byte[] data, int width, int height, CubeMapTarget target)
+        {
+            fixed (byte* ptr = &data[0])
+                return _instance.TextureCubeMap(ptr, width, height, (int)target);
+        }
+        
+        /// <summary>
+        /// Load a CubeMap texture buffer using a pointer from image's data.
+        /// </summary>
+        /// <param name="ptr">Image's data pointer</param>
+        /// <param name="width">Image's width</param>
+        /// <param name="height">Image's height</param>
+        /// <param name="target">Define OpenGl Cubemap target in TexImage</param>
+        /// <returns></returns>
+        public static uint BindTextureCubeMap(IntPtr ptr, int width, int height, CubeMapTarget target) => _instance.TextureCubeMap(ptr.ToPointer(), width, height, (int)target);
+        
+        /// <summary>
+        /// Load a CubeMap texture buffer using an pointer.
+        /// </summary>
+        /// <param name="data">Image's data pointer</param>
+        /// <param name="width">Image's width</param>
+        /// <param name="height">Image's height</param>
+        /// <returns></returns>
+        public static uint BindTextureCubeMap(void* data, int width, int height, CubeMapTarget target) => _instance.TextureCubeMap(data, width, height, (int)target);
+
+        /// <summary>
         /// Clear all buffers and clear buffers list.
         /// </summary>
         public static void Clear() => _instance.ClearAll();

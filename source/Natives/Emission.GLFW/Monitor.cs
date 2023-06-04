@@ -42,7 +42,7 @@ namespace Emission.Natives.GLFW.Window
         /// <summary>
         /// Return the name of the monitor.
         /// </summary>
-        public string Name => MemoryHelper.PtrToStringUtf8(glfwGetMonitorName((Monitor*)_handle));
+        public string Name => Memory.PtrToStringUtf8(glfwGetMonitorName((Monitor*)_handle));
 
         /// <summary>
         /// Get a <see cref="Rectangle"/> that represent the position and the size with the monitor.

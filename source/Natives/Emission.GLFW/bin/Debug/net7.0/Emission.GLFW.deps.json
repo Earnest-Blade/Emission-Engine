@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "Emission.GLFW/1.0.0": {
         "dependencies": {
-          "Emission.Core": "1.0.0"
+          "Emission.Core": "1.0.0",
+          "Emission Assets": "0.0.0.0"
         },
         "runtime": {
           "Emission.GLFW.dll": {}

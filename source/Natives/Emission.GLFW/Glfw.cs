@@ -22,7 +22,7 @@
 using System.Security;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Emission.Core.IO;
+using Emission.Assets;
 using Emission.Natives.GLFW.Window;
 using Monitor = Emission.Natives.GLFW.Window.Monitor;
 using Emission.Natives.GLFW.Input;

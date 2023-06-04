@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Emission.Assets;
 using Emission.Core.IO;
 
 namespace Emission.Natives.GLFW

@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-
+using Emission.Assets;
 using Emission.Core;
 using Emission.Core.IO;
 using Emission.Core.Memory;
 using Emission.Core.Mathematics;
 
 using Emission.Graphics;
-using Emission.Graphics.Emission.UI;
+using Emission.Graphics.UI;
 using Emission.Natives.GLFW.Input;
 using static Emission.Natives.GL.Gl;
 using static Emission.Natives.GLFW.Glfw;
@@ -100,7 +100,7 @@ namespace Emission.Engine.Window
             set
             {
                 _title = value ?? String.Empty;
-                glfwSetWindowTitle(Handle, MemoryHelper.StrUtf8ToBytePtr(_title));
+                glfwSetWindowTitle(Handle, Memory.StrUtf8ToBytePtr(_title));
             }
         }
         
@@ -204,7 +204,7 @@ namespace Emission.Engine.Window
             {
                 byte* info;
                 glfwGetError(&info);
-                string error = MemoryHelper.PtrToStringUtf8(info)!;
+                string error = Memory.PtrToStringUtf8(info)!;
 
                 throw new FatalEmissionException(EmissionException.ERR_GLFW, error);
             }
@@ -234,7 +234,7 @@ namespace Emission.Engine.Window
             
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, Application.Instance.IsDebug ? GL_TRUE : GL_FALSE);
 
-            Handle = glfwCreateWindow(Config.Width, Config.Height, MemoryHelper.StrUtf8ToBytePtr(Config.Title), null, null);
+            Handle = glfwCreateWindow(Config.Width, Config.Height, Memory.StrUtf8ToBytePtr(Config.Title), null, null);
             if (Handle == (void*)0) 
                 throw new FatalEmissionException(EmissionException.ERR_GLFW, "Failed to create GLFW Window!");
 
@@ -304,6 +304,8 @@ namespace Emission.Engine.Window
             glClearColor(_clearColor.R, _clearColor.G, _clearColor.B, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
+        
+        public void RenderUI() {}
 
         /// <summary>
         /// Swap Glfw buffers.

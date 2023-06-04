@@ -7,8 +7,7 @@ namespace Emission.Graphics.GeometricPrimitives
     {
         private const int CubeFaceCount = 6;
 
-        private static readonly Vector3[] FaceNormals = new Vector3[CubeFaceCount]
-        {
+        private static readonly Vector3[] FaceNormals = {
             new Vector3(0, 0, 1),
             new Vector3(0, 0, -1),
             new Vector3(1, 0, 0),
@@ -17,8 +16,7 @@ namespace Emission.Graphics.GeometricPrimitives
             new Vector3(0, -1, 0),
         };
 
-        private static readonly Vector2[] TextureCoordinates = new Vector2[4]
-        {
+        private static readonly Vector2[] TextureCoordinates = {
             new Vector2(1, 0),
             new Vector2(1, 1),
             new Vector2(0, 1),

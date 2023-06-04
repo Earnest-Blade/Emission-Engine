@@ -13,10 +13,13 @@ namespace Emission.Core.IO
 
         public const int DEFAULT_BUFFER_SIZE = 4096;
 
+        private const string DEBUG_TEMPLATE = "[INFO] Reading '{0}'";
+
         public static string ReadLine(string? path, int line)
         {
-            if (!Exists(path)) FileNotFound(path);
-            LogReading(path);
+            if (!Exists(path)) 
+                throw new FileNotFoundException("Emission File Not Found", path);
+            Debug.Log(string.Format(DEBUG_TEMPLATE, path));
             
             using (StreamReader reader = OpenText(path))
             {
@@ -36,9 +39,10 @@ namespace Emission.Core.IO
         
         public static IEnumerable<string> ReadLines(string? path)
         {
-            if (!Exists(path)) FileNotFound(path);
-            LogReading(path);
-
+            if (!Exists(path)) 
+                throw new FileNotFoundException("Emission File Not Found", path);
+            Debug.Log(string.Format(DEBUG_TEMPLATE, path));
+            
             using (StreamReader reader = new StreamReader(path))
             {
                 while (reader.ReadLine() is { } line) 
@@ -48,8 +52,9 @@ namespace Emission.Core.IO
 
         public static string ReadAllText(string? path)
         {
-            if(!Exists(path)) FileNotFound(path);
-            LogReading(path);
+            if(!Exists(path)) 
+                throw new FileNotFoundException("Emission File Not Found", path);
+            Debug.Log(string.Format(DEBUG_TEMPLATE, path));
 
             using (StreamReader reader = new StreamReader(path, detectEncodingFromByteOrderMarks:true))
                 return reader.ReadToEnd();
@@ -57,9 +62,9 @@ namespace Emission.Core.IO
 
         public static byte[] ReadAllBytes(string? path)
         {
-            if(!Exists(path)) FileNotFound(path);
-            LogReading(path);
-            
+            if(!Exists(path)) throw new FileNotFoundException("Emission File Not Found", path);
+            Debug.Log(string.Format(DEBUG_TEMPLATE, path));
+
             return System.IO.File.ReadAllBytes(path);
         }
 
@@ -120,21 +125,5 @@ namespace Emission.Core.IO
 
         public static bool IsDirectorySeparator(char c) =>
             c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar;
-
-        private static void FileNotFound(string? path)
-        {
-            throw new FileNotFoundException("Emission File Not Found", path);
-        }
-
-        private static void LogReading(string? path)
-        {
-            //Debug.Log($"[IO] Reading file '{path}'");
-        }
-
-        internal static bool Exists(object value)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

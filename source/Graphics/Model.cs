@@ -54,12 +54,12 @@ namespace Emission.Graphics
             shader.UseUniformMat4(UniformViewName, view);
             shader.UseUniformProjectionMat4(UniformProjectionName, projection);
 
-            unsafe
+            /*unsafe
             {
                 int width, height;
                 Glfw.glfwGetWindowSize(Application.Instance.Context.Window, &width, &height);
                 shader.UseUniformVec2(UniformWindowResolution, width, height);
-            }
+            }*/
             
             foreach (Mesh mesh in _meshes)
                 mesh.Draw(shader);

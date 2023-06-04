@@ -4,10 +4,10 @@ namespace Emission.Engine.Page
 {
     public class PageManager : IDisposable
     {
-        public static Page[] ActivePages => ((Game)Application.Instance!).PageManager._activePages.ToArray();
-        public static Page[] RegisteredPages => ((Game)Application.Instance!).PageManager._registerdPages.ToArray();
+        public static Page[] ActivePages => Application.GetInstanceAs<Game>().PageManager?._activePages.ToArray();
+        public static Page[] RegisteredPages => Application.GetInstanceAs<Game>().PageManager?._registerdPages.ToArray();
 
-        public static Camera? ActiveCamera => ((Game)Application.Instance!).PageManager._activeCamera;
+        public static Camera? ActiveCamera => Application.GetInstanceAs<Game>().PageManager?._activeCamera;
 
         private readonly List<Page> _activePages;
         private readonly List<Page> _registerdPages;

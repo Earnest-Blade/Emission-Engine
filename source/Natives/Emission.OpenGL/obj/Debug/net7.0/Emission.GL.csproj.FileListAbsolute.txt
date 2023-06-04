@@ -4,11 +4,9 @@ E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.GL.dll
 E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.GL.pdb
 E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Core.dll
 E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Win32.dll
-E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission Assets.dll
 E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Core.pdb
 E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Core.dll.config
 E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission.Win32.pdb
-E:\Code\Emission\source\Natives\Emission.OpenGL\bin\Debug\net7.0\Emission Assets.pdb
 E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.csproj.AssemblyReference.cache
 E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.GeneratedMSBuildEditorConfig.editorconfig
 E:\Code\Emission\source\Natives\Emission.OpenGL\obj\Debug\net7.0\Emission.GL.AssemblyInfoInputs.cache

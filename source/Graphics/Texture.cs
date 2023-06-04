@@ -4,8 +4,8 @@ using Emission.Assets;
 using Emission.Core;
 using Emission.Core.IO;
 using Emission.Core.Mathematics;
+using Emission.Core.Memory;
 using static Emission.Natives.GL.Gl;
-using MemoryHelper = Emission.Core.Memory.MemoryHelper;
 
 namespace Emission.Graphics
 {
@@ -184,9 +184,13 @@ namespace Emission.Graphics
             
             if (!EFile.Exists(path))
                 throw new FileNotFoundException(path);
-            
+
             int width, height;
             byte[] buffer = Image.LoadImageFromPath(path, &width, &height, (int*)0, colorFormat);
+            if (buffer == null)
+            {
+                throw new FatalEmissionException(EmissionException.ERR_IO, $"An error occured while loading '{path}'.");
+            }
 
             return new Texture(name, buffer, width, height, colorFormat, unit, filterMode, wrapMode);
         }
@@ -204,8 +208,12 @@ namespace Emission.Graphics
         public static Texture CreateTextureFromStream(Stream? stream, string? name, TextureUnit unit, ColorFormat colorFormat, TextureFilterMode filterMode, TextureWrapMode wrapMode)
         {
             int width, height;
-            byte[] buffer = Image.LoadImageFromMemory(MemoryHelper.ReadStream(stream, (int)stream.Length), &width, &height, (int*)0, colorFormat);
-
+            byte[] buffer = Image.LoadImageFromMemory(Memory.ReadStream(stream, (int)stream.Length), &width, &height, (int*)0, colorFormat);
+            if (buffer == null)
+            {
+                throw new FatalEmissionException(EmissionException.ERR_IO, $"An error occured while loading '{name}'.");
+            }
+            
             return new Texture(name, buffer, width, height, colorFormat, unit, filterMode, wrapMode);
         }
 
@@ -213,7 +221,11 @@ namespace Emission.Graphics
         {
             int width, height, comp;
             byte[] buffer = Image.LoadImageFromPath(Path.Combine(assetPath, slot.FilePath), &width, &height, &comp, ColorFormat.Default);
-
+            if (buffer == null)
+            {
+                throw new FatalEmissionException(EmissionException.ERR_IO, $"An error occured while loading '{name}'.");
+            }
+            
             return new Texture(name, buffer, width, height, ColorFormat.Default, unit, TextureFilterMode.Linear, TextureWrapMode.Repeat, (TextureType)(int)slot.TextureType);
         }
     }

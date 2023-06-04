@@ -6,7 +6,10 @@ using Emission.Engine.Page;
 using Emission.Engine.Window;
 using Emission.Graphics;
 using Emission.Graphics.RenderConfig;
+using Emission.Graphics.UI;
 using Emission.Natives.GLFW;
+
+using static nuklear.nuklear;
 
 namespace Emission.Engine
 {
@@ -35,6 +38,7 @@ namespace Emission.Engine
         internal EngineBehaviourDispatcher? BehaviourDispatcher;
         internal EventDispatcher? EventDispatcher;
         internal PageManager? PageManager;
+        internal UserInterfaceDispatcher? UserInterfaceDispatcher;
 
         public bool IsRunning { get; private set; }
         public bool IsDebug { get; private set; }
@@ -77,15 +81,16 @@ namespace Emission.Engine
             Window ??= new Window.Window(WindowConfig.Default("Window"));
             Renderer ??= new Renderer(new GlConfig().GetDefault());
             PageManager ??= new PageManager();
+            UserInterfaceDispatcher ??= new UserInterfaceDispatcher();
             
-            Graphics.Renderer.SetRendererInstance(Renderer);
+            Renderer.SetRendererInstance(Renderer);
 
             Window.Initialize();
             unsafe
             {
                 _context.Window = Window.Handle;
             }
-            
+
             Renderer.Initialize();
 
             EngineBehaviour.Call(Event.INITIALIZE);
@@ -151,10 +156,18 @@ namespace Emission.Engine
         public virtual void Render()
         {
             EngineBehaviour.Call(Event.RENDER);
+            
+            NkNewFrame();
+            
+            UserInterfaceDispatcher.CallAll();
+            
+            NkRender(false);
         }
         
         public virtual void Exit(int status)
         {
+            NkShutdown();
+            
             // Call Stop Event
             EngineBehaviour.Call(Event.STOP);
             Window!.Stop();

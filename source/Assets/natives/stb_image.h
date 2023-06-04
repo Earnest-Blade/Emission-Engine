@@ -975,7 +975,8 @@ STBIDEF const char *stbi_failure_reason(void)
 #ifndef STBI_NO_FAILURE_STRINGS
 static int stbi__err(const char *str)
 {
-   stbi__g_failure_reason = str;
+   fprintf(stderr, "[ERROR][Emission.Assets] %s\n", str);
+   //stbi__g_failure_reason = str;
    return 0;
 }
 #endif
@@ -1127,9 +1128,10 @@ STBIDEF void stbi_set_flip_vertically_on_load_thread(int flag_true_if_should_fli
    stbi__vertically_flip_on_load_set = 1;
 }
 
-#define stbi__vertically_flip_on_load  (stbi__vertically_flip_on_load_set       \
+/*#define stbi__vertically_flip_on_load  (stbi__vertically_flip_on_load_set       \
                                          ? stbi__vertically_flip_on_load_local  \
-                                         : stbi__vertically_flip_on_load_global)
+                                         : stbi__vertically_flip_on_load_global)*/
+#define stbi__vertically_flip_on_load stbi__vertically_flip_on_load_global
 #endif // STBI_THREAD_LOCAL
 
 static void *stbi__load_main(stbi__context *s, int *x, int *y, int *comp, int req_comp, stbi__result_info *ri, int bpc)
@@ -1273,7 +1275,7 @@ static unsigned char *stbi__load_and_postprocess_8bit(stbi__context *s, int *x, 
 
    // @TODO: move stbi__convert_format to here
 
-   if (stbi__vertically_flip_on_load_global) {
+   if (stbi__vertically_flip_on_load) {
       int channels = req_comp ? req_comp : *comp;
       stbi__vertical_flip(result, *x, *y, channels * sizeof(stbi_uc));
    }

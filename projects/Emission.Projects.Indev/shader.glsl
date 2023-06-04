@@ -1,5 +1,5 @@
 define:
-	#version 440
+	#version 450 core
 
 vertex:
 	layout(location = 0) in vec3 iPosition;

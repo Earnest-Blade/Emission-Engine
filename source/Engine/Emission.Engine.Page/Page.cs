@@ -1,11 +1,12 @@
-﻿using Emission;
+﻿using System.Collections;
+using Emission;
 using Emission.Annotations;
 using Emission.Core;
 
 namespace Emission.Engine.Page
 {
     [Serializable]
-    public class Page : IEngineBehaviour, IEquatable<Page>, IDisposable
+    public class Page : IEngineBehaviour, IEquatable<Page>, IDisposable, IEnumerable<Actor>
     {
         public readonly string Name;
 
@@ -183,11 +184,20 @@ namespace Emission.Engine.Page
             return other != null && _uuid.ToString() == other._uuid.ToString();
         }
 
+        public IEnumerator<Actor> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
         public override int GetHashCode()
         {
             return _uuid.GetHashCode();
         }
         
         public override string ToString() => Uuid;
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

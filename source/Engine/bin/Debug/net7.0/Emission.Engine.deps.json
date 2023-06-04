@@ -10,6 +10,7 @@
         "dependencies": {
           "Emission.Core": "1.0.0",
           "Emission.Graphics": "1.0.0",
+          "Emission Assets": "0.0.0.0",
           "Emission.Nuklear": "0.0.0.0"
         },
         "runtime": {
@@ -755,17 +756,17 @@
           "Emission.Win32.dll": {}
         }
       },
-      "Emission.Nuklear/0.0.0.0": {
+      "Emission Assets/0.0.0.0": {
         "runtime": {
-          "Emission.Nuklear.dll": {
+          "Emission Assets.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "Emission Assets/0.0.0.0": {
+      "Emission.Nuklear/0.0.0.0": {
         "runtime": {
-          "Emission Assets.dll": {
+          "Emission.Nuklear.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -1322,12 +1323,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Emission.Nuklear/0.0.0.0": {
+    "Emission Assets/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Emission Assets/0.0.0.0": {
+    "Emission.Nuklear/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

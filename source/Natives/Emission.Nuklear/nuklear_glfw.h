@@ -158,8 +158,8 @@ void ::NuklearInternal::nk_glfw_create(void) {
     dev->prog = Gl::glCreateProgram();
     dev->vert_shdr = Gl::glCreateShader(Gl::GL_VERTEX_SHADER);
     dev->frag_shdr = Gl::glCreateShader(Gl::GL_FRAGMENT_SHADER);
-    Gl::glShaderSource(dev->vert_shdr, 1, (unsigned char**)&vertex_shader, (int*)0);
-    Gl::glShaderSource(dev->frag_shdr, 1, (unsigned char**)&fragment_shader, (int*)0);
+    Gl::glShaderSource(dev->vert_shdr, 1, (wchar_t**)&vertex_shader, (int*)0);
+    Gl::glShaderSource(dev->frag_shdr, 1, (wchar_t**)&fragment_shader, (int*)0);
     Gl::glCompileShader(dev->vert_shdr);
     Gl::glCompileShader(dev->frag_shdr);
     Gl::glGetShaderiv(dev->vert_shdr, Gl::GL_COMPILE_STATUS, &status);
@@ -201,11 +201,7 @@ void ::NuklearInternal::nk_glfw_create(void) {
         size_t vp = offsetof(struct nk_glfw_vertex, position);
         size_t vt = offsetof(struct nk_glfw_vertex, uv);
         size_t vc = offsetof(struct nk_glfw_vertex, col);
-
-        unsigned int pos = dev->attrib_pos;
-        unsigned int uv = dev->attrib_uv;
-        unsigned int col = dev->attrib_col;
-
+        
         Gl::glCreateVertexArrays(1, &dev->vao);
         Gl::glCreateBuffers(1, &dev->vbo);
         Gl::glCreateBuffers(1, &dev->ebo);

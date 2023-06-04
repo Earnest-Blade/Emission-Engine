@@ -94,10 +94,10 @@ namespace Emission.Graphics.RenderConfig
             glfwGetWindowSize(Application.Instance!.Context.Window, &width, &height);
             glViewport(0, 0, width, height);
             
-            InfoCallback($"Using OpenGL {MemoryHelper.PtrToStringUtf8(glGetString(GL_VERSION))}");
-            InfoCallback($"Using GLSL {MemoryHelper.PtrToStringUtf8(glGetString(GL_SHADING_LANGUAGE_VERSION))}");
-            InfoCallback($"Running with OpenGL Vendor {MemoryHelper.PtrToStringUtf8(glGetString(GL_VENDOR))}");
-            InfoCallback($"Running with OpenGL Renderer {MemoryHelper.PtrToStringUtf8(glGetString(GL_RENDERER))}");
+            InfoCallback($"Using OpenGL {Memory.PtrToStringUtf8(glGetString(GL_VERSION))}");
+            InfoCallback($"Using GLSL {Memory.PtrToStringUtf8(glGetString(GL_SHADING_LANGUAGE_VERSION))}");
+            InfoCallback($"Running with OpenGL Vendor {Memory.PtrToStringUtf8(glGetString(GL_VENDOR))}");
+            InfoCallback($"Running with OpenGL Renderer {Memory.PtrToStringUtf8(glGetString(GL_RENDERER))}");
         }
 
         public override RenderConfig GetDefault()
@@ -142,11 +142,11 @@ namespace Emission.Graphics.RenderConfig
             switch (severity)
             {
                 case GL_DEBUG_SEVERITY_NOTIFICATION:
-                    InfoCallback(MemoryHelper.PtrToStringUtf8(message));
+                    InfoCallback(Memory.PtrToStringUtf8(message));
                     break;
                 
                 case GL_DEBUG_SEVERITY_LOW:
-                    WarningCallback(MemoryHelper.PtrToStringUtf8(message));
+                    WarningCallback(Memory.PtrToStringUtf8(message));
                     break;
                 
                 case GL_DEBUG_SEVERITY_MEDIUM:
@@ -179,8 +179,10 @@ namespace Emission.Graphics.RenderConfig
         
         private static void* ErrorCallback(string source, string type, uint id, string severity, char* message)
         {
-            if((Application.Instance!.Context.DebugFlags & DebugFlags.HideGlErrors) != DebugFlags.HideGlErrors)
-                throw new FatalEmissionException(EmissionException.ERR_OPEN_GL, string.Format(ERROR_TEMPLATE, id, severity, type, source, MemoryHelper.PtrToStringUtf8(message)));
+            if ((Application.Instance!.Context.DebugFlags & DebugFlags.HideGlErrors) != DebugFlags.HideGlErrors)
+            {
+                throw new FatalEmissionException(EmissionException.ERR_OPEN_GL, string.Format(ERROR_TEMPLATE, id, severity, type, source, Memory.PtrToStringUtf8(message)));
+            }
             
             return NULL;
         }

@@ -1,0 +1,5 @@
+E:\Code\Emission\Debug\Ijwhost.dll
+E:\Code\Emission\Debug\Emission Assets.deps.json
+E:\Code\Emission\Debug\Emission Assets.runtimeconfig.json
+E:\Code\Emission\source\Assets\Debug\Assets.vcxproj.AssemblyReference.cache
+E:\Code\Emission\source\Assets\Debug\Assets.genruntimeconfig.cache

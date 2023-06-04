@@ -1065,7 +1065,7 @@ namespace Emission.Natives.GL
         public delegate void PFNGLLINKPROGRAMPROC(uint program);
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void PFNGLSHADERSOURCEPROC(uint shader, int count, byte** @string, int* length);
+        public delegate void PFNGLSHADERSOURCEPROC(uint shader, int count, char** @string, int* length);
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void PFNGLUSEPROGRAMPROC(uint program);

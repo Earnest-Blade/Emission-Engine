@@ -3,7 +3,7 @@ using Emission.Core;
 using Emission.Core.IO;
 using Emission.Engine;
 using Emission.Engine.Page;
-using Emission.Graphics.Emission.UI;
+using Emission.Graphics.UI;
 
 namespace Emission.Projects.Indev
 {
@@ -18,18 +18,11 @@ namespace Emission.Projects.Indev
         {
             base.Initialize();
             
-            unsafe
-            {
-                Nuklear.Initialize(((Game)Application.Instance).Window.Handle, 512 * 1024, 128 * 1024);
-            }
-            
             PageManager.Enable(new IndevPage());
         }
 
         public override void Exit(int status)
         {
-            Nuklear.Destroy();
-            
             base.Exit(status);
         }
 

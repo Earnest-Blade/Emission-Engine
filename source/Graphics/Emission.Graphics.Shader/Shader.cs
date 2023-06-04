@@ -1,36 +1,53 @@
 ﻿using Emission.Core;
-using Emission.Core.Mathematics;
 using Emission.Core.Memory;
-using Emission.Natives.GL;
+using Emission.Core.Mathematics;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics
 {
     public unsafe partial class Shader : IEquatable<Shader>, IDisposable
     {
+        /// <summary>
+        /// Conventional name use to represent actor's transformation matrix in the shader. 'uTransform'
+        /// </summary>
         public const string UNIFORM_TRANSFORM = "uTransform";
+        
+        /// <summary>
+        /// Conventional name use to represent camera's view matrix in the shader. 'uView'
+        /// </summary>
         public const string UNIFORM_VIEW = "uView";
+        
+        /// <summary>
+        /// Conventional name use to represent camera's projection matrix in the shader. 'uProjection'
+        /// </summary>
         public const string UNIFORM_PROJECTION = "uProjection";
         
+        /// <summary>
+        /// Conventional name use to represent screen size in the shader. 'uWindowResolution'
+        /// </summary>
         public const string UNIFORM_WINDOW_RESOLUTION = "uWindowResolution";
 
         // public variables
-        public string Name => _name;
+        public string? Name => _name;
         public uint ID => _program;
         
         // private variables
-        private string _name;
+        private string? _name;
         private uint _program;
         private uint _vertex;
         private uint _fragment;
         private uint _geometry;
 
+#if EMISSION_ENABLE_TESSELATION
         private uint _tcs;
         private uint _tes;
+#endif
+
+        private static uint _activeShader;
         
         // constructor
-        internal Shader(ShaderStruct shaderStruct) : this(shaderStruct, null) {}
-        internal Shader(ShaderStruct shaderStruct, string name)
+        private Shader(ShaderStruct shaderStruct) : this(shaderStruct, null) {}
+        private Shader(ShaderStruct shaderStruct, string? name)
         {
             _name = name;
             
@@ -42,7 +59,7 @@ namespace Emission.Graphics
         /// Create program ID, load vertex shader, fragment shader and geometry shader.
         /// </summary>
         /// <param name="shader"></param>
-        public void Initialize(ShaderStruct shader)
+        private void Initialize(ShaderStruct shader)
         {
             // Catch when trying to re-init the shader. 
             if(_program != 0)
@@ -51,48 +68,63 @@ namespace Emission.Graphics
                 return;
             }
 
+            // Create a new program
             _program = glCreateProgram();
+            _activeShader = _program;
+            
+            if (_name == null) _name = $"shader{_program}";
+            else _name += _program.ToString();
+            
+            Debug.Log($"[INFO] Started created {_name}");
 
             if (shader.HasVertexShader)
             {
-                _vertex = ShaderLoader.CompileShader(ShaderLoader.VERTEX_SHADER, ref shader.VertexData);
+                Debug.Log("[INFO] Compiling a new vertex shader!");
+                _vertex = ShaderBuilder.CompileShader(ShaderBuilder.VERTEX_SHADER, ref shader.VertexData);
                 glAttachShader(_program, _vertex);
             }
 
             if (shader.HasFragmentShader)
             { 
-                _fragment = ShaderLoader.CompileShader(ShaderLoader.FRAGMENT_SHADER, ref shader.FragmentData);
+                Debug.Log("[INFO] Compiling a new fragment shader!");
+                _fragment = ShaderBuilder.CompileShader(ShaderBuilder.FRAGMENT_SHADER, ref shader.FragmentData);
                 glAttachShader(_program, _fragment);
             }
 
             if (shader.HasGeometryShade)
             {
-                _geometry = ShaderLoader.CompileShader(ShaderLoader.GEOMETRY_SHADER, ref shader.GeomertyData);
+                Debug.Log("[INFO] Compiling a new geometry shader!");
+                _geometry = ShaderBuilder.CompileShader(ShaderBuilder.GEOMETRY_SHADER, ref shader.GeomertyData);
                 glAttachShader(_program, _geometry);
             }
-
+            
+#if EMISSION_ENABLE_TESSELATION
             if (shader.HasTesselationShader)
             {
+                Debug.Log("[INFO] Compiling a new tesselation shader!");
+                
                 glPatchParameteri(GL_PATCH_VERTICES, 3);
 
-                _tcs = ShaderLoader.CompileShader(ShaderLoader.TESSELATION_CONTROL_SHADER, ref shader.TCSData);
+                _tcs = ShaderBuilder.CompileShader(ShaderBuilder.TESSELATION_CONTROL_SHADER, shader.TCSData);
                 glAttachShader(_program, _tcs);
 
-                _tes = ShaderLoader.CompileShader(ShaderLoader.TESSELATION_EVAL_SHADER, ref shader.TESData);
+                _tes = ShaderBuilder.CompileShader(ShaderBuilder.TESSELATION_EVAL_SHADER, shader.TESData);
                 glAttachShader(_program, _tes);
             }
-
-            glLinkProgram(_program);
-
+#endif
+            ShaderBuilder.LinkProgram(_program);
+            
             glDeleteShader(_vertex);
             glDeleteShader(_fragment);
             glDeleteShader(_geometry);
+            
+#if EMISSION_ENABLE_TESSELATION
             glDeleteShader(_tcs);
             glDeleteShader(_tes);
+#endif
 
-            if (_name == null) _name = $"shader{_program}";
-            else _name += _program.ToString();
-
+            _activeShader = 0;
+            glUseProgram(0);
             Debug.Log($"[INFO] Successfully compile shader '{Name}'");
         }
 
@@ -101,6 +133,7 @@ namespace Emission.Graphics
         /// </summary>
         public void Start()
         {
+            _activeShader = _program;
             glUseProgram(_program);
         }
 
@@ -110,6 +143,7 @@ namespace Emission.Graphics
         public void Stop()
         {
             glUseProgram(0);
+            _activeShader = 0;
         }
 
         /// <summary>
@@ -127,7 +161,7 @@ namespace Emission.Graphics
         /// <returns>Attribute's location</returns>
         public int GetAttributeLocation(string name)
         {
-            return glGetAttribLocation(_program, MemoryHelper.StrUtf8ToBytePtr(name));
+            return glGetAttribLocation(_program, Memory.StrUtf8ToBytePtr(name));
         }
         
         /// <summary>
@@ -137,7 +171,7 @@ namespace Emission.Graphics
         /// <returns>Uniform's location</returns>
         public int GetUniformLocation(string name)
         {
-            return glGetUniformLocation(_program, MemoryHelper.StrUtf8ToBytePtr(name));
+            return glGetUniformLocation(_program, Memory.StrUtf8ToBytePtr(name));
         }
         
         /// <summary>

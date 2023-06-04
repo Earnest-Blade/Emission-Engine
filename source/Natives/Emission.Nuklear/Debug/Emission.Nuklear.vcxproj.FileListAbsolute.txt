@@ -1,0 +1,6 @@
+E:\Code\Emission\Debug\Ijwhost.dll
+E:\Code\Emission\Debug\Emission.Nuklear.deps.json
+E:\Code\Emission\Debug\Emission.Nuklear.runtimeconfig.json
+E:\Code\Emission\source\Natives\Emission.Nuklear\Debug\Emission.Nuklear.vcxproj.AssemblyReference.cache
+E:\Code\Emission\source\Natives\Emission.Nuklear\Debug\Emission.Nuklear.vcxproj.CopyComplete
+E:\Code\Emission\source\Natives\Emission.Nuklear\Debug\Emission.Nuklear.genruntimeconfig.cache

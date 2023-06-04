@@ -182,7 +182,7 @@ namespace Emission.Graphics
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             
-            if (data != null)
+            if (data != NULL)
             {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
                 glGenerateMipmap(GL_TEXTURE_2D);
@@ -197,6 +197,38 @@ namespace Emission.Graphics
             
             LoadedTid.Add(tid);
             
+            return tid;
+        }
+
+        /// <summary>
+        /// Load a cubemap texture. See static for more informations
+        /// </summary>
+        /// <returns></returns>
+        public uint TextureCubeMap(void* data, int width, int height, int target)
+        {
+            uint tid;
+            glGenTextures(1, &tid);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, tid);
+            
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+            if (data != NULL)
+            {
+                glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            }
+            else
+            {
+                throw new EmissionException(EmissionException.ERR_TEXTURE, "Cannot load Cubemap");
+            }
+
+            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+            
+            LoadedTid.Add(tid);
+
             return tid;
         }
 

@@ -1,4 +1,5 @@
-﻿using Emission;
+﻿using System.Collections;
+using Emission;
 using Emission.Annotations;
 using Emission.Core;
 using Emission.Core.Mathematics;
@@ -8,9 +9,9 @@ using Emission.Graphics;
 namespace Emission.Engine
 {
     [Serializable]
-    public abstract class Actor : IDisposable, IEquatable<Actor>
+    public abstract class Actor : IDisposable, IEquatable<Actor>, IEnumerable<Actor>
     {
-        public static Actor Empty => new EmptyActor();
+        public static Actor Empty => new DefaultActor();
 
         public bool IsActive { get; protected set; }
         public string Name;
@@ -21,7 +22,7 @@ namespace Emission.Engine
             {
                 if (LonelyActor.IsActorLonely(GetType())) return null;
                 
-                Page.Page? p = ((Game)Application.Instance!).PageManager.FindPage(_page);
+                Page.Page? p = Application.GetInstanceAs<Game>().PageManager?.FindPage(_page);
                 if (p != null && p.IsActive)
                     return p.GetActor(_parent);
                 
@@ -36,7 +37,7 @@ namespace Emission.Engine
             {
                 if (LonelyActor.IsActorLonely(GetType())) return null!;
 
-                Page.Page? p = ((Game)Application.Instance!).PageManager.FindPage(_page);
+                Page.Page? p = Application.GetInstanceAs<Game>().PageManager?.FindPage(_page);
                 if ((p != null && p.IsActive) || _childs.Count != 0)
                 {
                     Actor[] childs = new Actor[_childs.Count];
@@ -64,21 +65,6 @@ namespace Emission.Engine
         {
             get => Transform.Rotation;
             set => Transform.Rotation = value;
-        }
-
-        public virtual float ScaleAsFloat
-        {
-            get
-            {
-                // X == Y && X == Z
-                if (!(Math.Abs(Transform.Scale.X - Transform.Scale.Y) < MathHelper.EPSILON && Math.Abs(Transform.Scale.X - Transform.Scale.Z) < MathHelper.EPSILON))
-                {
-                    Debug.LogWarning("[WARNING] Cannot get accurate ScaleAsFloat because X, Y and Z aren't the same!");
-                }
-
-                return Transform.Scale.X;
-            }
-            set => Transform.Scale = new Vector3(value);
         }
 
         public virtual Vector3 Scale
@@ -139,7 +125,7 @@ namespace Emission.Engine
         {
             
         }
-        
+
         internal void Enable(ushort id, Guid uuid)
         {
             SetActive(true);
@@ -232,12 +218,17 @@ namespace Emission.Engine
 
         public static bool IsActorEmpty(Actor? actor)
         {
-            return actor is EmptyActor;
+            return actor is DefaultActor;
         }
-    }
-    
-    public class EmptyActor : Actor
-    {
-        public EmptyActor() : base() {}
+
+        public IEnumerator<Actor> GetEnumerator()
+        {
+            return (IEnumerator<Actor>)Childs.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

@@ -33,6 +33,16 @@ namespace Emission {
 		private:
 		
 		};
+
+		public ref struct Icon
+		{
+		public:
+			initonly int Width;
+			initonly int Height;
+			initonly unsigned char* Pixels;
+			
+			Icon(String^ path);
+		};
 	}
 }
 

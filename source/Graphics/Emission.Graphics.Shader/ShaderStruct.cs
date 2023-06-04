@@ -2,12 +2,12 @@
 {
     public struct ShaderStruct
     {
-        public string VertexData;
-        public string GeomertyData;
-        public string FragmentData;
+        public string? VertexData;
+        public string? GeomertyData;
+        public string? FragmentData;
 
-        public string TCSData;
-        public string TESData;
+        public string? TCSData;
+        public string? TESData;
 
         public bool HasVertexShader = false;
         public bool HasFragmentShader = false;
@@ -50,36 +50,36 @@
         {
             switch (type)
             {
-                case ShaderLoader.NONE:
+                case ShaderBuilder.NONE:
                     return;
 
-                case ShaderLoader.DEFINE_SHADER:
+                case ShaderBuilder.DEFINE_SHADER:
                     VertexData += line + '\n';
                     GeomertyData += line + '\n';
                     FragmentData += line + '\n';
                     return;
 
-                case ShaderLoader.VERTEX_SHADER:
+                case ShaderBuilder.VERTEX_SHADER:
                     HasVertexShader = true;
                     VertexData += line + '\n';
                     return;
 
-                case ShaderLoader.GEOMETRY_SHADER:
+                case ShaderBuilder.GEOMETRY_SHADER:
                     HasGeometryShade = true;
                     GeomertyData += line + '\n';
                     return;
 
-                case ShaderLoader.FRAGMENT_SHADER:
+                case ShaderBuilder.FRAGMENT_SHADER:
                     HasFragmentShader = true;
                     FragmentData += line + '\n';
                     return;
 
-                case ShaderLoader.TESSELATION_CONTROL_SHADER:
+                case ShaderBuilder.TESSELATION_CONTROL_SHADER:
                     HasTesselationShader = true;
                     TCSData = line + '\n';
                     return;
 
-                case ShaderLoader.TESSELATION_EVAL_SHADER:
+                case ShaderBuilder.TESSELATION_EVAL_SHADER:
                     HasTesselationShader = true;
                     TESData = line + '\n';
                     return;

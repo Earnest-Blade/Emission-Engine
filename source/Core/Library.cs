@@ -10,9 +10,8 @@ namespace Emission.Core
     {
         public const string GLFW = "libglfw";
         public const string OPENAL = "liboal";
-        public const string STB = "stb";
 
-        private const string DllResourcePath = "bin/runtimes";
+        private const string DLL_RESOURCE_PATH = "bin/runtimes";
         
         public static string GetLibraryPath(string library)
         {
@@ -43,7 +42,7 @@ namespace Emission.Core
                 _ => throw new PlatformNotSupportedException()
             };
 
-            string path = Path.Combine(EDirectory.GetCurrentDirectory(), DllResourcePath, platform + '-' + cpu, library + extension);
+            string path = Path.Combine(EDirectory.GetCurrentDirectory(), DLL_RESOURCE_PATH, platform + '-' + cpu, library + extension);
             Debug.Log($"[INFO] Loading {library} from '{path}'");
             return path;
         }
