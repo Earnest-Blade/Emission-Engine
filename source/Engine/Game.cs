@@ -74,6 +74,7 @@ namespace Emission.Engine
             Debug.Log("[INFO] Creating game event handlers");
             Debug.Log($"[INFO] Running with Emission Engine '{Context.Name}' ({Context.VersionMajor})");
             Debug.Log($"[INFO] Current directory : '{EDirectory.GetCurrentDirectory()}'");
+            Debug.Log($"[INFO] Current log file : '{Path.Combine(EDirectory.GetCurrentDirectory(), _context.Debugger?.Path!)}'");
             Debug.Log($"[INFO] Running with FPS limit {Context.Framerate}");
             
             Window ??= new Window.Window(WindowConfig.Default("Window"));
@@ -116,6 +117,7 @@ namespace Emission.Engine
                 steps += elapsed;
                 
                 Window.Update();
+                IApplication.SetDeltaTime(elapsed);
 
                 while (steps >= 1.0 / Context.Framerate)
                 {

@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using System.Text;
+using Microsoft.VisualBasic.FileIO;
+using Microsoft.Win32.SafeHandles;
 
 namespace Emission.Core.IO
 {

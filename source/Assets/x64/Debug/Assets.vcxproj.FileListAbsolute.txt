@@ -1,6 +1,0 @@
-E:\Code\Emission\source\Assets\x64\Debug\Assets.vcxproj.AssemblyReference.cache
-E:\Code\Emission\source\Assets\x64\Debug\Ijwhost.dll
-E:\Code\Emission\source\Assets\x64\Debug\Emission Assets.dll
-E:\Code\Emission\source\Assets\x64\Debug\Emission Assets.deps.json
-E:\Code\Emission\source\Assets\x64\Debug\Assets.genruntimeconfig.cache
-E:\Code\Emission\source\Assets\x64\Debug\Emission Assets.runtimeconfig.json

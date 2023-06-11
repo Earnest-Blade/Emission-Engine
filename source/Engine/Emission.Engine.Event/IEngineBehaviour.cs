@@ -15,7 +15,10 @@ namespace Emission.Engine
 
         public void BindBehaviour()
         {
-            if (Application.HasInstance())
+            if (Behaviour == null)
+                throw new ArgumentException("Trying to bind a null behaviour!", nameof(Behaviour));
+            
+            if (Application.HasInstance() && Event.HasEventDispatcher())
             {
                 Event.AddDelegate(Event.INITIALIZE, Initialize);
                 Event.AddDelegate(Event.START, Start);

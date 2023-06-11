@@ -17,7 +17,7 @@
         /// Define current delta time value.
         /// </summary>
         /// <param name="value">New delta time value</param>
-        protected static void SetDeltaTime(float value) => Time.DeltaTime = value;
+        protected static void SetDeltaTime(double value) => Time.DeltaTime = value;
         
         /// <summary>
         /// Define current frame per second value.

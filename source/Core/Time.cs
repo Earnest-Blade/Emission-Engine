@@ -6,22 +6,16 @@ namespace Emission.Core
     public static class Time
     {
         /// <summary>
-        /// Return current time by using <see cref="Time"/>. return a double so it can be change as
-        /// a float easily.
+        /// Return the difference between the current and previous frame.
         /// </summary>
-        //public static long Current() => ((DateTimeOffset)Process.GetCurrentProcess().StartTime).ToUnixTimeMilliseconds(); //(float)Glfw.glfwGetTime();
-
-        /// <summary>
-        /// Return delta time use to define movements by time.
-        /// </summary>
-        public static float DeltaTime
+        public static double DeltaTime
         {
             get; 
             internal set;
         }
-
+        
         /// <summary>
-        /// Return current <see cref="Window"/>'s fps.
+        /// Return current <see cref="Application"/>'s fps.
         /// </summary>
         public static uint Fps
         {
@@ -51,6 +45,10 @@ namespace Emission.Core
             return ((DateTimeOffset)DateTime.Now).ToUnixTimeMilliseconds();
         }
 
+        /// <summary>
+        /// Return the current time as a string.
+        /// </summary>
+        /// <returns></returns>
         public static string TimeAsString()
         {
             return ((DateTimeOffset)Process.GetCurrentProcess().StartTime).ToString("G");

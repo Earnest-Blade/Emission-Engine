@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emission.Win32", "source\Na
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emission.GL", "source\Natives\Emission.OpenGL\Emission.GL.csproj", "{F5945A0A-699C-4B3F-B38A-523D770D5361}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Emission Assets", "source\Assets\Assets.vcxproj", "{D81DC74D-7EF1-4408-9E65-E64ED881E03B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Emission.Assets", "source\Emission.Assets\Emission.Assets.vcxproj", "{D81DC74D-7EF1-4408-9E65-E64ED881E03B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emission.Projects.Indev", "projects\Emission.Projects.Indev\Emission.Projects.Indev.csproj", "{3412F247-9140-4E91-91A6-61C0665620CD}"
 EndProject

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Assets\Assets.vcxproj" />
+    <ProjectReference Include="..\Emission.Assets\Emission.Assets.vcxproj" />
     <ProjectReference Include="..\Natives\Emission.Win32\Emission.Win32.csproj" />
   </ItemGroup>
 

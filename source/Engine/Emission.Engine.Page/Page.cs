@@ -41,8 +41,7 @@ namespace Emission.Engine.Page
         public Page() : this(string.Empty) {}
         public Page(string? name)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
+            ArgumentNullException.ThrowIfNull(name);
             
             Name = name;
             Camera = null;

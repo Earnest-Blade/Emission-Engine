@@ -1,10 +1,10 @@
 ﻿using System.Collections;
+
 using Emission;
-using Emission.Annotations;
 using Emission.Core;
-using Emission.Core.Mathematics;
-using Emission.Engine.Page;
 using Emission.Graphics;
+using Emission.Annotations;
+using Emission.Core.Mathematics;
 
 namespace Emission.Engine
 {
@@ -16,6 +16,12 @@ namespace Emission.Engine
         public bool IsActive { get; protected set; }
         public string Name;
 
+        public Actor? this[int i]
+        {
+            get => Childs[i];
+            set => SetChild(_childs[i], value);
+        }
+        
         public Actor? Parent
         {
             get
@@ -48,6 +54,8 @@ namespace Emission.Engine
                 return Array.Empty<Actor>();
             }
         }
+
+        public int ChildCount => _childs.Count;
 
         public virtual Vector3 Position
         {
@@ -188,7 +196,7 @@ namespace Emission.Engine
             if (page != null && page.IsActive)
             {
                 ushort id = page.HasActor(actor);
-                if (id != 0)
+                if (id != 0) // if the page has this actor
                 {
                     _childs.Add(id);
                 }
@@ -197,11 +205,39 @@ namespace Emission.Engine
                     page.RegisterActor(actor);
                     _childs.Add((ushort)page.ActorCount);
                     
-                    Debug.LogWarning($"[WARNING] '{actor?.Name}' is not registered in current page while trying to be add to childrens!");
+                    Debug.LogWarning($"[WARNING] '{actor?.Name}' is not registered in current page while trying to be add to children!");
                 }
             }
             else
-                throw new EmissionException(EmissionException.ERR_PAGE, "Cannot get Actor from page!");
+                throw new EmissionException(EmissionException.ERR_PAGE, "Cannot get Actor from an inactive page!");
+        }
+
+        // TODO: Change page reference
+        public void DestroyActor()
+        {
+            Page.Page? page = Application.GetInstanceAs<Game>().PageManager?.FindPage(_page);
+            if (page != null && page.IsActive)
+            {
+                ushort id = page.HasActor(this);
+                if (id != 0) // if the page has this actor
+                {
+                    page.RemoveActor(this);
+                }
+                else
+                {
+                    Debug.LogWarning($"[WARNING] Cannot destroy '{Name}' because this actor is not register in the current scene!");
+                }
+
+                Disable();
+            }
+            else
+                throw new EmissionException(EmissionException.ERR_PAGE, "Cannot remove Actor from an inactive page!");
+        }
+
+        // TODO: Change page reference
+        public void SetChild(ushort child, Actor? actor)
+        {
+            
         }
 
         public void Dispose() => Disable();

@@ -30,7 +30,7 @@ namespace Emission.Core
         /// </summary>
         public static string ConsoleTitle
         {
-            get => Console.Title;
+            get => Platform.Type == PlatformType.Windows ? Console.Title : string.Empty;
             set => Console.Title = value;
         }
         
@@ -39,7 +39,12 @@ namespace Emission.Core
         /// </summary>
         public override Encoding Encoding => _encoding;
 
-        private const string LOG_FILE_TEMPLATE = "{0} | {1}";
+        /// <summary>
+        /// Return Emission log path.
+        /// </summary>
+        public string Path => _logPath;
+        
+        private const string LOG_FILE_TEMPLATE = "{0} | {1}\n";
         
         private Stream _stream;
         private string _logPath;
@@ -128,7 +133,7 @@ namespace Emission.Core
 
             if (count > 0)
             {
-                _stream.WriteAsync(_byteBuffer, 0, count);
+                _stream.Write(_byteBuffer, 0, count);
             }
 
             if(flushStream) 
@@ -166,6 +171,17 @@ namespace Emission.Core
             if (bufferSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
 
+            if (EFile.Exists(path))
+            {
+                FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize, FileOptions.SequentialScan);
+                if (stream.Length != 0)
+                {
+                    stream.SetLength(0);
+                }
+
+                return stream;
+            }
+            
             return new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize, FileOptions.SequentialScan);
         }
 
@@ -173,8 +189,7 @@ namespace Emission.Core
         {
             if (buffer.Length <= 4 && buffer.Length <= _charLen - _charPos)
             {
-                foreach (var t in buffer)
-                    _charBuffer[_charPos++] = t;
+                foreach (var t in buffer) _charBuffer[_charPos++] = t;
             }
             else
             {
@@ -420,7 +435,7 @@ namespace Emission.Core
                 if (!HasInstance()) return;
                 Console.ForegroundColor = color;
                 
-                Application.Instance?.Context.Debugger.WriteLine(str);
+                Application.Instance?.Context.Debugger.Write(LOG_FILE_TEMPLATE, Time.TimeAsString(), str);
                 Console.WriteLine(str);
             });
         }
