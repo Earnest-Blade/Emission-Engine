@@ -35,7 +35,6 @@ namespace Emission.Engine
         public Window.Window? Window;
         public Renderer? Renderer;
 
-        internal EngineBehaviourDispatcher? BehaviourDispatcher;
         internal EventDispatcher? EventDispatcher;
         internal PageManager? PageManager;
         internal UserInterfaceDispatcher? UserInterfaceDispatcher;
@@ -52,7 +51,7 @@ namespace Emission.Engine
             if(!string.IsNullOrWhiteSpace(workingDirectory))
                 EDirectory.SetCurrentDirectory(workingDirectory);
             
-            ModelBuilder.InitializeContext();
+            Model.InitializeContext();
         }
 
         public virtual void Initialize()
@@ -64,12 +63,11 @@ namespace Emission.Engine
             }
             else _context.DebugFlags = DebugFlags.ShowNothing;
             
-            EngineBehaviour.CreateDispatcher();
             Event.CreateEventDispatcher();
 
             Event.AddDelegate(Event.INITIALIZE, Initialize);
             Event.AddDelegate(Event.START, Start);
-            Event.AddDelegate(Event.UPDATE, Update);
+            Event.AddDelegate<float>(Event.UPDATE, Update);
             Event.AddDelegate(Event.RENDER, Render);
             Event.AddDelegate<int>(Event.STOP, Exit);
             
@@ -79,7 +77,7 @@ namespace Emission.Engine
             Debug.Log($"[INFO] Running with FPS limit {Context.Framerate}");
             
             Window ??= new Window.Window(WindowConfig.Default("Window"));
-            Renderer ??= new Renderer(new GlConfig().GetDefault());
+            Renderer ??= new Renderer(new OpenGlConfig().GetDefault());
             PageManager ??= new PageManager();
             UserInterfaceDispatcher ??= new UserInterfaceDispatcher();
             
@@ -92,14 +90,11 @@ namespace Emission.Engine
             }
 
             Renderer.Initialize();
-
-            EngineBehaviour.Call(Event.INITIALIZE);
         }
         
         public virtual void Start()
         {
             Window.Start();
-            EngineBehaviour.Call(Event.START);
 
             if (!IsRunning) 
                 Loop();
@@ -109,54 +104,41 @@ namespace Emission.Engine
         {
             IsRunning = true;
 
-            float previous = (float)Glfw.glfwGetTime();
-            float steps = 0.0f;
-            uint frames = 0;
+            double previous = Glfw.glfwGetTime();
+            double steps = 0.0f;
             
             while (!Window.ShouldClose)
             {
-                float start = (float)Glfw.glfwGetTime();
-                
-                IApplication.SetDeltaTime(start - previous);
-                
-                previous = (float)Glfw.glfwGetTime();
-                steps += Time.DeltaTime;
-                
-                while (steps >= 1.0f / Context.Framerate)
-                {
-                    Window.Update();
-                    Event.Invoke(Event.UPDATE);
-                    
-                    IApplication.SetFps(frames);
-                    
-                    steps -= 1.0f / Context.Framerate;
-                    frames = 0;
-                }
+                double current = Glfw.glfwGetTime();
+                double elapsed = current - previous;
+                previous = current;
 
+                steps += elapsed;
+                
+                Window.Update();
+
+                while (steps >= 1.0 / Context.Framerate)
+                {
+                    Event.Invoke(Event.UPDATE, (float)elapsed);
+                    steps -= 1.0 / Context.Framerate;
+                }
+                
                 Window.Render();
                 Event.Invoke(Event.RENDER);
                 
                 Input.Instance.Update();
-
-                Window.Swap();
                 
-                steps += (float)Glfw.glfwGetTime() - start;
-                frames++;
+                Window.Swap();
             }
 
             IsRunning = false;
             Event.Invoke(Event.STOP, 0);
         }
 
-        public virtual void Update()
-        {
-            EngineBehaviour.Call(Event.UPDATE);
-        }
+        public virtual void Update(float delta) { }
 
         public virtual void Render()
         {
-            EngineBehaviour.Call(Event.RENDER);
-            
             NkNewFrame();
             
             UserInterfaceDispatcher.CallAll();
@@ -167,16 +149,13 @@ namespace Emission.Engine
         public virtual void Exit(int status)
         {
             NkShutdown();
-            
-            // Call Stop Event
-            EngineBehaviour.Call(Event.STOP);
+
             Window!.Stop();
             
-            ModelBuilder.ReleaseContext();
+            Model.ReleaseContext();
             
             // Dispose Observators
             Event.DisposeEventDispatcher();
-            EngineBehaviour.RemoveDispatcher();
             
             // Dispose Debugger
             Debug.Log($"[INFO] Application stopped with exit code {status}");
@@ -189,7 +168,7 @@ namespace Emission.Engine
         public void AttachInitializeFunction(Action action) => EventDispatcher!.Add(Event.INITIALIZE, () => action());
         public void AttachStartFunction(Action action) => EventDispatcher!.Add(Event.START, () => action());
         public void AttachRenderFunction(Action action) => EventDispatcher!.Add(Event.RENDER, () => action());
-        public void AttachUpdateFunction(Action action) => EventDispatcher!.Add(Event.UPDATE, () => action());
+        public void AttachUpdateFunction(Action<float> action) => EventDispatcher!.Add<float>(Event.UPDATE, (_) => action(_));
         public void AttachExitFunction(Action<int> action) => EventDispatcher!.Add<int>(Event.STOP, (_) => action(_));
 
         public override string ToString() => Context.ToString();

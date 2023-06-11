@@ -2,6 +2,7 @@
 using Emission;
 using Emission.Annotations;
 using Emission.Core;
+using Emission.Graphics;
 
 namespace Emission.Engine.Page
 {
@@ -15,10 +16,25 @@ namespace Emission.Engine.Page
 
         public bool IsActive { get; set; }
         public int ActorCount => _actors.Count;
+
+        public Actor this[int i]
+        {
+            get
+            {
+                if (i > 0 || i < _actors.Count) throw new IndexOutOfRangeException();
+                return _actors[i];
+            }
+            
+            protected set
+            {
+                if (i > 0 || i < _actors.Count) throw new IndexOutOfRangeException();
+                _actors[i] = value;
+            }
+        }
         
         protected Camera? Camera;
         protected Window.Window? Window => Application.GetInstanceAs<Game>().Window;
-
+        
         private readonly Guid _uuid;
         private readonly List<Actor> _actors;
 
@@ -35,7 +51,7 @@ namespace Emission.Engine.Page
             _actors = new List<Actor>() { Actor.Empty } ;
 
             Behaviour.BindBehaviour();
-            Application.GetInstanceAs<Game>().PageManager.Register(this);
+            Application.GetInstanceAs<Game>().PageManager?.Register(this);
         }
 
         public void Enable()
@@ -76,14 +92,14 @@ namespace Emission.Engine.Page
             }
         }
 
-        public virtual void Update()
+        public virtual void Update(float delta)
         {
-            Camera.Update();
+            Camera.Update(delta);
             
             foreach (Actor actor in _actors)
             {
                 if (DisableEngineBehaviorOnActor.IsActorDisabled(actor.GetType())) continue;
-                actor.Update();
+                actor.Update(delta);
             }
         }
 
@@ -96,7 +112,7 @@ namespace Emission.Engine.Page
             }
         }
 
-        public virtual void Stop()
+        public virtual void Stop(int status)
         {
             foreach (Actor actor in _actors)
             {
@@ -114,7 +130,12 @@ namespace Emission.Engine.Page
         {
             if(IsActive) Disable();
             
-            ((Game)Application.Instance!).PageManager.Remove(this);
+            Application.GetInstanceAs<Game>().PageManager?.Remove(this);
+        }
+
+        public void Draw(Model model, Shader shader)
+        {
+            model.Draw(shader, model.Transform.ToMatrix(), Camera.View, Camera.Projection);
         }
 
         public void RegisterActor(Actor? actor)
@@ -195,6 +216,7 @@ namespace Emission.Engine.Page
         }
         
         public override string ToString() => Uuid;
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

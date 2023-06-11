@@ -4,6 +4,7 @@ using Emission.Core;
 
 namespace Emission.Graphics
 {
+    [Serializable]
     public class TextureArray : IEquatable<TextureArray>, IList<Texture>, IEnumerator<Texture>
     {
         private const int MaxTextureArrayLength = 32;

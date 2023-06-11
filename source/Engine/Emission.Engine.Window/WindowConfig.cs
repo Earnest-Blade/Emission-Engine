@@ -55,7 +55,7 @@ namespace Emission.Engine.Window
                 DepthBits = 24,
                 StencilBits = 8,
                 
-                RenderConfig = new GlConfig().GetDefault()
+                RenderConfig = new OpenGlConfig().GetDefault()
             };
         }
     }

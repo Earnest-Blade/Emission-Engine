@@ -12,14 +12,12 @@ using Material = Assimp.Material;
 
 namespace Emission.Graphics
 {
-    public class ModelBuilder
+    internal class ModelBuilder
     {
-        #region Assimp Loader
-        
         public const PostProcessSteps DEFAULT_POST_PROCESS_STEPS = PostProcessSteps.Triangulate | PostProcessSteps.OptimizeMeshes;
         public static AssimpContext? CurrentContext => _context;
 
-        private static AssimpContext? _context;
+        internal static AssimpContext? _context;
         
         private readonly List<Mesh>? _meshes;
         private string? _assetDirectory;
@@ -42,10 +40,10 @@ namespace Emission.Graphics
             _meshes.Add(mesh);
         }
 
-        private Model CreateModel()
+        public Model CreateModel()
         {
             if (_meshes == null || _meshes.Count == 0) 
-                return CreateEmpty();
+                return Model.CreateEmpty();
             
             return new Model(Transform.Zero, _meshes);
         }
@@ -140,81 +138,5 @@ namespace Emission.Graphics
             
             return arr;
         }
-
-        public static void InitializeContext()
-        {
-            _context = new AssimpContext();
-        }
-
-        public static void ReleaseContext()
-        {
-            if(_context != null)
-                _context.Dispose();
-        }
-        
-        #endregion
-
-        #region Static Methods
-        public static Model FromPath(string? path) => FromPath(path, EDirectory.GetDirectoryFromFilePath(path));
-        public static Model FromPath(string? path, string? asset) => FromPath(path, asset, DEFAULT_POST_PROCESS_STEPS);
-        public static Model FromPath(string? path, string? asset, PostProcessSteps steps)
-        {
-            if (path == null) return null;
-            if (path.Length == 0) return null;
-
-            StreamReader reader = EFile.OpenText(path);
-            return FromStream(reader.BaseStream, asset, steps);
-        }
-
-        public static Model FromMemory(MemoryStream stream, string? asset) => FromMemory(stream, asset, DEFAULT_POST_PROCESS_STEPS);
-        public static Model FromMemory(MemoryStream stream,  string? asset, PostProcessSteps steps)
-        {
-            if (stream.Length == 0) return null;
-            return FromStream(stream, asset, steps);
-        }
-
-        public static Model FromStream(Stream stream, string? asset) => FromStream(stream, asset, DEFAULT_POST_PROCESS_STEPS);
-        public static Model FromStream(Stream stream, string? asset, PostProcessSteps steps)
-        {
-            if (_context == null)
-                throw new ArgumentNullException(nameof(_context));
-            if (_context.IsDisposed)
-                throw new ObjectDisposedException(nameof(_context));
-
-            if (string.IsNullOrEmpty(asset))
-            {
-                Debug.LogWarning($"[WARNING] Trying to import model, but asset directory is null or empty. Assimp will try to load assets in {EDirectory.GetCurrentDirectory()}");
-                asset = string.Empty;                
-            }
-
-            if (stream == null || !stream.CanRead)
-                throw new ArgumentNullException(nameof(steps));
-            
-            Scene scene = _context.ImportFileFromStream(stream, steps);
-
-            if (scene == null || scene.SceneFlags == SceneFlags.Incomplete || scene.RootNode == null)
-            {
-                stream.Dispose();
-                throw new EmissionException(EmissionException.ERR_ASSIMP, "Cannot load Assimp Model!");
-            }
-            
-            stream.Close();
-
-            ModelBuilder builder = new ModelBuilder();
-            builder.LoadAssimpScene(scene, asset);
-            return builder.CreateModel();
-        }
-
-        public static Model CreateEmpty()
-        {
-            return new Model(Transform.Zero, new Mesh());
-        }
-        
-        public static Model FromMesh(Mesh mesh)
-        {
-            return new Model(Transform.Zero, mesh);
-        }
-        
-        #endregion
     }
 }

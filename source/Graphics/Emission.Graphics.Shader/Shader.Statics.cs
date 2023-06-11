@@ -99,6 +99,6 @@ namespace Emission.Graphics
         /// Return active shader program.
         /// </summary>
         /// <returns></returns>
-        public static uint GetActiveProgram() => _activeShader;
+        //public static uint GetActiveProgram() => _activeShader;
     }
 }

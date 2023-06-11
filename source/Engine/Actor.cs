@@ -106,7 +106,7 @@ namespace Emission.Engine
             
         }
 
-        public virtual void Update()
+        public virtual void Update(float delta)
         {
             
         }
@@ -155,7 +155,7 @@ namespace Emission.Engine
             if (IsValidActor(actor))
                 throw new EmissionException(EmissionException.ERR_PAGE, $"Cannot set an empty actor ({actor?.Name}) as parent!");
 
-            Page.Page? page = ((Game)Application.Instance!).PageManager.FindPage(_page);
+            Page.Page? page = Application.GetInstanceAs<Game>().PageManager?.FindPage(_page);
             if (page != null && page.IsActive)
             {
                 ushort id = page.HasActor(actor);
@@ -184,7 +184,7 @@ namespace Emission.Engine
             if (IsValidActor(actor))
                 throw new EmissionException(EmissionException.ERR_PAGE, $"Cannot set an empty actor ({actor?.Name}) as child!");
             
-            Page.Page? page = ((Game)Application.Instance!).PageManager.FindPage(_page);
+            Page.Page? page = Application.GetInstanceAs<Game>().PageManager?.FindPage(_page);
             if (page != null && page.IsActive)
             {
                 ushort id = page.HasActor(actor);

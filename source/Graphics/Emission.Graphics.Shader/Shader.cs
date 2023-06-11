@@ -61,7 +61,7 @@ namespace Emission.Graphics
         /// <param name="shader"></param>
         private void Initialize(ShaderStruct shader)
         {
-            // Catch when trying to re-init the shader. 
+            // Catch if we trying to re-init the shader. 
             if(_program != 0)
             {
                 Debug.LogWarning($"[WARNING] Shader '{Name}' is already initialize!");
@@ -80,21 +80,21 @@ namespace Emission.Graphics
             if (shader.HasVertexShader)
             {
                 Debug.Log("[INFO] Compiling a new vertex shader!");
-                _vertex = ShaderBuilder.CompileShader(ShaderBuilder.VERTEX_SHADER, ref shader.VertexData);
+                _vertex = ShaderBuilder.CompileShader(ShaderBuilder.VERTEX_SHADER, shader.VertexData);
                 glAttachShader(_program, _vertex);
             }
 
             if (shader.HasFragmentShader)
             { 
                 Debug.Log("[INFO] Compiling a new fragment shader!");
-                _fragment = ShaderBuilder.CompileShader(ShaderBuilder.FRAGMENT_SHADER, ref shader.FragmentData);
+                _fragment = ShaderBuilder.CompileShader(ShaderBuilder.FRAGMENT_SHADER, shader.FragmentData);
                 glAttachShader(_program, _fragment);
             }
 
             if (shader.HasGeometryShade)
             {
                 Debug.Log("[INFO] Compiling a new geometry shader!");
-                _geometry = ShaderBuilder.CompileShader(ShaderBuilder.GEOMETRY_SHADER, ref shader.GeomertyData);
+                _geometry = ShaderBuilder.CompileShader(ShaderBuilder.GEOMETRY_SHADER, shader.GeomertyData);
                 glAttachShader(_program, _geometry);
             }
             
@@ -278,4 +278,3 @@ namespace Emission.Graphics
         }
     }
 }
-

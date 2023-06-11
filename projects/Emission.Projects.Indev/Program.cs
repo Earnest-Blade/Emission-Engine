@@ -1,9 +1,6 @@
-﻿using System;
-using Emission.Core;
-using Emission.Core.IO;
+﻿using Emission.Core;
 using Emission.Engine;
 using Emission.Engine.Page;
-using Emission.Graphics.UI;
 
 namespace Emission.Projects.Indev
 {
@@ -11,7 +8,7 @@ namespace Emission.Projects.Indev
     {
         public Program(ApplicationContext context) : base(context, "../")
         {
-            Debug.Log(EDirectory.GetCurrentDirectory());
+            
         }
         
         public override void Initialize()
@@ -21,12 +18,7 @@ namespace Emission.Projects.Indev
             PageManager.Enable(new IndevPage());
         }
 
-        public override void Exit(int status)
-        {
-            base.Exit(status);
-        }
-
-        public static void Main(String[] args)
+        public static void Main(string[] args)
         {
             ApplicationContext ctx = new ApplicationContext
             {
@@ -43,8 +35,6 @@ namespace Emission.Projects.Indev
             Application.Create(p);
             Application.Start();
         }
-
-        
     }
 }
 

@@ -9,7 +9,7 @@ namespace Emission.Engine
     {
         public event EmissionHandler OnInitialize;
         public event EmissionHandler OnStart;
-        public event EmissionHandler OnUpdate;
+        public event EmissionHandler<float> OnUpdate;
         public event EmissionHandler OnRender;
         public event EmissionHandler<int> OnStop;
 

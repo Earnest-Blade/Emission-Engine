@@ -1,4 +1,7 @@
-﻿namespace Emission.Core.Memory
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
+
+namespace Emission.Core.Memory
 {
     public static unsafe partial class Memory
     {
@@ -59,8 +62,7 @@
         /// <param name="array">Array to transform</param>
         public static byte* BytePtrFromByteArray(byte[] array)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
+            ArgumentNullException.ThrowIfNull(array);
 
             fixed (byte* ptr = &array[0])
                 return ptr;
@@ -72,11 +74,25 @@
         /// <param name="array">Array to transform</param>
         public static sbyte* SbytePtrFromSbyteArray(sbyte[] array)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
+            ArgumentNullException.ThrowIfNull(array);
 
             fixed (sbyte* ptr = &array[0])
                 return ptr;
+        }
+
+        /// <summary>
+        /// Create a managed array from an unmanaged pointer.
+        /// </summary>
+        public static T[] PtrToArray<T>(T* ptr, int length) where T : unmanaged
+        {
+            ArgumentNullException.ThrowIfNull(ptr);
+
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            
+            T[] array = new T[length];
+            new Span<T>(ptr, length).CopyTo(new Span<T>(array, 0, length));
+            return array;
         }
     }
 }

@@ -151,9 +151,9 @@ namespace Emission.Engine
             if(PageManager.ActiveCamera == null) SetActive(true);
         }
 
-        public override void Update()
+        public override void Update(float delta)
         {
-            base.Update();
+            base.Update(delta);
 
             if (_shouldUpdateProjection)
             {

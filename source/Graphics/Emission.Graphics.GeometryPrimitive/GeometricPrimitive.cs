@@ -35,7 +35,7 @@ namespace Emission.Graphics.GeometricPrimitives
         {
             plane /= 2;
             
-            return ModelBuilder.FromMesh(new Mesh(
+            return Model.FromMesh(new Mesh(
                 new Vertex[]
                 {
                     new Vertex(new Vector3(-plane.X,  plane.Y,  plane.Z), Vector3.UnitZ, (0, 1)),
@@ -56,7 +56,7 @@ namespace Emission.Graphics.GeometricPrimitives
         public static Model PrimitiveLine(Vector3 start, Vector3 end) => PrimitiveLine(Transform.Zero, start, end);
         public static Model PrimitiveLine(Transform transform, Vector3 start, Vector3 end)
         {
-            return ModelBuilder.FromMesh(new Mesh(
+            return Model.FromMesh(new Mesh(
                 new Vertex[]
                 {
                     new Vertex(start, Vector3.Zero, Vector2.Zero),

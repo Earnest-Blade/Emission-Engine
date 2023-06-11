@@ -22,6 +22,8 @@ namespace Emission.Core
         private const char ARRAY_SEPARATOR = ';';
         private const char PARAM_SEPARATOR = ' ';
         private const string MESSAGE_BOX_TITLE = "Fatal Error";
+        private const string FALSE_STR = "false";
+        private const string TRUE_STR = "true";
 
         /// <summary>
         /// Get or set developer console's title.
@@ -254,6 +256,8 @@ namespace Emission.Core
         /// Log a 2D Vector to the console
         /// </summary>
         public static void Log(Vector2 vector2) => Log($"{vector2}");
+
+        public static void Log(bool b) => Log(b ? TRUE_STR : FALSE_STR);
         
         /// <summary>
         /// Log a 3D Vector to the console

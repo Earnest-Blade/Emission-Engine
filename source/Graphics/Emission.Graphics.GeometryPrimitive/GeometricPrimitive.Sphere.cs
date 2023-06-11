@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Emission.Core.Mathematics;
-
-namespace Emission.Graphics.GeometricPrimitives
+﻿namespace Emission.Graphics.GeometricPrimitives
 {
     public static partial class GeometricPrimitive
     {
@@ -71,7 +67,7 @@ namespace Emission.Graphics.GeometricPrimitives
                 }
             }
             
-            return ModelBuilder.FromMesh(new Mesh(vertices.ToArray(), indices.ToArray(), textures));
+            return Model.FromMesh(new Mesh(vertices.ToArray(), indices.ToArray(), textures));
         }
     }
 }

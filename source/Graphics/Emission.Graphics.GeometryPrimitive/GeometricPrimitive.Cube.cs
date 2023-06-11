@@ -64,7 +64,7 @@ namespace Emission.Graphics.GeometricPrimitives
                 vertices[vertexCount++] = new Vertex((normal + side1 - side2) * size, normal, textureCoords[3]);
             }
 
-            return ModelBuilder.FromMesh(new Mesh(vertices, indices, textures));
+            return Model.FromMesh(new Mesh(vertices, indices, textures));
         }
     }
 }

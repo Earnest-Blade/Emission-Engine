@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "Emission.Projects.Indev/1.0.0": {
         "dependencies": {
-          "Emission.Engine": "1.0.0"
+          "Emission.Engine": "1.0.0",
+          "Emission.Nuklear": "0.0.0.0"
         },
         "runtime": {
           "Emission.Projects.Indev.dll": {}

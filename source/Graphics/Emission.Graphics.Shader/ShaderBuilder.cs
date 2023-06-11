@@ -1,7 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using Emission.Core;
+﻿using System.Diagnostics.CodeAnalysis;
 using Emission.Core.Memory;
-using Emission.Natives.GL;
 using static Emission.Natives.GL.Gl;
 
 namespace Emission.Graphics
@@ -43,40 +41,12 @@ namespace Emission.Graphics
 
                 if (line.Contains(':'))
                 {
-                    if (line.Contains(DEFINE_KEY))
-                    {
-                        type = DEFINE_SHADER;
-                        continue;
-                    }
-
-                    if (line.Contains(VERTEX_SHADER_KEY))
-                    {
-                        type = VERTEX_SHADER;
-                        continue;
-                    }
-
-                    if (line.Contains(GEOMETRY_SHADER_KEY))
-                    {
-                        type = GEOMETRY_SHADER;
-                        continue;
-                    }
-
-                    if (line.Contains(FRAGMENT_SHADER_KEY))
-                    {
-                        type = FRAGMENT_SHADER;
-                        continue;
-                    }
-
-                    if (line.Contains(TCS_SHADER_KEY))
-                    {
-                        type = TESSELATION_CONTROL_SHADER;
-                        continue;
-                    }
-
-                    if (line.Contains(TES_SHADER_KEY))
-                    {
-                        type = TESSELATION_EVAL_SHADER;
-                    }
+                    if (line.Contains(DEFINE_KEY)) { type = DEFINE_SHADER; continue; }
+                    if (line.Contains(VERTEX_SHADER_KEY)) { type = VERTEX_SHADER; continue; }
+                    if (line.Contains(GEOMETRY_SHADER_KEY)) { type = GEOMETRY_SHADER; continue; }
+                    if (line.Contains(FRAGMENT_SHADER_KEY)) { type = FRAGMENT_SHADER; continue; }
+                    if (line.Contains(TCS_SHADER_KEY)) { type = TESSELATION_CONTROL_SHADER; continue; }
+                    if (line.Contains(TES_SHADER_KEY)) { type = TESSELATION_EVAL_SHADER; }
                 }
                 else
                 {
@@ -94,7 +64,7 @@ namespace Emission.Graphics
         /// <param name="data">Shader data to compile</param>
         /// <returns></returns>
         /// <exception cref="EmissionException"></exception>
-        public static uint CompileShader(uint type, ref string data)
+        public static uint CompileShader(uint type, string data)
         {
             uint shader = glCreateShader(type);
             
@@ -106,22 +76,11 @@ namespace Emission.Graphics
             
             int shaderStatus;
             glGetShaderiv(shader, GL_COMPILE_STATUS, &shaderStatus);
+
+            if (shaderStatus == GL_TRUE) return shader;
             
-            if (shaderStatus != GL_TRUE)
-            {
-                int length;
-                char* source = (char*)CRuntime.Malloc(COMPILE_SHADER_OUTPUT_BUFFER_SIZE);
-                glGetShaderInfoLog(shader, COMPILE_SHADER_OUTPUT_BUFFER_SIZE, &length, source);
-                string? info = Memory.PtrToStringUtf8(source, length);
-                CRuntime.Free(source);
-                
-                if (info == null)
-                    throw new ArgumentNullException(nameof(info), "Error while getting information from OpenGL GLSL compiler!");
-                
-                throw new EmissionException(EmissionException.ERR_SHADER, info);
-            }
-            
-            return shader;
+            TestShader(shader);
+            return 0;
         }
 
         public static void LinkProgram(uint program)
@@ -130,19 +89,37 @@ namespace Emission.Graphics
 
             int status;
             glGetProgramiv(program, GL_LINK_STATUS, &status);
-            if (status != GL_TRUE)
-            {
-                int lenght;
-                byte* source = (byte*)CRuntime.Malloc(COMPILE_SHADER_OUTPUT_BUFFER_SIZE);
-                glGetProgramInfoLog(program, COMPILE_SHADER_OUTPUT_BUFFER_SIZE, &lenght, source);
-                string? info = Memory.PtrToStringUtf8(source, lenght);
-                CRuntime.Free(source);
+            if (status == GL_TRUE) return;
+            
+            TestProgram(program);
+        }
 
-                if (info == null)
-                    throw new ArgumentNullException(nameof(info), "Error while getting information from OpenGL GLSL compiler!");
+        private static void TestShader(uint shader)
+        {
+            int length;
+            char* source = (char*)CRuntime.Malloc(COMPILE_SHADER_OUTPUT_BUFFER_SIZE);
+            glGetShaderInfoLog(shader, COMPILE_SHADER_OUTPUT_BUFFER_SIZE, &length, source);
+            string? info = Memory.PtrToStringUtf8(source, length);
+            CRuntime.Free(source);
                 
-                throw new EmissionException(EmissionException.ERR_SHADER, info);
-            }
+            if (info == null)
+                throw new ArgumentNullException(nameof(info), "Error while getting information from OpenGL GLSL compiler!");
+                
+            throw new EmissionException(EmissionException.ERR_SHADER, info);
+        }
+
+        private static void TestProgram(uint program)
+        {
+            int lenght;
+            byte* source = (byte*)CRuntime.Malloc(COMPILE_SHADER_OUTPUT_BUFFER_SIZE);
+            glGetProgramInfoLog(program, COMPILE_SHADER_OUTPUT_BUFFER_SIZE, &lenght, source);
+            string? info = Memory.PtrToStringUtf8(source, lenght);
+            CRuntime.Free(source);
+
+            if (info == null)
+                throw new ArgumentNullException(nameof(info), "Error while getting information from OpenGL GLSL compiler!");
+                
+            throw new EmissionException(EmissionException.ERR_SHADER, info);
         }
     }
 }

@@ -1,17 +1,21 @@
 ﻿using Emission;
 using Emission.Core;
 using Emission.Core.Mathematics;
+using Emission.Core.Memory;
+using Emission.Natives.GLFW;
 using Emission.Natives.GLFW.Input;
 
 namespace Emission.Engine
 {
-    public class Input
+    public unsafe class Input
     {
         /* Constants */
         public const int KEYBOARD_SIZE = 512;
         public const int MOUSE_SIZE = 16;
         public const int NO_STATE = -1;
         public const int MOUSE_DB_CLICK_COOLDOWN = 1000000000 / 5;
+
+        public const int CONTROLLER_SIZE = 16;
 
         /// <summary>
         /// Get if a key or a mouse button is pressed. Return a boolean.
@@ -116,6 +120,9 @@ namespace Emission.Engine
         private Vector2 _lastMousePosition;
         private long _lastPressedMouse;
 
+        private int[] _controllers;
+        private int[] _axisCount;
+
         private Input()
         {
             _keyStates = new int[KEYBOARD_SIZE];
@@ -123,6 +130,16 @@ namespace Emission.Engine
             
             _buttonStates = new int[MOUSE_SIZE];
             _activeButtons = new bool[MOUSE_SIZE];
+
+            _controllers = new int[CONTROLLER_SIZE];
+            _axisCount = new int[CONTROLLER_SIZE];
+
+            for (int i = 0; i < CONTROLLER_SIZE; i++)
+            {
+                int a;
+                Glfw.glfwGetJoystickAxes(i, &a);
+                _axisCount[i] = a;
+            }
             
             _mouseScroll = 0;
             _mouseSensivity = 1f;
@@ -161,6 +178,16 @@ namespace Emission.Engine
         {
             if(!HasInstance()) return;
             _mouseScroll = (float)scroll;
+        }
+
+        public virtual void ControllerCallback(int jid, int @event)
+        {
+            if (!HasInstance()) return;
+            _controllers[jid] = @event;
+
+            int axisCount;
+            Glfw.glfwGetJoystickAxes(jid, &axisCount);
+            _axisCount[jid] = axisCount;
         }
         
         private bool KeyDown(int key)
@@ -249,11 +276,30 @@ namespace Emission.Engine
         public static bool IsMouseButtonReleased(MouseButton button) { return _instance.MouseButtonReleased((int)button); }
         public static bool IsMouseButtonDoubleClicked(MouseButton button) { return _instance.MouseButtonDoubleClicked((int)button); }
 
-        public static int Axis(Axis a) { return a.IsDown(); }
-        public static float Axis(Axis a, float mod) { return a.IsDown(mod); }
+        public static bool IsControllerConnected(Controllers controllers)
+        {
+            return Glfw.glfwJoystickPresent((int)controllers) == Glfw.GLFW_TRUE;
+        }
+
+        public static float[] GetControllerAxis(Controllers controllers)
+        {
+            float* ptr = Glfw.glfwGetJoystickAxes((int)controllers, (int*)0);
+            return Memory.PtrToArray(ptr, _instance._axisCount[(int)controllers]);
+        }
         
-        public static int AxisPress(Axis a) { return a.IsPress(); }
-        public static float AxisPress(Axis a, float mod) { return a.IsPress(mod); }
+        public static float GetControllerAxis(Controllers controllers, int axis)
+        {
+            float* ptr = Glfw.glfwGetJoystickAxes((int)controllers, (int*)0);
+            if (ptr == (float*)0)
+                return 0;
+            
+            return ptr[axis];
+        }
+
+        public static int GetControllerAxisCount(Controllers controllers)
+        {
+            return _instance._axisCount[(int)controllers];
+        }
 
         public static bool HasInstance() => _instance != null;
 

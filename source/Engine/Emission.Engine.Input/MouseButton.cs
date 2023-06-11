@@ -1,7 +1,7 @@
 ﻿namespace Emission.Engine
 {
     [Flags]
-    public enum MouseButton : int
+    public enum MouseButton
     {
         /// <summary>
         /// An unknown button.

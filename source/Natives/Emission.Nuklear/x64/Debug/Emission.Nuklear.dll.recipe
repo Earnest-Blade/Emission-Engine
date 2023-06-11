@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\Code\Emission\x64\Debug\Emission.Nuklear.runtimeconfig.json</FullPath>
+      <FullPath>E:\Code\Emission\source\Natives\Emission.Nuklear\x64\Debug\Emission.Nuklear.runtimeconfig.json</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\Code\Emission\x64\Debug\Emission.Nuklear.dll</FullPath>
+      <FullPath>E:\Code\Emission\source\Natives\Emission.Nuklear\x64\Debug\Emission.Nuklear.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

@@ -1,1 +1,3 @@
-﻿  Emission.Nuklear.vcxproj -> E:\Code\Emission\x64\Debug\Emission.Nuklear.dll
+﻿  nuklear.obj : module MSIL détecté ; liens incrémentiels désactivés pour MSIL ; édition de liens complète en cours
+nuklear.obj : warning LNK4248: jeton typeref non résolu (01000021) pour 'nuklear.NkUserFontGlyph' ; l'image risque de ne pas s'exécuter
+  Emission.Nuklear.vcxproj -> E:\Code\Emission\source\Natives\Emission.Nuklear\x64\Debug\Emission.Nuklear.dll

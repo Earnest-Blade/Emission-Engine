@@ -43,6 +43,9 @@ namespace Emission.Graphics.UI
 
         public void Register<T>(T item) where T : IUserInterface
         {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+            
             if(_context == null)
                 Debug.LogWarning($"[WARNING] Cannot register UserInterface '{typeof(T).Name}' because UIContext isn't initialize!");
             if (!Application.HasInstance()) return;

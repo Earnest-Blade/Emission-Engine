@@ -18,6 +18,7 @@
     <!-- Import Group -->
     <ItemGroup>
       <ProjectReference Include="..\..\source\Engine\Emission.Engine.csproj" />
+      <ProjectReference Include="..\..\source\Natives\Emission.Nuklear\Emission.Nuklear.vcxproj" />
     </ItemGroup>
 
 </Project>

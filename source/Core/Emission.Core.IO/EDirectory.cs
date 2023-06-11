@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO.Enumeration;
 using System.Text;
 
@@ -120,7 +117,7 @@ namespace Emission.Core.IO
         /// <summary>
         /// Return true if the given character is a directory separator.
         /// </summary>
-        internal static bool IsDirectorySeparator(char c) 
+        public static bool IsDirectorySeparator(char c) 
             => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar;
         
         [return: NotNullIfNotNull("path")]

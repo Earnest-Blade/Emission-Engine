@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-using Microsoft.VisualBasic.FileIO;
+﻿using Microsoft.VisualBasic.FileIO;
 
 namespace Emission.Core.IO
 {
     public static class EFile
     {
-        public static string ASSET_FILE => Path.Combine(EDirectory.GetCurrentDirectory(), "Assets/");
-        public static string DATA_FILE => Path.Combine(EDirectory.GetCurrentDirectory(), "Data/");
-
         public const int DEFAULT_BUFFER_SIZE = 4096;
 
         private const string DEBUG_TEMPLATE = "[INFO] Reading '{0}'";
@@ -104,21 +97,19 @@ namespace Emission.Core.IO
         {
             try
             {
-                if (path == null) return false;
-                if (path.Length == 0) return false;
+                if (string.IsNullOrEmpty(path)) throw new ArgumentException("'path' cannot be null or empty.", nameof(path));
 
                 path = Path.GetFullPath(path);
 
                 if (path.Length > 0 && IsDirectorySeparator(path[path.Length - 1]))
                     return false;
-                
+
                 return FileSystem.FileExists(path);
             }
-            catch(ArgumentException){}
-            catch(IOException){}
-            catch(UnauthorizedAccessException){}
-
-            return false;
+            catch (Exception exception) when (exception is ArgumentException || exception is IOException || exception is UnauthorizedAccessException)
+            {
+                throw new EmissionException(EmissionException.ERR_IO, exception);
+            }
         }
         
         public static string ExtractDirectory(string path) => path.Substring(0, path.LastIndexOf('/'));

@@ -9,14 +9,16 @@ E:\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\linux-x64\native\
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\osx-x64\native\libassimp.dylib
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\win-x64\native\assimp.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\runtimes\win-x86\native\assimp.dll
+E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Assets.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Core.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Engine.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.GL.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.GLFW.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Graphics.dll
-E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Win32.dll
-E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Assets.dll
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Nuklear.dll
+E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Win32.dll
+E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Nuklear.pdb
+E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Assets.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Engine.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Core.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Core.dll.config
@@ -24,8 +26,6 @@ E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.GL.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.GLFW.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Graphics.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Win32.pdb
-E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission Assets.pdb
-E:\Code\Emission\projects\Emission.Projects.Indev\bin\Emission.Nuklear.pdb
 E:\Code\Emission\projects\Emission.Projects.Indev\obj\Debug\Emission.Projects.Indev.csproj.AssemblyReference.cache
 E:\Code\Emission\projects\Emission.Projects.Indev\obj\Debug\Emission.Projects.Indev.GeneratedMSBuildEditorConfig.editorconfig
 E:\Code\Emission\projects\Emission.Projects.Indev\obj\Debug\Emission.Projects.Indev.AssemblyInfoInputs.cache

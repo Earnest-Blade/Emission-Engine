@@ -7,7 +7,7 @@ using Emission.Natives.GLFW;
 
 namespace Emission.Graphics
 {
-    public class Model
+    public partial class Model
     {
         public Transform Transform;
 
@@ -29,23 +29,8 @@ namespace Emission.Graphics
             UniformTransformName = Shader.UNIFORM_TRANSFORM;
             UniformViewName = Shader.UNIFORM_VIEW;
             UniformProjectionName = Shader.UNIFORM_PROJECTION;
-            UniformWindowResolution = Shader.UNIFORM_WINDOW_RESOLUTION;
+            UniformWindowResolution = ""; //Shader.UNIFORM_WINDOW_RESOLUTION;
         }
-
-        /*public void Draw(Shader shader) 
-            => Draw(shader, Transform.ToMatrix(), PageManager.ActiveCamera.View, PageManager.ActiveCamera.Projection);
-
-        public void DrawTransform(Shader shader, Matrix4 transformation)
-            => Draw(shader, transformation, PageManager.ActiveCamera.View, PageManager.ActiveCamera.Projection);
-
-        public void DrawProjection(Shader shader, Matrix4 projection) 
-            => Draw(shader, Transform.ToMatrix(), PageManager.ActiveCamera.View, projection);
-
-        public void DrawView(Shader shader, Matrix4 view)
-            => Draw(shader, Transform.ToMatrix(), view, PageManager.ActiveCamera.Projection);
-
-        public void Draw(Shader shader, Matrix4 transformation, Matrix4 view) => Draw(shader, transformation, view, PageManager.ActiveCamera.Projection);*/
-        
         public void Draw(Shader shader, Matrix4 transformation, Matrix4 view, Matrix4 projection)
         {
             shader.Start();
@@ -54,13 +39,6 @@ namespace Emission.Graphics
             shader.UseUniformMat4(UniformViewName, view);
             shader.UseUniformProjectionMat4(UniformProjectionName, projection);
 
-            /*unsafe
-            {
-                int width, height;
-                Glfw.glfwGetWindowSize(Application.Instance.Context.Window, &width, &height);
-                shader.UseUniformVec2(UniformWindowResolution, width, height);
-            }*/
-            
             foreach (Mesh mesh in _meshes)
                 mesh.Draw(shader);
             

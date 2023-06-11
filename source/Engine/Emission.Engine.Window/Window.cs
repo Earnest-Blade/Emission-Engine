@@ -1,22 +1,19 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Emission.Assets;
+
 using Emission.Core;
-using Emission.Core.IO;
+using Emission.Assets;
 using Emission.Core.Memory;
 using Emission.Core.Mathematics;
 
 using Emission.Graphics;
-using Emission.Graphics.UI;
 using Emission.Natives.GLFW.Input;
 using static Emission.Natives.GL.Gl;
 using static Emission.Natives.GLFW.Glfw;
 
-using nuklear;
-
 namespace Emission.Engine.Window
 {
-    public sealed unsafe class Window : IDisposable, IEngineBehaviour
+    public sealed unsafe class Window : IDisposable
     {
         /// <summary>
         /// Pointer to Glfw Window object. Represent window. Public get and can be only set class constructor.
@@ -176,10 +173,6 @@ namespace Emission.Engine.Window
         /// </summary>
         public Viewport Viewport => new Viewport(0, 0, WindowSize.X, WindowSize.Y, 0.1f, 400f);
 
-        /// <summary>
-        /// Engine Behaviour of the Window.
-        /// </summary>
-        public IEngineBehaviour Behaviour => this;
         public bool IsActive { get => true; set {} }
 
         private string _title;
@@ -187,10 +180,7 @@ namespace Emission.Engine.Window
         private Vector2 _lastWinPos;
         private ColorRgb _clearColor;
         private Icon _windowIcon;
-
-        private NkContext _nkContext;
-        private NkImage _nkImage;
-
+        
         public Window(WindowConfig config)
         {
             Config = config;
@@ -278,6 +268,8 @@ namespace Emission.Engine.Window
             glfwSetMouseButtonCallback(Handle, (_, button, action, _) => Event.Invoke<(MouseButton, InputState)>(Event.BUTTON, ((MouseButton)button, action)));
             glfwSetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MOUSE_SCROLL, y));
             glfwSetCursorPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MOUSE_MOVE, ((float)x, (float)y)));
+
+            glfwSetJoystickCallback((joystick, status) => Input.Instance.ControllerCallback(joystick, status));
         }
 
         /// <summary>
@@ -304,8 +296,6 @@ namespace Emission.Engine.Window
             glClearColor(_clearColor.R, _clearColor.G, _clearColor.B, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
-        
-        public void RenderUI() {}
 
         /// <summary>
         /// Swap Glfw buffers.
