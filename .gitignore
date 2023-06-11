@@ -8,9 +8,11 @@
 # Visual Studio Code
 .vscode
 .vs
+/.vs
 
 # Rider
 .idea
+/.idea
 
 # Build directories
 build/
