@@ -18,11 +18,16 @@ namespace Emission.Graphics.UI
             {
                 NkLayoutRowStatic(ActiveContext, 10, 300, 1);
                 NkLabel(ActiveContext, $"Fps: {Time.Fps}", (uint)NkTextAlign.NK_TEXT_ALIGN_LEFT);
-                NkLabel(ActiveContext, $"Delta Time: {Time.DeltaTime} ms", (uint)NkTextAlign.NK_TEXT_ALIGN_LEFT);
+                NkLabel(ActiveContext, $"Delta Time: {Time.DeltaTimeAsFloat} ms", (uint)NkTextAlign.NK_TEXT_ALIGN_LEFT);
                 //NkLabel(Context, $"Memory: {GC.GetTotalMemory(false)} bytes", (uint)NkTextAlign.NK_TEXT_ALIGN_LEFT);
             }
             
             NkEnd(ActiveContext);
+        }
+
+        public static void ShowControllerInfos()
+        {
+            
         }
     }
 }

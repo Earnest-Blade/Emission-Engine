@@ -7,12 +7,14 @@ namespace Emission.Engine
 {
     internal class EventDispatcher : IDisposable
     {
+        /* Engine Life Cycle Events */
         public event EmissionHandler OnInitialize;
         public event EmissionHandler OnStart;
         public event EmissionHandler<float> OnUpdate;
         public event EmissionHandler OnRender;
         public event EmissionHandler<int> OnStop;
 
+        /* Window Events */
         public event EmissionHandler OnWindowClose;
         public event EmissionHandler<Vector2> OnWindowResize;
         public event EmissionHandler<Vector2> OnWindowMove;
@@ -20,11 +22,15 @@ namespace Emission.Engine
         public event EmissionHandler<bool> OnWindowMaximize;
         public event EmissionHandler<bool> OnWindowFocus;
 
+        /* Keyboard and Mouse Events */
         public event EmissionHandler<(Keys keys, InputState action)> OnKey;
         public event EmissionHandler<(MouseButton buttons, InputState action)> OnButton;
             
         public event EmissionHandler<Vector2> OnMouseMove;
         public event EmissionHandler<double> OnMouseScroll;
+
+        /* Controller Events */
+        public event EmissionHandler<(Controllers controllers, int @event)>? OnController;
 
         public void Add(string? name, EmissionHandler handler)
         {
@@ -83,7 +89,8 @@ namespace Emission.Engine
             OnKey = null;
             OnButton = null;
             OnMouseMove = null;
-            OnMouseScroll = null; 
+            OnMouseScroll = null;
+            OnController = null;
         }
 
         private bool InvokeDelegate(Delegate @delegate, object[] args)

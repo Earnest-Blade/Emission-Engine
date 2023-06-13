@@ -237,6 +237,8 @@ namespace Emission.Engine.Window
 
             if (!string.IsNullOrEmpty(config.Icon))
                 WindowIcon = new Icon(config.Icon);
+            
+            Input.CreateInstance();
         }
 
         /// <summary>
@@ -257,6 +259,8 @@ namespace Emission.Engine.Window
             Event.AddDelegate<double>(Event.MOUSE_SCROLL, Input.Instance.ScrollCallback);
             Event.AddDelegate<Vector2>(Event.MOUSE_MOVE, Input.Instance.CursorCallback);
             
+            Event.AddDelegate<(Controllers c, int @event)>(Event.CONTROLLER_STATUS, Input.Instance.ControllerCallback);
+            
             glfwSetWindowCloseCallback(Handle, _ => Event.Invoke(Event.WINDOW_CLOSE));
             glfwSetWindowSizeCallback(Handle, (_, width, height) => Event.Invoke<Vector2>(Event.WINDOW_RESIZE, (width, height)));
             glfwSetWindowPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.WINDOW_MOVE, ((float)x, (float)y)));
@@ -269,7 +273,7 @@ namespace Emission.Engine.Window
             glfwSetScrollCallback(Handle, (_, _, y) => Event.Invoke(Event.MOUSE_SCROLL, y));
             glfwSetCursorPosCallback(Handle, (_, x, y) => Event.Invoke<Vector2>(Event.MOUSE_MOVE, ((float)x, (float)y)));
 
-            glfwSetJoystickCallback((joystick, status) => Input.Instance.ControllerCallback(joystick, status));
+            glfwSetJoystickCallback((joystick, @event) => Event.Invoke<(Controllers c, int status)>(Event.CONTROLLER_STATUS, ((Controllers)joystick, @event)));
         }
 
         /// <summary>

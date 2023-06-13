@@ -5,7 +5,7 @@ namespace Emission.Engine
     /// <summary>
     ///     Represents a gamepad axis.
     /// </summary>
-    public enum GamePadAxis
+    public enum ControllerAxis
     {
         LeftX = 0,
         LeftY = 1,

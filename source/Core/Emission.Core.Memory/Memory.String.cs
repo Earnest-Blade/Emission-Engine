@@ -53,6 +53,8 @@ namespace Emission.Core.Memory
         /// </summary>
         public static unsafe string? PtrToStringUtf8(char* ptr) => PtrToString(ptr, Encoding.UTF8);
 
+        public static unsafe string? PtrToStringUtf8(byte* ptr) => PtrToString(ptr, Encoding.UTF8);
+
         /// <summary>
         /// Return a string formatted as UTF-8 from an unmanaged pointer.
         /// </summary>
@@ -201,5 +203,7 @@ namespace Emission.Core.Memory
         /// <param name="str"></param>
         /// <returns></returns>
         public static unsafe byte* StrUtf8ToBytePtr(string str) => StrToBytePtr(str, Encoding.UTF8);
+
+        
     }
 }

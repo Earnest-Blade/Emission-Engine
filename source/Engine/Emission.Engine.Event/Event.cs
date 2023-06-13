@@ -25,6 +25,9 @@ namespace Emission.Engine
         public const string BUTTON = "Button";
         public const string MOUSE_SCROLL = "MouseScroll"; 
         public const string MOUSE_MOVE = "MouseMove";
+        
+        /* Controller Events */
+        public const string CONTROLLER_STATUS = "Controller";
 
         public static void AddDelegate(string type, EmissionHandler handler)
         {

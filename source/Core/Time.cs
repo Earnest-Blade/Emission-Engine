@@ -6,13 +6,18 @@ namespace Emission.Core
     public static class Time
     {
         /// <summary>
-        /// Return the difference between the current and previous frame.
+        /// Return the time difference between the current and previous frame.
         /// </summary>
         public static double DeltaTime
         {
             get; 
             internal set;
         }
+
+        /// <summary>
+        /// Return the time difference between the current and previous frame.
+        /// </summary>
+        public static float DeltaTimeAsFloat => (float)DeltaTime;
         
         /// <summary>
         /// Return current <see cref="Application"/>'s fps.

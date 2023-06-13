@@ -76,12 +76,16 @@ namespace Emission.Engine
             Debug.Log($"[INFO] Current directory : '{EDirectory.GetCurrentDirectory()}'");
             Debug.Log($"[INFO] Current log file : '{Path.Combine(EDirectory.GetCurrentDirectory(), _context.Debugger?.Path!)}'");
             Debug.Log($"[INFO] Running with FPS limit {Context.Framerate}");
-            
+
             Window ??= new Window.Window(WindowConfig.Default("Window"));
             Renderer ??= new Renderer(new OpenGlConfig().GetDefault());
             PageManager ??= new PageManager();
             UserInterfaceDispatcher ??= new UserInterfaceDispatcher();
-            
+
+            Debug.Log($"[INFO] {Input.ControllerCount} controller(s) are detected!");
+            foreach (Controllers controller in Input.GetControllers())
+                Debug.Log($"[INFO] {controller.ToString()} : '{Input.GetControllerName(controller)}'");
+
             Renderer.SetRendererInstance(Renderer);
 
             Window.Initialize();
@@ -108,10 +112,22 @@ namespace Emission.Engine
             double previous = Glfw.glfwGetTime();
             double steps = 0.0f;
             
+            double previousSec = 0.0;
+            uint frames = 0;
+            
             while (!Window.ShouldClose)
             {
                 double current = Glfw.glfwGetTime();
                 double elapsed = current - previous;
+                
+                frames++;
+                if (current - previousSec >= 1.0)
+                {
+                    IApplication.SetFps(frames);
+                    frames = 0;
+                    previousSec += 1.0;
+                }
+                
                 previous = current;
 
                 steps += elapsed;
@@ -123,6 +139,7 @@ namespace Emission.Engine
                 {
                     Event.Invoke(Event.UPDATE, (float)elapsed);
                     steps -= 1.0 / Context.Framerate;
+                    
                 }
                 
                 Window.Render();

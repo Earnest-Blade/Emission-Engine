@@ -2,14 +2,7 @@
 
 namespace Emission.Engine
 {
-    /// <summary>
-    ///     Represents gamepad buttons.
-    ///     <para>
-    ///         Duplicate values convenience for providing naming conventions for common gamepads (PlayStation,
-    ///         X-Box, etc).
-    ///     </para>
-    /// </summary>
-    public enum GamePadButton : byte
+    public enum ControllerButton : byte
     {
         A = 0,
         B = 1,
